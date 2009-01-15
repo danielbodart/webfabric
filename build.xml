@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webfabric" default="all">
+
+  <target name="clean" description="cleanup all">
+
+  </target>
+  
+  <target name="all" depends="clean" description="build all"/>
+</project>
