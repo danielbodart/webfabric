@@ -21,7 +21,6 @@ public class StringTemplateDecoratorTest {
         String result = GetResult(decorator, html);
 
         // verify
-        Assert.fail();
         Assert.assertTrue(result.contains("HTMLPage"));
     }
 
