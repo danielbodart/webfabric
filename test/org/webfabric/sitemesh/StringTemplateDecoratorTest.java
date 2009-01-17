@@ -11,6 +11,19 @@ import java.io.StringWriter;
 
 public class StringTemplateDecoratorTest {
     @Test
+    public void HandlesNullPages() throws Exception{
+        // setup
+        StringTemplate template = new StringTemplate("$head$");
+        StringTemplateDecorator decorator = new StringTemplateDecorator(template);
+
+        // execute
+        String result = GetResult(decorator, null);
+
+        // verify
+        Assert.assertEquals("", result);
+    }
+
+    @Test
     public void SupportsPage() throws Exception{
         // setup
         HTMLPage html = createPage("");

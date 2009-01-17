@@ -14,6 +14,7 @@
     <orderEntry type="library" name="sitemesh" level="project" />
     <orderEntry type="library" name="stringtemplate" level="project" />
     <orderEntry type="library" name="buildtime" level="project" />
+    <orderEntry type="library" name="functionaljava" level="project" />
   </component>
 </module>
 

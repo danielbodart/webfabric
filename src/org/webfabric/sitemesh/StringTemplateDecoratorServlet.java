@@ -3,12 +3,18 @@ package org.webfabric.sitemesh;
 import com.opensymphony.module.sitemesh.HTMLPage;
 import com.opensymphony.module.sitemesh.RequestConstants;
 import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import fj.data.List;
+import static fj.data.List.list;
+import fj.F;
 
 public class StringTemplateDecoratorServlet extends HttpServlet {
     @Override
@@ -23,11 +29,41 @@ public class StringTemplateDecoratorServlet extends HttpServlet {
         templateDecorator.Decorate(html, response.getWriter());
     }
 
-    private StringTemplate getTemplate(HttpServletRequest request) {
-        return new StringTemplate("body is $body$");
+    private StringTemplate getTemplate(final HttpServletRequest request) {
+        Path path = findPath(request);
+        String name = removeExtension(path.value());
+
+        StringTemplateGroup groups = new StringTemplateGroup("decorators", getRootPath(), DefaultTemplateLexer.class);
+        return groups.getInstanceOf(name);
+    }
+
+    private Path findPath(HttpServletRequest request) {
+        List<Path> possiblePaths = GetPossiblePaths(request);
+
+        return possiblePaths.dropWhile(new F<Path, Boolean>() {
+            public Boolean f(Path source) {
+                return source.value() == null;
+            }
+        }).head();
+    }
+
+    private List<Path> GetPossiblePaths(HttpServletRequest request) {
+        return list(new OriginalServletPath(request),
+                new OriginalPathInfo(request),
+                new ServletPath(request),
+                new PathInfo(request));
+    }
+
+    private String getRootPath() {
+        return getServletContext().getRealPath("");
+    }
+
+    private String removeExtension(String path) {
+        return path.replace(".st", "");
     }
 
     private HTMLPage getPage(HttpServletRequest request) {
         return (HTMLPage) request.getAttribute(RequestConstants.PAGE);
     }
+
 }

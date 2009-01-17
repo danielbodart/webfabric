@@ -16,9 +16,9 @@ public class StringTemplateDecorator {
 
     public void Decorate(HTMLPage html, Writer writer) throws IOException {
         template.setAttribute("page", html);
-        template.setAttribute("head", html.getHead());
-        template.setAttribute("title", html.getTitle());
-        template.setAttribute("body", html.getBody());
+        template.setAttribute("head", html != null ? html.getHead() : null );
+        template.setAttribute("title", html != null ? html.getTitle() : null);
+        template.setAttribute("body", html != null ? html.getBody() : null);
         template.write(new NoIndentWriter(writer));
     }
 }

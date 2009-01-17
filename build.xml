@@ -32,14 +32,13 @@
 
     <target name="build" depends="clean, compile, test" description="build all"/>
 
-    <taskdef classpathref="dependancies" resource="tasks.properties" loaderref="jetty.loader"/>
     <target name="server">
-        <jetty tempdirectory="${build.output}/temp">
-            <webApp name="${ant.project.name}" warfile="web" contextpath="/">
-                <lib dir="lib/runtime" includes="*.jar"/>
-                <lib dir="${dist}" includes="*.jar"/>
-            </webApp>
-        </jetty>
+        <java classname="org.webfabric.WebServer">
+            <classpath>
+                <path refid="all.jars"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+        </java>
     </target>
 
 
