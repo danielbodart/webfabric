@@ -10,6 +10,20 @@ import java.io.IOException;
 
 public class StringTemplateDecoratorTest {
     @Test
+    public void SupportsPage() throws Exception{
+        // setup
+        HTMLPage html = createPage("");
+        StringTemplate template = new StringTemplate("$page$");
+        StringTemplateDecorator decorator = new StringTemplateDecorator(template);
+
+        // execute
+        String result = decorator.Decorate(html);
+
+        // verify
+        Assert.assertTrue(result.contains("HTMLPage"));
+    }
+
+    @Test
     public void SupportsHeadTag() throws Exception{
         // setup
         HTMLPage html = createPage("<html><head><script/></head></html>");

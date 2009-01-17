@@ -27,10 +27,21 @@
     </target>
 
     <target name="test">
-         <test dir="${test}" classpathref="all.jars" reports="${reports}"/>
+        <test dir="${test}" classpathref="all.jars" reports="${reports}"/>
     </target>
 
     <target name="build" depends="clean, compile, test" description="build all"/>
+
+    <taskdef classpathref="dependancies" resource="tasks.properties" loaderref="jetty.loader"/>
+    <target name="server">
+        <jetty tempdirectory="${build.output}/temp">
+            <webApp name="${ant.project.name}" warfile="web" contextpath="/">
+                <lib dir="lib/runtime" includes="*.jar"/>
+                <lib dir="${dist}" includes="*.jar"/>
+            </webApp>
+        </jetty>
+    </target>
+
 
     <macrodef name="compile.and.jar">
         <attribute name="src"/>

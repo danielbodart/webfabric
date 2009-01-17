@@ -11,6 +11,7 @@ public class StringTemplateDecorator {
     }
 
     public String Decorate(HTMLPage html) {
+        template.setAttribute("page", html);
         template.setAttribute("head", html.getHead());
         template.setAttribute("title", html.getTitle());
         template.setAttribute("body", html.getBody());
