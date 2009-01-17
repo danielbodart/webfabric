@@ -17,6 +17,7 @@ public class StringTemplateDecoratorTest {
         StringTemplate template = new StringTemplate("$page$");
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
+        
         // execute
         String result = GetResult(decorator, html);
 
