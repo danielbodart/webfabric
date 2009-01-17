@@ -17,12 +17,11 @@ public class StringTemplateDecoratorTest {
         StringTemplate template = new StringTemplate("$page$");
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
-        
         // execute
         String result = GetResult(decorator, html);
 
         // verify
-        Assert.assertTrue(result.contains("HTMLPage"));
+        Assert.assertEquals(html.toString(), result);
     }
 
     @Test
