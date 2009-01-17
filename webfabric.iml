@@ -10,7 +10,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Runtime" level="project" />
-    <orderEntry type="library" name="Buildtime" level="project" />
+    <orderEntry type="library" name="buildtime" level="project" />
+    <orderEntry type="library" name="sitemesh" level="project" />
+    <orderEntry type="library" name="stringtemplate" level="project" />
+    <orderEntry type="library" name="buildtime" level="project" />
   </component>
 </module>
 
