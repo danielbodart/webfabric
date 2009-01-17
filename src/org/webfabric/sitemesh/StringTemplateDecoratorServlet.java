@@ -13,15 +13,21 @@ import java.io.IOException;
 public class StringTemplateDecoratorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HTMLPage html = (HTMLPage) request.getAttribute(RequestConstants.PAGE);
-
         StringTemplate template = getTemplate(request);
+        template.setAttribute("request", request);
+        template.setAttribute("response", response);
+
+        HTMLPage html = getPage(request);
+
         StringTemplateDecorator templateDecorator = new StringTemplateDecorator(template);
-        String result = templateDecorator.Decorate(html);
-        response.getWriter().write(result);
+        templateDecorator.Decorate(html, response.getWriter());
     }
 
     private StringTemplate getTemplate(HttpServletRequest request) {
         return new StringTemplate("body is $body$");
+    }
+
+    private HTMLPage getPage(HttpServletRequest request) {
+        return (HTMLPage) request.getAttribute(RequestConstants.PAGE);
     }
 }

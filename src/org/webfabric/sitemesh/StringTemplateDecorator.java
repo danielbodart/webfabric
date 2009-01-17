@@ -2,6 +2,10 @@ package org.webfabric.sitemesh;
 
 import com.opensymphony.module.sitemesh.HTMLPage;
 import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.NoIndentWriter;
+
+import java.io.Writer;
+import java.io.IOException;
 
 public class StringTemplateDecorator {
     private final StringTemplate template;
@@ -10,11 +14,11 @@ public class StringTemplateDecorator {
         this.template = template;
     }
 
-    public String Decorate(HTMLPage html) {
+    public void Decorate(HTMLPage html, Writer writer) throws IOException {
         template.setAttribute("page", html);
         template.setAttribute("head", html.getHead());
         template.setAttribute("title", html.getTitle());
         template.setAttribute("body", html.getBody());
-        return template.toString();
+        template.write(new NoIndentWriter(writer));
     }
 }

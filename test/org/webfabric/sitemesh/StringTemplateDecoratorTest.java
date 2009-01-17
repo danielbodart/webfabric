@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.StringWriter;
 
 public class StringTemplateDecoratorTest {
     @Test
@@ -17,9 +18,10 @@ public class StringTemplateDecoratorTest {
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
         // execute
-        String result = decorator.Decorate(html);
+        String result = GetResult(decorator, html);
 
         // verify
+        Assert.fail();
         Assert.assertTrue(result.contains("HTMLPage"));
     }
 
@@ -31,7 +33,7 @@ public class StringTemplateDecoratorTest {
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
         // execute
-        String result = decorator.Decorate(html);
+        String result = GetResult(decorator, html);
 
         // verify
         Assert.assertEquals("<script/>", result);
@@ -45,7 +47,7 @@ public class StringTemplateDecoratorTest {
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
         // execute
-        String result = decorator.Decorate(html);
+        String result = GetResult(decorator, html);
 
         // verify
         Assert.assertEquals("Some text", result);
@@ -59,10 +61,16 @@ public class StringTemplateDecoratorTest {
         StringTemplateDecorator decorator = new StringTemplateDecorator(template);
 
         // execute
-        String result = decorator.Decorate(html);
+        String result = GetResult(decorator, html);
 
         // verify
         Assert.assertEquals("Some title", result);
+    }
+
+    private String GetResult(StringTemplateDecorator decorator, HTMLPage html) throws IOException {
+        StringWriter writer = new StringWriter();
+        decorator.Decorate(html, writer);
+        return writer.toString();
     }
 
     private HTMLPage createPage(String html) throws IOException {
