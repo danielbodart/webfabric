@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="webfabric">
+<project default="release">
 
     <property name="distribution" value="output/dist"/>
     <property file="${distribution}/build.properties"/>
     <property name="release.version" value="0.${build.number}.${stored.build.number}"/>
-    <property name="release.name" value="${ant.project.name}.${release.version}"/>
+    <property name="release.name" value="webfabric.${release.version}"/>
 
     <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
              classpath="ant-googlecode-0.0.1.jar"
