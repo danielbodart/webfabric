@@ -22,8 +22,7 @@ public class StringTemplateDecoratorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         StringTemplate template = getTemplate(request);
-        template.setAttribute("request", request);
-        template.setAttribute("response", response);
+        template.setAttribute("params", request.getParameterMap());
         template.setAttribute("base", ContextPath.create(request));
 
         HTMLPage html = getPage(request);
