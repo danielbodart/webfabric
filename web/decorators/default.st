@@ -1,9 +1,9 @@
 <html>
 <head>
-    <title>Decorating $page.title$</title>
+    <title>Decorating $title$</title>
 </head>
 <body>
-    Decorating $page.body$
+    Decorating $body$
 
 </body>
 </html>

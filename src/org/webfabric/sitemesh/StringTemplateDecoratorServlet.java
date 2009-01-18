@@ -30,28 +30,20 @@ public class StringTemplateDecoratorServlet extends HttpServlet {
     }
 
     private StringTemplate getTemplate(final HttpServletRequest request) {
-        Path path = findPath(request);
-        String name = removeExtension(path.value());
-
-        StringTemplateGroup groups = new StringTemplateGroup("decorators", getRootPath(), DefaultTemplateLexer.class);
-        return groups.getInstanceOf(name);
-    }
-
-    private Path findPath(HttpServletRequest request) {
-        List<Path> possiblePaths = GetPossiblePaths(request);
-
-        return possiblePaths.dropWhile(new F<Path, Boolean>() {
-            public Boolean f(Path source) {
-                return source.value() == null;
-            }
-        }).head();
-    }
-
-    private List<Path> GetPossiblePaths(HttpServletRequest request) {
-        return list(new OriginalServletPath(request),
+        List<Path> possiblePaths = list(new OriginalServletPath(request),
                 new OriginalPathInfo(request),
                 new ServletPath(request),
                 new PathInfo(request));
+
+        Path validPath = possiblePaths.dropWhile(new F<Path, Boolean>() {
+            public Boolean f(Path path1) {
+                return path1.value() == null;
+            }
+        }).head();
+        String name = removeExtension(validPath.value());
+
+        StringTemplateGroup groups = new StringTemplateGroup("decorators", getRootPath(), DefaultTemplateLexer.class);
+        return groups.getInstanceOf(name);
     }
 
     private String getRootPath() {
