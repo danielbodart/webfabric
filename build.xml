@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="webfabric" default="build">
 
+    <property name="build.number" value="dev"/>
+    <property name="version" value="0.0.${build.number}"/>
+    <property name="version.name" value="${ant.project.name}.${version}"/>
     <property name="build" value="${basedir}/build"/>
     <property name="build.output" value="${build}/output"/>
-    <property name="dist" value="${build.output}/dist"/>
+    <property name="distribution" value="${build.output}/dist"/>
     <property name="reports" value="${build.output}/reports"/>
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
 
     <import file="${build}/macros.xml"/>
 
-    <path id="dependancies">
-        <fileset dir="lib" includes="**/*.jar"/>
+
+    <path id="all.dependancies">
+        <fileset id="buildtime.jars" dir="lib/buildtime" includes="**/*.jar"/>
+        <fileset id="runtime.jars" dir="lib/runtime" includes="**/*.jar"/>
     </path>
 
     <path id="all.jars">
-        <path refid="dependancies"/>
-        <fileset dir="${dist}" includes="**/*.jar"/>
+        <path refid="all.dependancies"/>
+        <fileset  id="distribution.jars" dir="${distribution}" includes="**/*.jar"/>
     </path>
 
     <target name="clean" description="cleanup all">
@@ -24,18 +29,30 @@
     </target>
 
     <target name="compile">
-        <compile.and.jar src="${src}" jar="${dist}/webfabric.jar" classpathref="dependancies"/>
-        <compile.and.jar src="${test}" jar="${dist}/webfabric.test.jar" classpathref="all.jars"/>
+        <compile.and.jar src="${src}" jar="${distribution}/${version.name}.jar" classpathref="all.dependancies"/>
+        <compile.and.jar src="${test}" jar="${distribution}/${version.name}.test.jar" classpathref="all.jars"/>
     </target>
 
     <target name="test">
         <test dir="${test}" classpathref="all.jars" reports="${reports}"/>
     </target>
 
-    <target name="build" depends="clean, compile, test" description="build all"/>
+    <target name="package">
+        <mkdir dir="${distribution}"/>
+
+        <war destfile="${distribution}/${version.name}.war" webxml="web/WEB-INF/web.xml">
+            <lib refid="distribution.jars"/>
+            <lib refid="runtime.jars"/>
+            <fileset dir="web" casesensitive="yes">
+                <include name="**/*"/>
+            </fileset>
+        </war>
+    </target>
+
+    <target name="build" depends="clean, compile, test, package" description="build all"/>
 
     <target name="server">
-        <java classname="org.webfabric.web.WebServerrver">
+        <java classname="org.webfabric.web.WebServer">
             <classpath>
                 <path refid="all.jars"/>
                 <pathelement path="${java.class.path}"/>
