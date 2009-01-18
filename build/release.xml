@@ -18,7 +18,7 @@
 
         <sequential>
             <gcupload username="${release.username}" password="${release.password}"
-                      projectname="${ant.project.name}"
+                      projectname="webfabric"
                       filename="${distribution}/@{source}" targetfilename="@{destination}"
                       summary="@{summary}" labels="@{labels}"/>
         </sequential>
