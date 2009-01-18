@@ -6,10 +6,7 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 import org.webfabric.io.Path;
-import org.webfabric.web.servlet.OriginalPathInfo;
-import org.webfabric.web.servlet.OriginalServletPath;
-import org.webfabric.web.servlet.PathInfo;
-import org.webfabric.web.servlet.ServletPath;
+import org.webfabric.web.servlet.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +24,7 @@ public class StringTemplateDecoratorServlet extends HttpServlet {
         StringTemplate template = getTemplate(request);
         template.setAttribute("request", request);
         template.setAttribute("response", response);
+        template.setAttribute("base", ContextPath.create(request));
 
         HTMLPage html = getPage(request);
 
@@ -35,10 +33,10 @@ public class StringTemplateDecoratorServlet extends HttpServlet {
     }
 
     private StringTemplate getTemplate(final HttpServletRequest request) {
-        List<Path> possiblePaths = list(new OriginalServletPath(request),
-                new OriginalPathInfo(request),
-                new ServletPath(request),
-                new PathInfo(request));
+        List<Path> possiblePaths = list(OriginalServletPath.create(request),
+                OriginalPathInfo.create(request),
+                ServletPath.create(request),
+                PathInfo.create(request));
 
         Path validPath = possiblePaths.dropWhile(new F<Path, Boolean>() {
             public Boolean f(Path path1) {

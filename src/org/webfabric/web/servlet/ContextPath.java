@@ -4,19 +4,19 @@ import org.webfabric.io.Path;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class OriginalPathInfo implements Path {
+public class ContextPath implements Path {
     private final String value;
 
-    public OriginalPathInfo(String value) {
+    public ContextPath(String value) {
         this.value = value;
-    }
-
-    public static OriginalPathInfo create(HttpServletRequest request) {
-        return new OriginalPathInfo((String) request.getAttribute("javax.servlet.include.servlet_info"));
     }
 
     public String value() {
         return value;
+    }
+
+    public static ContextPath create(HttpServletRequest request) {
+        return new ContextPath(request.getContextPath());
     }
 
     @Override
