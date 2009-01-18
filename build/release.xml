@@ -2,7 +2,7 @@
 <project default="release">
 
     <property name="distribution" value="output/dist"/>
-    <propertyfile file="${distribution}/build.properties"/>
+    <property file="${distribution}/build.properties"/>
     <property name="release.name" value="0.${build.number}.${stored.build.number}"/>
 
     <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
