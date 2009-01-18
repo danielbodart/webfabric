@@ -3,16 +3,17 @@
 
     <property name="build.number" value="dev"/>
     <property name="version" value="0.0.${build.number}"/>
-    <property name="version.name" value="${ant.project.name}.${version}"/>
+    <property name="release" value="${ant.project.name}.${version}"/>
     <property name="build" value="${basedir}/build"/>
     <property name="build.output" value="${build}/output"/>
     <property name="distribution" value="${build.output}/dist"/>
     <property name="reports" value="${build.output}/reports"/>
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
+    <property name="release.jar" value="${distribution}/${release}.jar"/>
+    <property name="test.jar" value="${distribution}/${release}.test.jar"/>
 
     <import file="${build}/macros.xml"/>
-
 
     <path id="all.dependancies">
         <fileset id="buildtime.jars" dir="lib/buildtime" includes="**/*.jar"/>
@@ -21,7 +22,8 @@
 
     <path id="all.jars">
         <path refid="all.dependancies"/>
-        <fileset  id="distribution.jars" dir="${distribution}" includes="**/*.jar"/>
+        <path path="${release.jar}"/>
+        <path path="${test.jar}"/>
     </path>
 
     <target name="clean" description="cleanup all">
@@ -29,8 +31,8 @@
     </target>
 
     <target name="compile">
-        <compile.and.jar src="${src}" jar="${distribution}/${version.name}.jar" classpathref="all.dependancies"/>
-        <compile.and.jar src="${test}" jar="${distribution}/${version.name}.test.jar" classpathref="all.jars"/>
+        <compile.and.jar src="${src}" jar="${release.jar}" classpathref="all.dependancies"/>
+        <compile.and.jar src="${test}" jar="${test.jar}" classpathref="all.jars"/>
     </target>
 
     <target name="test">
@@ -40,8 +42,8 @@
     <target name="package">
         <mkdir dir="${distribution}"/>
 
-        <war destfile="${distribution}/${version.name}.war" webxml="web/WEB-INF/web.xml">
-            <lib refid="distribution.jars"/>
+        <war destfile="${distribution}/${release}.war" webxml="web/WEB-INF/web.xml">
+            <lib file="${release.jar}"/>
             <lib refid="runtime.jars"/>
             <fileset dir="web" casesensitive="yes">
                 <include name="**/*"/>
