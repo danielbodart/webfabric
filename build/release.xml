@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="webfabric" basedir=".." default="release">
+<project default="release">
 
-    <import file="${basedir}/build.xml"/>
+    <property name="distribution" value="output/dist"/>
+    <propertyfile file="${distribution}/build.properties"/>
+    <property name="release.name" value="0.${build.number}.${stored.build.number}"/>
 
     <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
-             classpathref="all.dependancies"
+             classpath="ant-googlecode-0.0.1.jar"
              name="gcupload"/>
 
     <macrodef name="upload">
         <attribute name="file"/>
-        <attribute name="summary" default="Build ${build.number}"/>
-        <attribute name="labels" default="Web, Semantic, SiteMesh, StringTemplate"/>
+        <attribute name="summary" default="Release ${release.name}"/>
+        <attribute name="labels" default=""/>
 
         <sequential>
             <gcupload username="${release.username}" password="${release.password}"
-                      projectname="${ant.project.name}"
+                      projectname="webfabric"
                       filename="${distribution}/@{file}" targetfilename="@{file}"
                       summary="@{summary}" labels="@{labels}"/>
         </sequential>
     </macrodef>
 
-    <target name="release" depends="build">
-        <upload file="${release}.jar"/>
-        <upload file="${release}.war"/>
+    <target name="release">
+        <upload file="${stored.build.name}.jar"/>
+        <upload file="${stored.build.name}.war"/>
     </target>
 
 

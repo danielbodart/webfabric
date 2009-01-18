@@ -2,16 +2,15 @@
 <project name="webfabric" default="build">
 
     <property name="build.number" value="dev"/>
-    <property name="version" value="0.0.${build.number}"/>
-    <property name="release" value="${ant.project.name}.${version}"/>
+    <property name="build.name" value="${ant.project.name}.${build.number}"/>
     <property name="build" value="${basedir}/build"/>
     <property name="build.output" value="${build}/output"/>
     <property name="distribution" value="${build.output}/dist"/>
     <property name="reports" value="${build.output}/reports"/>
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
-    <property name="release.jar" value="${distribution}/${release}.jar"/>
-    <property name="test.jar" value="${distribution}/${release}.test.jar"/>
+    <property name="release.jar" value="${distribution}/${build.name}.jar"/>
+    <property name="test.jar" value="${distribution}/${build.name}.test.jar"/>
 
     <import file="${build}/macros.xml"/>
 
@@ -42,13 +41,18 @@
     <target name="package">
         <mkdir dir="${distribution}"/>
 
-        <war destfile="${distribution}/${release}.war" webxml="web/WEB-INF/web.xml">
+        <war destfile="${distribution}/${build.name}.war" webxml="web/WEB-INF/web.xml">
             <lib file="${release.jar}"/>
             <lib refid="runtime.jars"/>
             <fileset dir="web" casesensitive="yes">
                 <include name="**/*"/>
             </fileset>
         </war>
+
+        <propertyfile file="${distribution}/build.properties">
+          <entry key="stored.build.number" value="${build.number}"/>
+          <entry key="stored.build.name" value="${build.name}"/>
+        </propertyfile>
     </target>
 
     <target name="build" depends="clean, compile, test, package" description="build all"/>
