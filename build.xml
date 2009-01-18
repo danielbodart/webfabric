@@ -41,6 +41,8 @@
     <target name="package">
         <mkdir dir="${distribution}"/>
 
+        <zip destfile="${distribution}/${build.name}.src.zip" basedir="src"/>
+        
         <war destfile="${distribution}/${build.name}.war" webxml="web/WEB-INF/web.xml">
             <lib file="${release.jar}"/>
             <lib refid="runtime.jars"/>

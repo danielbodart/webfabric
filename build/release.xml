@@ -24,7 +24,8 @@
 
     <target name="release">
         <upload file="${stored.build.name}.jar"/>
-        <upload file="${stored.build.name}.war"/>
+        <upload file="${stored.build.name}.src.zip"/>
+        <!--upload file="${stored.build.name}.war"/-->
     </target>
 
 
