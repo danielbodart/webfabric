@@ -8,6 +8,8 @@
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
 
+    <import file="${build}/macros.xml"/>
+
     <path id="dependancies">
         <fileset dir="lib" includes="**/*.jar"/>
     </path>
@@ -33,54 +35,12 @@
     <target name="build" depends="clean, compile, test" description="build all"/>
 
     <target name="server">
-        <java classname="org.webfabric.WebServer">
+        <java classname="org.webfabric.web.WebServerrver">
             <classpath>
                 <path refid="all.jars"/>
                 <pathelement path="${java.class.path}"/>
             </classpath>
         </java>
     </target>
-
-
-    <macrodef name="compile.and.jar">
-        <attribute name="src"/>
-        <attribute name="jar"/>
-        <attribute name="classpathref"/>
-        <attribute name="debug" default="yes"/>
-        <attribute name="classes" default="@{jar}.classses"/>
-
-        <sequential>
-            <mkdir dir="@{classes}"/>
-            <javac srcdir="@{src}" destdir="@{classes}" debug="@{debug}" classpathref="@{classpathref}"/>
-
-            <copy todir="@{classes}">
-                <fileset dir="@{src}" excludes="**/*.java"/>
-            </copy>
-
-            <jar destfile="@{jar}" basedir="@{classes}"/>
-
-            <delete dir="@{classes}"/>
-        </sequential>
-    </macrodef>
-
-    <macrodef name="test">
-        <attribute name="dir"/>
-        <attribute name="reports"/>
-        <attribute name="classpathref"/>
-
-        <sequential>
-            <mkdir dir="@{reports}"/>
-            <junit printsummary="no" fork="on" failureproperty="failed" forkmode="once">
-                <classpath refid="@{classpathref}"/>
-                <formatter type="xml"/>
-                <batchtest todir="@{reports}">
-                    <fileset dir="@{dir}">
-                        <include name="**/*Test*.java"/>
-                    </fileset>
-                </batchtest>
-            </junit>
-            <fail message="Tests failed" if="failed"/>
-        </sequential>
-    </macrodef>
 
 </project>

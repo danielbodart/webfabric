@@ -1,4 +1,6 @@
-package org.webfabric.sitemesh;
+package org.webfabric.web.servlet;
+
+import org.webfabric.io.Path;
 
 import javax.servlet.http.HttpServletRequest;
 

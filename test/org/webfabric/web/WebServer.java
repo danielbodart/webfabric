@@ -1,4 +1,4 @@
-package org.webfabric;
+package org.webfabric.web;
 
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.jetty.nio.SelectChannelConnector;

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webfabric.macros">
+    <macrodef name="compile.and.jar">
+        <attribute name="src"/>
+        <attribute name="jar"/>
+        <attribute name="classpathref"/>
+        <attribute name="debug" default="yes"/>
+        <attribute name="classes" default="@{jar}.classses"/>
+
+        <sequential>
+            <mkdir dir="@{classes}"/>
+            <javac srcdir="@{src}" destdir="@{classes}" debug="@{debug}" classpathref="@{classpathref}"/>
+
+            <copy todir="@{classes}">
+                <fileset dir="@{src}" excludes="**/*.java"/>
+            </copy>
+
+            <jar destfile="@{jar}" basedir="@{classes}"/>
+
+            <delete dir="@{classes}"/>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="test">
+        <attribute name="dir"/>
+        <attribute name="reports"/>
+        <attribute name="classpathref"/>
+
+        <sequential>
+            <mkdir dir="@{reports}"/>
+            <junit printsummary="no" fork="on" failureproperty="failed" forkmode="once">
+                <classpath refid="@{classpathref}"/>
+                <formatter type="xml"/>
+                <batchtest todir="@{reports}">
+                    <fileset dir="@{dir}">
+                        <include name="**/*Test*.java"/>
+                    </fileset>
+                </batchtest>
+            </junit>
+            <fail message="Tests failed" if="failed"/>
+        </sequential>
+    </macrodef>
+
+</project>

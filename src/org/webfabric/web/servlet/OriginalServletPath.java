@@ -1,8 +1,10 @@
-package org.webfabric.sitemesh;
+package org.webfabric.web.servlet;
+
+import org.webfabric.io.Path;
 
 import javax.servlet.http.HttpServletRequest;
 
-class OriginalServletPath implements Path {
+public class OriginalServletPath implements Path {
     private final String value;
 
     public OriginalServletPath(HttpServletRequest request) {

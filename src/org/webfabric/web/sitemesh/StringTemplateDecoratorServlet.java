@@ -1,10 +1,15 @@
-package org.webfabric.sitemesh;
+package org.webfabric.web.sitemesh;
 
 import com.opensymphony.module.sitemesh.HTMLPage;
 import com.opensymphony.module.sitemesh.RequestConstants;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
+import org.webfabric.io.Path;
+import org.webfabric.web.servlet.OriginalPathInfo;
+import org.webfabric.web.servlet.OriginalServletPath;
+import org.webfabric.web.servlet.PathInfo;
+import org.webfabric.web.servlet.ServletPath;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
