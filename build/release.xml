@@ -7,7 +7,7 @@
     <property name="release.name" value="webfabric.${release.version}"/>
 
     <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
-             classpath="ant-googlecode-0.0.1.jar"
+             classpath="lib/ant-googlecode-0.0.1.jar"
              name="gcupload"/>
 
     <macrodef name="upload">

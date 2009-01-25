@@ -15,8 +15,8 @@
     <import file="${build}/macros.xml"/>
 
     <path id="all.dependancies">
-        <fileset id="buildtime.jars" dir="lib/buildtime" includes="**/*.jar"/>
-        <fileset id="runtime.jars" dir="lib/runtime" includes="**/*.jar"/>
+        <fileset id="build.dependancies" dir="build/lib" includes="**/*.jar"/>
+        <fileset id="release.dependancies" dir="lib" includes="**/*.jar"/>
     </path>
 
     <path id="all.jars">
@@ -45,7 +45,7 @@
         
         <war destfile="${distribution}/${build.name}.war" webxml="web/WEB-INF/web.xml">
             <lib file="${release.jar}"/>
-            <lib refid="runtime.jars"/>
+            <lib refid="release.dependancies"/>
             <fileset dir="web" casesensitive="yes">
                 <include name="**/*"/>
             </fileset>
