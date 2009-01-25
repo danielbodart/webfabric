@@ -3,7 +3,15 @@
     <title>Decorating $title$</title>
 </head>
 <body>
-    Decorating $body$
+
+    <div>Extracted Div Contents: $page.properties.("div.target")$</div>
+
+    <div>Decorating $body$</div>
+
+
+
+
+
 
 </body>
 </html>
