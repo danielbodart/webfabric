@@ -5,6 +5,7 @@
     <property file="${distribution}/build.properties"/>
     <property name="release.version" value="0.${build.number}.${stored.build.number}"/>
     <property name="release.name" value="webfabric.${release.version}"/>
+    <property name="release.notes" value=""/>
 
     <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask"
              classpath="lib/ant-googlecode-0.0.1.jar"
@@ -26,9 +27,9 @@
 
     <target name="release">
         <upload source="${stored.build.name}.jar" destination="${release.name}.jar"
-                summary="Core WebFabric Library (${release.version})"/>
+                summary="Core WebFabric Library (${release.version}). ${release.notes}"/>
         <upload source="${stored.build.name}.src.zip" destination="${release.name}.src.zip"
-                summary="Source zip for IDE intellisense support (${release.version})"/>
+                summary="Source zip for IDE intellisense support (${release.version}). ${release.notes}"/>
         <!--upload file="${stored.build.name}.war" destination="${release.name}.war"
                 summary="Example Web App (${release.version})"/-->
     </target>
