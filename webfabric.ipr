@@ -29,6 +29,9 @@
       <entry name="*.*" />
     </wildcardResourcePatterns>
   </component>
+  <component name="CopyrightManager" default="">
+    <module2copyright />
+  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -89,6 +92,9 @@
     <option name="projectName" value="webfabric" />
   </component>
   <component name="ProjectFileVersion" converted="true" />
+  <component name="ProjectKey">
+    <option name="state" value="https://webfabric.googlecode.com/svn/trunk/webfabric.ipr" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/webfabric.iml" filepath="$PROJECT_DIR$/webfabric.iml" />
@@ -123,6 +129,7 @@
       </map>
     </option>
     <option name="myVersion" value="124" />
+    <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
@@ -145,15 +152,6 @@
       <JAVADOC />
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/lib/stringtemplate-3.2.src.zip!/" />
-      </SOURCES>
-    </library>
-    <library name="functionaljava">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/functionaljava.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/functionaljava.src.zip!/" />
       </SOURCES>
     </library>
     <library name="build.dependancies">
