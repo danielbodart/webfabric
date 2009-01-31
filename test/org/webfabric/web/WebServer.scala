@@ -28,9 +28,3 @@ class WebServer(port: Int) {
   }
 }
 
-object WebServer {
-  def main(args: Array[String]) {
-    val webServer = new WebServer(8080)
-    webServer.start
-  }
-}

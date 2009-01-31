@@ -4,11 +4,11 @@ import org.junit.Test;
 import org.junit.Assert.{assertNotNull, assertEquals}
 import org.webfabric.io.Converter.asString
 
-class RelativeResourceLoaderTest {
+class RelativeResourceTest {
   @Test
   def supportsLoadingAsStream() {
     // execute
-    val stream = RelativeResourceLoader.load[RelativeResourceLoaderTest]("relative.file")
+    val stream = RelativeResource.asStream(classOf[RelativeResourceTest], "relative.file")
 
     // verify
     assertNotNull(stream);

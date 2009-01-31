@@ -2,10 +2,12 @@ package org.webfabric.web.sitemesh
 
 import antlr.stringtemplate.language.DefaultTemplateLexer
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
+import java.net.URL
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import io.Path
 import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
 import servlet._
+import stringtemplate.UrlStringTemplateGroup
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) {
@@ -28,12 +30,15 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     var validPath = possiblePaths.find(path => path.value() != null).get
     var name = removeExtension(validPath.value())
 
-    var groups = new StringTemplateGroup("decorators", getRootPath())
+    var groups = new UrlStringTemplateGroup("decorators", getBaseUrl())
     return groups.getInstanceOf(name)
   }
 
-  def getRootPath(): String = {
-    getServletContext().getRealPath("")
+  def getBaseUrl(): URL = {
+    val url: String = getServletContext().getResource("/WEB-INF/web.xml").toString
+    val lastSlash: Int = url.lastIndexOf("/WEB-INF/web.xml")
+    val base = url.subSequence(0, lastSlash).toString
+    return new URL(base)
   }
 
   def removeExtension(path: String): String = {
