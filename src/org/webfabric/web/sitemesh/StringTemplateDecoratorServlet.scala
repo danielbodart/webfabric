@@ -11,26 +11,26 @@ import stringtemplate.UrlStringTemplateGroup
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) {
-    var template = getTemplate(request)
+    val template = getTemplate(request)
     template.setAttribute("params", request.getParameterMap())
     template.setAttribute("base", ContextPath(request))
 
-    var html = getPage(request)
+    val html = getPage(request)
 
-    var templateDecorator = new StringTemplateDecorator(template)
+    val templateDecorator = new StringTemplateDecorator(template)
     templateDecorator.Decorate(html, response.getWriter())
   }
 
   def getTemplate(request: HttpServletRequest): StringTemplate = {
-    var possiblePaths = List(OriginalServletPath(request),
+    val possiblePaths = List(OriginalServletPath(request),
       OriginalPathInfo(request),
       ServletPath(request),
       PathInfo(request))
 
-    var validPath = possiblePaths.find(path => path.value() != null).get
-    var name = removeExtension(validPath.value())
+    val validPath = possiblePaths.find(path => path.value() != null).get
+    val name = removeExtension(validPath.value())
 
-    var groups = new UrlStringTemplateGroup("decorators", getBaseUrl())
+    val groups = new UrlStringTemplateGroup("decorators", getBaseUrl())
     return groups.getInstanceOf(name)
   }
 

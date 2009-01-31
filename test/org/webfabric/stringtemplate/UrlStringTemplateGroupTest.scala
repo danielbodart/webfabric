@@ -7,11 +7,25 @@ import java.net.URL
 import org.junit.Test
 import org.junit.Assert.{assertNotNull, assertEquals}
 
-class UrlStringTemplateGroupTest{
+class UrlStringTemplateGroupTest {
+  @Test
+  def supportsTemplatesInSubFolders = {
+    // setup
+    val baseUrl: URL = getBaseUrl()
+    val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
+
+    // execute
+    val template: StringTemplate = group.getInstanceOf("parent")
+
+    // verify
+    assertNotNull(template)
+    assertEquals("what say you child? dont call me child!", template.toString)
+  }
+
   @Test
   def loadsTemplatesFromBaseUrl = {
     // setup
-    val baseUrl:URL = getBaseUrl()
+    val baseUrl: URL = getBaseUrl()
     val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
 
     // execute
