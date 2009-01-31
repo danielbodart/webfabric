@@ -33,22 +33,26 @@
     </macrodef>
 
     <macrodef name="test">
-        <attribute name="dir"/>
+        <attribute name="jar"/>
         <attribute name="reports"/>
         <attribute name="classpathref"/>
 
         <sequential>
             <mkdir dir="@{reports}"/>
+            <property name="unzipped.jar" value="@{reports}.unzipped.jar"/>
+            <mkdir dir="${unzipped.jar}"/>
+            <unzip dest="${unzipped.jar}" src="@{jar}"/>
             <junit printsummary="no" fork="on" failureproperty="failed" forkmode="once">
                 <classpath refid="@{classpathref}"/>
                 <formatter type="xml"/>
                 <batchtest todir="@{reports}">
-                    <fileset dir="@{dir}">
+                    <fileset dir="${unzipped.jar}">
                         <include name="**/*Test*"/>
                         <exclude name="**/*$*"/>
                     </fileset>
                 </batchtest>
             </junit>
+            <delete dir="${unzipped.jar}"/>
             <fail message="Tests failed" if="failed"/>
         </sequential>
     </macrodef>

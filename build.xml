@@ -35,7 +35,7 @@
     </target>
 
     <target name="test">
-        <test dir="${test}" classpathref="all.jars" reports="${reports}"/>
+        <test jar="${test.jar}" classpathref="all.jars" reports="${reports}"/>
     </target>
 
     <target name="package">
