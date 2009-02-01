@@ -11,7 +11,6 @@ class UrlStringTemplateGroupTest {
   @Test
   def handlesMissingTemplatesTheSameWay(): Unit = {
     // setup
-    val baseUrl: URL = getBaseUrl()
     val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
 
     // execute
@@ -26,7 +25,6 @@ class UrlStringTemplateGroupTest {
   @Test
   def supportsTemplatesInSubFolders = {
     // setup
-    val baseUrl: URL = getBaseUrl()
     val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
 
     // execute
@@ -40,7 +38,6 @@ class UrlStringTemplateGroupTest {
   @Test
   def loadsTemplatesFromBaseUrl = {
     // setup
-    val baseUrl: URL = getBaseUrl()
     val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
 
     // execute
@@ -52,7 +49,7 @@ class UrlStringTemplateGroupTest {
     assertEquals("foo:test", template.toString)
   }
 
-  def getBaseUrl(): URL = {
+  def baseUrl(): URL = {
     val url = RelativeResource.asUrl(classOf[UrlStringTemplateGroupTest], "resource.st").toString
     val lastSlash: Int = url.lastIndexOf("/resource.st")
     val base = url.subSequence(0, lastSlash).toString
