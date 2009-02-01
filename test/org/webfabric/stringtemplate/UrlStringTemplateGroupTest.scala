@@ -4,10 +4,25 @@ package org.webfabric.stringtemplate
 import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
 import io.RelativeResource
 import java.net.URL
-import org.junit.Test
-import org.junit.Assert.{assertNotNull, assertEquals}
+import org.junit.{Test, Assert}
+import org.junit.Assert.{assertNotNull, assertEquals, fail}
 
 class UrlStringTemplateGroupTest {
+  @Test
+  def handlesMissingTemplatesTheSameWay(): Unit = {
+    // setup
+    val baseUrl: URL = getBaseUrl()
+    val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
+
+    // execute
+    try{
+      group.getInstanceOf("missing")
+    } catch {
+      case ex : IllegalArgumentException => // All is well
+      case ex : Exception => fail("Expected IllegalArgumentException got " + ex)
+    }
+  }
+
   @Test
   def supportsTemplatesInSubFolders = {
     // setup
