@@ -1,14 +1,11 @@
 package org.webfabric.web.servlet
 
-import org.webfabric.io.Path;
 
+
+import io.{HierarchicalPath, Path}
 import javax.servlet.http.HttpServletRequest;
 
-class ContextPath(v: String) extends Path {
-  def value(): String = v
-
-  override def toString = v
-}
+class ContextPath(v: String) extends HierarchicalPath(v)
 
 object ContextPath {
   def apply(request: HttpServletRequest):ContextPath = {

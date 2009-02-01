@@ -1,6 +1,5 @@
 package org.webfabric.stringtemplate
 
-
 import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
 import java.io.{InputStreamReader, BufferedReader, IOException}
 import java.lang.String

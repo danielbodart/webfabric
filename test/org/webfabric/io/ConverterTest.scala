@@ -33,5 +33,4 @@ class ConverterTest {
         // verify
         assertEquals(all, value);
     }
-
 }
