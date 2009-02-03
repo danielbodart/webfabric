@@ -2,9 +2,9 @@ package org.webfabric.web.sitemesh
 
 import antlr.stringtemplate.language.DefaultTemplateLexer
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
+import io.{Url, Path}
 import java.net.URL
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
-import io.Path
 import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
 import servlet._
 import stringtemplate.UrlStringTemplateGroup
@@ -35,10 +35,8 @@ class StringTemplateDecoratorServlet extends HttpServlet {
   }
 
   def getBaseUrl(): URL = {
-    val url: String = getServletContext().getResource("/WEB-INF/web.xml").toString
-    val lastSlash: Int = url.lastIndexOf("/WEB-INF/web.xml")
-    val base = url.subSequence(0, lastSlash).toString
-    return new URL(base)
+    val url: Url = new Url(getServletContext().getResource("/WEB-INF/web.xml"))
+    return url.replacePath(url.path.parent.parent).toURL
   }
 
   def removeExtension(path: String): String = {

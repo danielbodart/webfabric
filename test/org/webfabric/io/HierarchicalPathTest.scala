@@ -15,14 +15,12 @@ class HierarchicalPathTest {
 
   @Test
   def providesChildren(): Unit = {
-    // setup
-    val parent = new HierarchicalPath("/foo/")
-
-    // execute
-    val child = parent.child("bar")
-
-    // verify
-    assertEquals(new HierarchicalPath("/foo/bar/"), child)
+    assertEquals(new HierarchicalPath("/foo/bar/"), new HierarchicalPath("/foo/").child("bar"))
+    assertEquals(new HierarchicalPath("/foo/bar/"), new HierarchicalPath("/foo").child("bar"))
+    assertEquals(new HierarchicalPath("foo/bar/"), new HierarchicalPath("foo").child("bar"))
+    assertEquals(new HierarchicalPath("foo/bar/"), new HierarchicalPath("foo/").child("bar"))
+    //assertEquals(new HierarchicalPath("/foo/"), new HierarchicalPath("/").child("foo")) TODO
+    //assertEquals(new HierarchicalPath("foo/"), new HierarchicalPath("").child("foo")) TODO
   }
 
   @Test
@@ -49,7 +47,7 @@ class HierarchicalPathTest {
     assertEquals(new HierarchicalPath("/foo/"), parent)
   }
 
-    @Test
+  @Test
   def handlesTopLevelPaths(): Unit = {
     // setup
     val child = new HierarchicalPath("/top/")

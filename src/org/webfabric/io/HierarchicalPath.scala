@@ -5,7 +5,7 @@ class HierarchicalPath(path: String) extends Path {
 
   def value = path
 
-  private val segments = path.split('/').toList.reverse
+  private def segments = path.split('/').toList.reverse
 
   def parent: HierarchicalPath = {
     return new HierarchicalPath(if(segments.isEmpty) List() else segments.tail);
