@@ -4,7 +4,7 @@ package org.webfabric.io
 import java.net.{URI, URL}
 
 class Url(url: String) {
-  def this(u: URL) = this (u.toString)
+  def this(url: URL) = this (url.toString)
 
   def toURL = new URL(url)
 

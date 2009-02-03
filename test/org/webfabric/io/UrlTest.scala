@@ -14,6 +14,6 @@ class UrlTest{
     val result = url.replacePath(url.path.parent)
 
     // verify
-    assertEquals(new Url("http://webfabric.org/foo"), result)
+    assertEquals(new Url("http://webfabric.org/foo/"), result)
   }
 }

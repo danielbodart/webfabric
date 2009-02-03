@@ -2,9 +2,17 @@ package org.webfabric.io
 
 
 import org.junit.Test
-import org.junit.Assert.{assertEquals}
+import org.junit.Assert.{assertEquals, assertTrue}
 
 class HierarchicalPathTest {
+  @Test
+  def supportsToString(): Unit = {
+    assertEquals("/", new HierarchicalPath("/").toString)
+    assertEquals("", new HierarchicalPath("").toString)
+    assertEquals("/foo/bar/", new HierarchicalPath("/foo/bar/").toString)
+    assertTrue("/foo/bar/" != new HierarchicalPath("/foo/bar/"))
+  }
+
   @Test
   def providesChildren(): Unit = {
     // setup

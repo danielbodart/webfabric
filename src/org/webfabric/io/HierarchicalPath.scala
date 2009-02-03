@@ -1,24 +1,26 @@
 package org.webfabric.io
 
-class HierarchicalPath(segments: Array[String]) extends Path {
-  def this(s:String) = this(s.split('/'))
+class HierarchicalPath(path: String) extends Path {
+  def this(list: List[String]) = this(list.reverse.mkString("/") + "/")
 
-  def value = segments.deepMkString("/")
+  def value = path
+
+  private val segments = path.split('/').toList.reverse
 
   def parent: HierarchicalPath = {
-    return new HierarchicalPath(segments.take(segments.length - 1));
+    return new HierarchicalPath(if(segments.isEmpty) List() else segments.tail);
   }
 
-  def child(name:String):HierarchicalPath = {
-    val childSegments: List[String] = segments.toList ::: List(name)
-    return new HierarchicalPath(childSegments.toArray)
+  def child(name: String): HierarchicalPath = {
+    return new HierarchicalPath(name :: segments)
   }
 
   override def toString = value
 
   override def hashCode = value.hashCode
 
-  override def equals(obj: Any) = {
-    if(obj == null) false else toString == obj.toString
+  override def equals(other: Any) = other match {
+    case that: Path => this.value == that.value
+    case _ => false
   }
 }
