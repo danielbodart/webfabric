@@ -8,18 +8,13 @@ import org.junit.{Test, Assert}
 import org.junit.Assert.{assertNotNull, assertEquals, fail}
 
 class UrlStringTemplateGroupTest {
-  @Test
+  @Test {val expected = classOf[IllegalArgumentException]}
   def handlesMissingTemplatesTheSameWay(): Unit = {
     // setup
     val group: StringTemplateGroup = new UrlStringTemplateGroup("resourceTemplates", baseUrl)
 
     // execute
-    try{
-      group.getInstanceOf("missing")
-    } catch {
-      case ex : IllegalArgumentException => // All is well
-      case ex : Exception => fail("Expected IllegalArgumentException got " + ex)
-    }
+    group.getInstanceOf("missing")
   }
 
   @Test
