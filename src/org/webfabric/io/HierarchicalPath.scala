@@ -1,18 +1,22 @@
 package org.webfabric.io
 
-class HierarchicalPath(path: String) extends Path {
-  def this(list: List[String]) = this(list.reverse.mkString("/") + "/")
+class HierarchicalPath(val value:String) extends Path {
+  private def segments = value.split('/').toList.reverse
+  private def joinDirectories(list: List[String]) = join(list) + "/"
+  private def join(list: List[String]) = list.reverse.mkString("/")
 
-  def value = path
-
-  private def segments = path.split('/').toList.reverse
-
-  def parent: HierarchicalPath = {
-    return new HierarchicalPath(if(segments.isEmpty) List() else segments.tail);
+  def parent: HierarchicalPath = value match {
+    case "" => this
+    case "/" => this
+    case _ => new HierarchicalPath(joinDirectories(segments.tail))
   }
 
-  def child(name: String): HierarchicalPath = {
-    return new HierarchicalPath(name :: segments)
+  def subDirectory(name: String): HierarchicalPath = {
+    return new HierarchicalPath(joinDirectories(name :: segments))
+  }
+
+  def file(name: String): HierarchicalPath = {
+    return new HierarchicalPath(join(name :: segments))
   }
 
   override def toString = value
@@ -23,4 +27,12 @@ class HierarchicalPath(path: String) extends Path {
     case that: Path => this.value == that.value
     case _ => false
   }
+}
+
+object HierarchicalPath{
+  def apply(value:String):HierarchicalPath = {
+    new HierarchicalPath(duplicateSeperators.replaceAllIn(value, "/"))
+  }
+
+  private val duplicateSeperators = """\/+""".r
 }

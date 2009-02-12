@@ -1,8 +1,6 @@
 package org.webfabric.web.servlet;
 
-
-
-import io.{HierarchicalPath, Path}
+import io.HierarchicalPath
 import javax.servlet.http.HttpServletRequest;
 
 class OriginalServletPath(v: String) extends HierarchicalPath(v)

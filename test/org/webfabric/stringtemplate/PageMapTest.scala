@@ -8,7 +8,7 @@ import junit.Test
 import junit.Assert.{assertEquals}
 
 class PageMapTest{
-  @Test{val timeout=200}
+  @Test
   def failsSilentlyIfPageIsNotAvailable{
     // setup
     val pageMap = new PageMap
@@ -23,7 +23,7 @@ class PageMapTest{
     assertEquals("", title)
   }
 
-  @Test{val timeout=200}
+  @Test
   def canBeUsedInAStringTemplate{
     // setup
     val pageMap = new PageMap
@@ -39,6 +39,6 @@ class PageMapTest{
   }
 
   def url:Url = {
-    return new Url(RelativeResource.asUrl(classOf[PageMapTest], "html.st"))
+    return RelativeResource.asUrl(classOf[PageMapTest], "html.st")
   }
 }

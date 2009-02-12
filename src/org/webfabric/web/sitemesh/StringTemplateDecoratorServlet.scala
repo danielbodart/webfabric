@@ -22,7 +22,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
   }
 
   def getTemplate(request: HttpServletRequest): StringTemplate = {
-    val possiblePaths = List(OriginalServletPath(request),
+    val possiblePaths = List[Path](OriginalServletPath(request),
       OriginalPathInfo(request),
       ServletPath(request),
       PathInfo(request))
@@ -34,9 +34,9 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     return groups.getInstanceOf(name)
   }
 
-  def getBaseUrl(): URL = {
-    val url: Url = new Url(getServletContext().getResource("/WEB-INF/web.xml"))
-    return url.replacePath(url.path.parent.parent).toURL
+  def getBaseUrl(): Url = {
+    val url: Url = getServletContext().getResource("/WEB-INF/web.xml")
+    return url.replacePath(url.path.parent.parent)
   }
 
   def removeExtension(path: String): String = {

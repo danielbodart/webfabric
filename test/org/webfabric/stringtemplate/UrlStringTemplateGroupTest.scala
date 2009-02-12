@@ -1,8 +1,8 @@
 package org.webfabric.stringtemplate
 
 
+import _root_.org.webfabric.io.{Url, RelativeResource}
 import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
-import io.RelativeResource
 import java.net.URL
 import org.junit.{Test, Assert}
 import org.junit.Assert.{assertNotNull, assertEquals, fail}
@@ -44,10 +44,8 @@ class UrlStringTemplateGroupTest {
     assertEquals("foo:test", template.toString)
   }
 
-  def baseUrl(): URL = {
-    val url = RelativeResource.asUrl(classOf[UrlStringTemplateGroupTest], "resource.st").toString
-    val lastSlash: Int = url.lastIndexOf("/resource.st")
-    val base = url.subSequence(0, lastSlash).toString
-    new URL(base)
+  def baseUrl(): Url = {
+    val url = RelativeResource.asUrl(classOf[UrlStringTemplateGroupTest], "resource.st")
+    url.replacePath(url.path.parent)
   }
 }
