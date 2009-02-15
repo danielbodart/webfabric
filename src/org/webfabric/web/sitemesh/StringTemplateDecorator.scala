@@ -1,15 +1,34 @@
 package org.webfabric.web.sitemesh
 
+import _root_.org.webfabric.web.servlet.{QueryString, ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
-import java.io.Writer
+import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
 
 class StringTemplateDecorator(template: StringTemplate) {
-  def Decorate(html: HTMLPage, writer: Writer) = {
-    template.setAttribute("page", html)
-    template.setAttribute("head", if (html != null) html.getHead else "")
-    template.setAttribute("title", if (html != null) html.getTitle else "")
-    template.setAttribute("body", if (html != null) html.getBody else "")
-    template.write(new NoIndentWriter(writer))
+  def setBase(base:ContextPath):StringTemplateDecorator =  {
+    template.setAttribute("base", base)
+    this
+  }
+
+  def setQueryString(queryString:QueryString):StringTemplateDecorator =  {
+    template.setAttribute("queryString", queryString.map)
+    this
+  }
+
+  def setPage(page: HTMLPage):StringTemplateDecorator = {
+    template.setAttribute("page", page)
+    template.setAttribute("head", page.getHead)
+    template.setAttribute("title", page.getTitle)
+    template.setAttribute("body", page.getBody)
+    this
+  }
+
+  def writeTo(writer:Writer) = template.write(new NoIndentWriter(writer))
+
+  override def toString = {
+    val writer = new StringWriter
+    writeTo(writer)
+    writer.toString
   }
 }

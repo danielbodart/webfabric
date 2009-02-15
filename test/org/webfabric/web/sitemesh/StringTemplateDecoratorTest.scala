@@ -1,5 +1,6 @@
 package org.webfabric.web.sitemesh
 
+import _root_.org.webfabric.web.servlet.{QueryString, ContextPath}
 import antlr.stringtemplate.StringTemplate
 import java.io.StringWriter
 import com.opensymphony.module.sitemesh.parser.HTMLPageParser
@@ -9,16 +10,17 @@ import org.junit.Assert.assertEquals
 
 class StringTemplateDecoratorTest {
   @Test
-  def HandlesNullPages = {
+  def supportsBase(): Unit = {
     // setup
-    var template = new StringTemplate("$head$")
+    var base = new ContextPath("/foo/")
+    var template = new StringTemplate("$base$")
     var decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = GetResult(decorator, null)
+    var result = decorator.setBase(base).toString
 
     // verify
-    assertEquals("", result)
+    assertEquals(base.toString(), result)
   }
 
   @Test
@@ -78,13 +80,11 @@ class StringTemplateDecoratorTest {
   }
 
   def GetResult(decorator: StringTemplateDecorator, html: HTMLPage): String = {
-    var writer = new StringWriter()
-    decorator.Decorate(html, writer)
-    writer.toString()
+    decorator.setPage(html).toString()
   }
 
   def createPage(html: String): HTMLPage = {
-    var pageParser = new HTMLPageParser()
-    pageParser.parse(html.toCharArray()).asInstanceOf[HTMLPage]
+    var pageParser = new DivCapturingPageParser()
+    pageParser.parse(html)
   }
 }
