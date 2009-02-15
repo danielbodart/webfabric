@@ -12,7 +12,6 @@
 			<param name="property.1" value="meta.decorator" />
 			<param name="property.2" value="decorator" />
 		</mapper>
-		<mapper class="com.opensymphony.module.sitemesh.mapper.FileDecoratorMapper"/>
 		<mapper class="com.opensymphony.module.sitemesh.mapper.ConfigDecoratorMapper">
 			<param name="config" value="${decorators-file}" />
 		</mapper>

@@ -137,11 +137,11 @@
   <component name="libraryTable">
     <library name="sitemesh">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/sitemesh-2.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/sitemesh-2.4.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/lib/sitemesh-2.3.src.zip!/" />
+        <root url="jar://$PROJECT_DIR$/lib/sitemesh-2.4.src.zip!/" />
       </SOURCES>
     </library>
     <library name="stringtemplate">
@@ -159,9 +159,7 @@
         <root url="file://$PROJECT_DIR$/build/lib" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/build/lib/junit-4.5-src.jar!/" />
-      </SOURCES>
+      <SOURCES />
       <jarDirectory url="file://$PROJECT_DIR$/build/lib" recursive="false" />
     </library>
   </component>

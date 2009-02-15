@@ -6,10 +6,10 @@ import java.net.{URI, URL, URLConnection}
 class Url(val url: String) {
   def replacePath(path: Path): Url = {
     url match {
-      case Url.JarUrl(jar, entry) => new Url("jar:" + jar + "!" + path.value)
+      case Url.JarUrl(jar, entry) => new Url("jar:" + jar + "!" + path.toString)
       case _ => {
         val o: URI = Url.toURI(this)
-        val n = new URI(o.getScheme, o.getUserInfo, o.getHost, o.getPort, path.value, o.getQuery, o.getFragment)
+        val n = new URI(o.getScheme, o.getUserInfo, o.getHost, o.getPort, path.toString, o.getQuery, o.getFragment)
         new Url(n.toString)
       }
     }

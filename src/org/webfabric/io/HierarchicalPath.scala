@@ -5,7 +5,7 @@ class HierarchicalPath(val value:String) extends Path {
   private def joinDirectories(list: List[String]) = join(list) + "/"
   private def join(list: List[String]) = list.reverse.mkString("/")
 
-  def parent: HierarchicalPath = value match {
+  def parent: HierarchicalPath = toString match {
     case "" => this
     case "/" => this
     case _ => new HierarchicalPath(joinDirectories(segments.tail))
@@ -24,7 +24,7 @@ class HierarchicalPath(val value:String) extends Path {
   override def hashCode = value.hashCode
 
   override def equals(other: Any) = other match {
-    case that: Path => this.value == that.value
+    case that: Path => this.toString == that.toString
     case _ => false
   }
 }

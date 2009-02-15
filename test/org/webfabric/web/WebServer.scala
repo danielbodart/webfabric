@@ -6,21 +6,21 @@ import mortbay.jetty.{Connector, Server}
 
 class WebServer(port: Int) {
   val server = new Server()
-  server.addConnector(createConnector())
-  server.setHandler(createAppContext())
+  createConnector()
+  createAppContext()
   server.setStopAtShutdown(true)
 
-  def createAppContext(): WebAppContext = {
+  def createAppContext() {
     val appContext = new WebAppContext()
     appContext.setContextPath("/")
     appContext.setWar("./web")
-    return appContext
+    server.setHandler(appContext)
   }
 
-  def createConnector(): Connector = {
+  def createConnector() {
     val connector = new SelectChannelConnector()
     connector.setPort(port)
-    return connector
+    server.addConnector(connector)
   }
 
   def start = {

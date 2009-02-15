@@ -1,7 +1,7 @@
 package org.webfabric.web.sitemesh
 
-import _root_.org.webfabric.web.servlet._
-import antlr.stringtemplate.language.DefaultTemplateLexer
+import java.util.regex.Pattern
+import web.servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import io.{Url, Path}
 import java.net.URL
@@ -24,32 +24,28 @@ class StringTemplateDecoratorServlet extends HttpServlet {
   }
 
   def getTemplate(request: HttpServletRequest): StringTemplate = {
-    val possiblePaths = List[Path](OriginalServletPath(request),
+    val possiblePaths = List[String](OriginalServletPath(request),
       OriginalPathInfo(request),
       ServletPath(request),
       PathInfo(request))
 
-    val validPath = possiblePaths.find(path => path.value() != null).get
-    val name = removeExtension(validPath.value())
-
+    val StringTemplateDecoratorServlet.TemplateName(name) = possiblePaths.find(_ != null).get
     val groups = new UrlStringTemplateGroup("decorators", getBaseUrl())
     return groups.getInstanceOf(name)
   }
 
   def getBaseUrl(): Url = {
-    val url: Url = getServletContext().getResource("/WEB-INF/web.xml")
-    return url.replacePath(url.path.parent.parent)
-  }
-
-  def removeExtension(path: String): String = {
-    path.replace(".st", "");
+    getServletContext().getResource("/")
   }
 
   def getPage(request: HttpServletRequest): Option[HTMLPage] = {
-    request.getAttribute(RequestConstants.PAGE) match{
-      case page:HTMLPage => Some(page)
-      case null => None
+    request.getAttribute(RequestConstants.PAGE) match {
+      case page: HTMLPage => Some(page)
+      case _ => None
     }
-
   }
+}
+
+object StringTemplateDecoratorServlet {
+  private val TemplateName = """(.+)\.st$""".r
 }

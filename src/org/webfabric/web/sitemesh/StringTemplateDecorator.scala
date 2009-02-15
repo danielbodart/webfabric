@@ -6,17 +6,17 @@ import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
 
 class StringTemplateDecorator(template: StringTemplate) {
-  def setBase(base:ContextPath):StringTemplateDecorator =  {
+  def setBase(base: ContextPath): StringTemplateDecorator = {
     template.setAttribute("base", base)
     this
   }
 
-  def setQueryString(queryString:QueryString):StringTemplateDecorator =  {
+  def setQueryString(queryString: QueryString): StringTemplateDecorator = {
     template.setAttribute("queryString", queryString.map)
     this
   }
 
-  def setPage(page: HTMLPage):StringTemplateDecorator = {
+  def setPage(page: HTMLPage): StringTemplateDecorator = {
     template.setAttribute("page", page)
     template.setAttribute("head", page.getHead)
     template.setAttribute("title", page.getTitle)
@@ -24,7 +24,7 @@ class StringTemplateDecorator(template: StringTemplate) {
     this
   }
 
-  def writeTo(writer:Writer) = template.write(new NoIndentWriter(writer))
+  def writeTo(writer: Writer) = template.write(new NoIndentWriter(writer))
 
   override def toString = {
     val writer = new StringWriter
