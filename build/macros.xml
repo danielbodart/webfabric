@@ -55,13 +55,6 @@
                 </batchtest>
             </junit>
 
-            <junitreport todir="@{reports}">
-                <fileset dir="@{reports}">
-                    <include name="TEST-*.xml"/>
-                </fileset>
-                <report todir="@{reports}"/>
-            </junitreport>
-
             <delete dir="${unzipped.jar}"/>
             <fail message="Tests failed" if="failed"/>
         </sequential>

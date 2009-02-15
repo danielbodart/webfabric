@@ -8,14 +8,15 @@ import java.util.Stack
 class DivCapturingRule(pageBuilder: PageBuilder) extends BasicRule("div") {
   val ids: Stack[String] = new Stack[String]
 
-  def process(tag: Tag) {
-    if (tag.getType() == Tag.OPEN) {
+  def process(tag: Tag):Unit = tag.getType match {
+    case Tag.OPEN => {
       ensureTagIsNotConsumed(tag)
       if (shouldCapture(tag)) {
         pushContent
       }
       pushId(tag)
-    } else if (tag.getType() == Tag.CLOSE) {
+    }
+    case Tag.CLOSE => {
       val id: String = popId
       if (capturing(id)) {
         val content = popContent

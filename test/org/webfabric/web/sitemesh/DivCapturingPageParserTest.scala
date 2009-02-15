@@ -15,7 +15,7 @@ class DivCapturingPageParserTest {
     var pageParser = new DivCapturingPageParser();
 
     // execute
-    var page = pageParser.parse(html.toCharArray());
+    var page = pageParser.parse(html);
 
     // verify
     assertEquals(body, page.getBody());
@@ -30,7 +30,7 @@ class DivCapturingPageParserTest {
     var pageParser = new DivCapturingPageParser();
 
     // execute
-    var page = pageParser.parse(html.toCharArray());
+    var page = pageParser.parse(html);
 
     // verify
     assertEquals("<div id='target'>content</div>", page.getBody());
@@ -43,7 +43,7 @@ class DivCapturingPageParserTest {
     var pageParser = new DivCapturingPageParser();
 
     // execute
-    var page = pageParser.parse(html.toCharArray());
+    var page = pageParser.parse(html);
 
     // verify
     assertEquals("content", page.getProperty("div.target"));
