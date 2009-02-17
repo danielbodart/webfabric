@@ -12,7 +12,7 @@ class StringTemplateDecorator(template: StringTemplate) {
   }
 
   def setQueryString(queryString: QueryString): StringTemplateDecorator = {
-    template.setAttribute("queryString", queryString.map)
+    template.setAttribute("query", queryString.map)
     this
   }
 
