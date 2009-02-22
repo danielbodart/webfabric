@@ -11,7 +11,7 @@
 
     $scala$
 
-
+    Googles title: $include.("http://www.google.co.uk/").title$
 
 </body>
 </html>

@@ -29,7 +29,7 @@ class PageMapTest{
     val pageMap = new PageMap
     val template = new StringTemplate("""$include.(url).title$""")
     template.setAttribute("include", pageMap)
-    template.setAttribute("url", url)
+    template.setAttribute("url", PageMapTest.url)
 
     // execute
     val title = template.toString
@@ -37,7 +37,9 @@ class PageMapTest{
     // verify
     assertEquals("Test", title)
   }
+}
 
+object PageMapTest{
   def url:Url = {
     return RelativeResource.asUrl(classOf[PageMapTest], "html.st")
   }

@@ -7,8 +7,25 @@ import com.opensymphony.module.sitemesh.parser.HTMLPageParser
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.junit.Test
 import org.junit.Assert.assertEquals
+import stringtemplate.{PageMap, PageMapTest}
 
 class StringTemplateDecoratorTest {
+  @Test
+  def supportsIncludingOtherPages(): Unit = {
+    // setup
+    var include = new PageMap
+    var template = new StringTemplate("$include.(url).title$")
+    template.setAttribute("url", PageMapTest.url)
+    var decorator = new StringTemplateDecorator(template)
+
+    // execute
+    var result = decorator.setInclude(include).toString
+
+    // verify
+    assertEquals("Test", result)
+  }
+
+
   @Test
   def supportsBase(): Unit = {
     // setup

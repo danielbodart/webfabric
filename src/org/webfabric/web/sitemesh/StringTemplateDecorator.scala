@@ -4,8 +4,14 @@ import _root_.org.webfabric.web.servlet.{QueryString, ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
+import stringtemplate.PageMap
 
 class StringTemplateDecorator(template: StringTemplate) {
+  def setInclude(include: PageMap): StringTemplateDecorator = {
+    template.setAttribute("include", include)
+    this
+  }
+
   def setBase(base: ContextPath): StringTemplateDecorator = {
     template.setAttribute("base", base)
     this
