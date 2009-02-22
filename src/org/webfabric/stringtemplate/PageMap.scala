@@ -8,7 +8,9 @@ import java.net.URL
 import java.util.{Map => JavaMap}
 import web.sitemesh.DivCapturingPageParser
 
-class PageMap extends JavaMap[String, HTMLPage]{
+class PageMap(pageLoader:PageLoader) extends JavaMap[String, HTMLPage]{
+  def this() = this(new UrlPageLoader)
+
   var cache:Map[String, HTMLPage] = Map()
 
   def containsKey(key: Any) = key match{
@@ -29,14 +31,9 @@ class PageMap extends JavaMap[String, HTMLPage]{
   }
 
   def loadPage(path:String){
-    try{
-      val url = new URL(path);
-      val html = Converter.asString(url.openStream)
-      val parser = new DivCapturingPageParser()
-      val page = parser.parse(html)
-      cache += (path -> page)
-    } catch {
-      case ex: IOException => return "";
+    pageLoader.load(path) match {
+      case Some(page) => cache += (path -> page)
+      case _ =>
     }
   }
 
