@@ -1,7 +1,7 @@
 package org.webfabric.web.sitemesh
 
 import java.util.regex.Pattern
-import stringtemplate.{PageMap, UrlStringTemplateGroup}
+import stringtemplate._
 import web.servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import io.{Url, Path}
@@ -14,7 +14,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     val templateDecorator = new StringTemplateDecorator(getTemplate(request))
     templateDecorator.setBase(ContextPath(request))
     templateDecorator.setQueryString(QueryString(request))
-    templateDecorator.setInclude(new PageMap)
+    templateDecorator.setInclude(getPageMap(request, response))
 
     getPage(request) match {
       case Some(page) => templateDecorator.setPage(page)
@@ -44,6 +44,11 @@ class StringTemplateDecoratorServlet extends HttpServlet {
       case page: HTMLPage => Some(page)
       case _ => None
     }
+  }
+
+  def getPageMap(request: HttpServletRequest, response: HttpServletResponse):PageMap = {
+    val loaders = new PageLoaders(new UrlPageLoader, new ServletPageLoader(request, response, getServletConfig))
+    new PageMap(loaders)
   }
 }
 

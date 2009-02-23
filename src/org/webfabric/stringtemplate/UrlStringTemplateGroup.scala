@@ -7,6 +7,8 @@ import java.io.{InputStreamReader, BufferedReader, IOException}
 import java.lang.String
 
 class UrlStringTemplateGroup(name: String, baseUrl: URL) extends StringTemplateGroup(name, baseUrl.toString) {
+  setRefreshInterval(0)
+  
   override def loadTemplate(name: String, filename: String): StringTemplate = {
     try {
       val url = Url(filename)

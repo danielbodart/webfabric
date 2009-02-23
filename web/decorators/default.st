@@ -8,10 +8,11 @@
 
     <div>Decorating $body$</div>
 
+    <p>Fully qualified url include: expected: 'Google' actual: '$include.("http://www.google.co.uk/").title$'</p>
 
-    $scala$
+    <p>Absolute path include: expected: 'Test' actual: '$include.("/test.html").title$'</p>
 
-    Googles title: $include.("http://www.google.co.uk/").title$
+    <p>Relative path include: expected: 'Relative' actual: '$include.("relative.html").title$'</p>
 
 </body>
 </html>
