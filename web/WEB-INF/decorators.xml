@@ -2,4 +2,5 @@
     <decorator name="default" page="default.st">
           <pattern>/*</pattern>
     </decorator>
+    <decorator name="body" page="body.st"/>
 </decorators>
