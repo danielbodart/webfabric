@@ -14,7 +14,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/output" />
       <excludeFolder url="file://$MODULE_DIR$/lib" />
     </content>
-    <orderEntry type="library" name="scala-2.7.3.final" level="application" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="sitemesh" level="project" />
@@ -29,6 +28,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="scala" level="project" />
   </component>
 </module>
 

@@ -1,16 +1,22 @@
 package org.webfabric.web.sitemesh
 
-import java.util.regex.Pattern
+import javax.servlet.http._
 import stringtemplate._
 import web.servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import io.{Url, Path}
-import java.net.URL
-import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
-import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
+import antlr.stringtemplate.{StringTemplate}
 
 class StringTemplateDecoratorServlet extends HttpServlet {
-  override def doGet(request: HttpServletRequest, response: HttpServletResponse) {
+  override def doPost(request: HttpServletRequest, response: HttpServletResponse) = {
+    handle(request, response)
+  }
+
+  override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {
+    handle(request, response)
+  }
+
+  override def handle(request: HttpServletRequest, response: HttpServletResponse) {
     val templateDecorator = new StringTemplateDecorator(getTemplate(request))
     templateDecorator.setBase(ContextPath(request))
     templateDecorator.setQueryString(QueryString(request))
