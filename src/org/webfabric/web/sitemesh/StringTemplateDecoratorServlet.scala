@@ -16,7 +16,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     handle(request, response)
   }
 
-  override def handle(request: HttpServletRequest, response: HttpServletResponse) {
+  def handle(request: HttpServletRequest, response: HttpServletResponse) {
     val templateDecorator = new StringTemplateDecorator(getTemplate(request))
     templateDecorator.setBase(ContextPath(request))
     templateDecorator.setQueryString(QueryString(request))
