@@ -2,8 +2,6 @@ package org.webfabric.web.sitemesh
 
 import _root_.org.webfabric.web.servlet.{QueryString, ContextPath}
 import antlr.stringtemplate.StringTemplate
-import java.io.StringWriter
-import com.opensymphony.module.sitemesh.parser.HTMLPageParser
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.junit.Test
 import org.junit.Assert.assertEquals
@@ -13,13 +11,13 @@ class StringTemplateDecoratorTest {
   @Test
   def supportsIncludingOtherPages(): Unit = {
     // setup
-    var include = new PageMap
-    var template = new StringTemplate("$include.(url).title$")
+    val include = new PageMap
+    val template = new StringTemplate("$include.(url).title$")
     template.setAttribute("url", PageMapTest.url)
-    var decorator = new StringTemplateDecorator(template)
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = decorator.setInclude(include).toString
+    val result = decorator.setInclude(include).toString
 
     // verify
     assertEquals("Test", result)
@@ -29,12 +27,12 @@ class StringTemplateDecoratorTest {
   @Test
   def supportsBase(): Unit = {
     // setup
-    var base = new ContextPath("/foo/")
-    var template = new StringTemplate("$base$")
-    var decorator = new StringTemplateDecorator(template)
+    val base = new ContextPath("/foo/")
+    val template = new StringTemplate("$base$")
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = decorator.setBase(base).toString
+    val result = decorator.setBase(base).toString
 
     // verify
     assertEquals(base.toString(), result)
@@ -43,12 +41,12 @@ class StringTemplateDecoratorTest {
   @Test
   def SupportsPage = {
     // setup
-    var html = createPage("")
-    var template = new StringTemplate("$page$")
-    var decorator = new StringTemplateDecorator(template)
+    val html = createPage("")
+    val template = new StringTemplate("$page$")
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = GetResult(decorator, html)
+    val result = GetResult(decorator, html)
 
     // verify
     assertEquals(html.toString(), result)
@@ -57,12 +55,12 @@ class StringTemplateDecoratorTest {
   @Test
   def SupportsHeadTag = {
     // setup
-    var html = createPage("<html><head><script/></head></html>")
-    var template = new StringTemplate("$head$")
-    var decorator = new StringTemplateDecorator(template)
+    val html = createPage("<html><head><script/></head></html>")
+    val template = new StringTemplate("$head$")
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = GetResult(decorator, html)
+    val result = GetResult(decorator, html)
 
     // verify
     assertEquals("<script/>", result)
@@ -71,12 +69,12 @@ class StringTemplateDecoratorTest {
   @Test
   def SupportsBodyTag = {
     // setup
-    var html = createPage("<html><body>Some text</body></html>")
-    var template = new StringTemplate("$body$")
-    var decorator = new StringTemplateDecorator(template)
+    val html = createPage("<html><body>Some text</body></html>")
+    val template = new StringTemplate("$body$")
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = GetResult(decorator, html)
+    val result = GetResult(decorator, html)
 
     // verify
     assertEquals("Some text", result)
@@ -85,12 +83,12 @@ class StringTemplateDecoratorTest {
   @Test
   def SupportsTitleTag = {
     // setup
-    var html = createPage("<html><head><title>Some title</title></head></html>")
-    var template = new StringTemplate("$title$")
-    var decorator = new StringTemplateDecorator(template)
+    val html = createPage("<html><head><title>Some title</title></head></html>")
+    val template = new StringTemplate("$title$")
+    val decorator = new StringTemplateDecorator(template)
 
     // execute
-    var result = GetResult(decorator, html)
+    val result = GetResult(decorator, html)
 
     // verify
     assertEquals("Some title", result)
@@ -101,7 +99,7 @@ class StringTemplateDecoratorTest {
   }
 
   def createPage(html: String): HTMLPage = {
-    var pageParser = new DivCapturingPageParser()
+    val pageParser = new DivCapturingPageParser()
     pageParser.parse(html)
   }
 }
