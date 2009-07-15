@@ -43,6 +43,28 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="FacetAutodetectingManager">
+    <autodetection-disabled>
+      <facet-type id="web">
+        <modules>
+          <module name="webfabric">
+            <files>
+              <file url="file://$PROJECT_DIR$/web/WEB-INF/web.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="google-app-engine">
+        <modules>
+          <module name="webfabric">
+            <files>
+              <file url="file://$PROJECT_DIR$/web/WEB-INF/appengine-web.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+    </autodetection-disabled>
+  </component>
   <component name="IdProvider" IDEtalkID="D25B0EF1F4872F9D088E2C9F513975BC" />
   <component name="InspectionProjectProfileManager">
     <option name="PROJECT_PROFILE" value="Project Default" />
