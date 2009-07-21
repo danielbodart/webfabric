@@ -59,5 +59,5 @@ class StringTemplateDecoratorServlet extends HttpServlet {
 }
 
 object StringTemplateDecoratorServlet {
-  private val TemplateName = """(.+)\.st$""".r
+  val TemplateName = """(.+)\.st$""".r
 }

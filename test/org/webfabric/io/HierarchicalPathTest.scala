@@ -38,6 +38,7 @@ class HierarchicalPathTest {
     assertEquals(new HierarchicalPath("foo/bar.txt"), new HierarchicalPath("foo/").file("bar.txt"))
 //    assertEquals(new HierarchicalPath("/foo.txt"), new HierarchicalPath("/").file("foo.txt")) TODO
 //    assertEquals(new HierarchicalPath("foo.txt"), new HierarchicalPath("").file("foo.txt")) TODO
+    assertEquals("bar.txt", new HierarchicalPath("/foo/bar.txt").file)
   }
 
   @Test

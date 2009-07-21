@@ -22,6 +22,10 @@ class Url(val url: String) {
     }
   }
 
+  def parent: Url = {
+    replacePath(path.parent)
+  }
+
   def reader: Reader = {
     return new InputStreamReader(inputStream)
   }

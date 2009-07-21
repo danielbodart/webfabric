@@ -15,6 +15,8 @@ class HierarchicalPath(val value:String) extends Path {
     return new HierarchicalPath(joinDirectories(name :: segments))
   }
 
+  def file: String = segments.head
+
   def file(name: String): HierarchicalPath = {
     return new HierarchicalPath(join(name :: segments))
   }
