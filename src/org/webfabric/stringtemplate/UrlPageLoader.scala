@@ -14,6 +14,7 @@ class UrlPageLoader extends PageLoader{
       Some(parser.parse(html))
     } catch {
       case ex: IOException => None;
+      case ex: NullPointerException => None;
     }
   }
 }

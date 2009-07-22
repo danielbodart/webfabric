@@ -18,7 +18,7 @@ class SiteMeshServlet extends HttpServlet{
         val decorator = new StringTemplateDecorator(template)
 
         decorator.setBase(new ContextPath(decoratorUrl.parent.toString))
-        decorator.setInclude(new PageMap(new UrlPageLoader))
+        decorator.setInclude(new PageMap)
         decorator.setPage(page)
         decorator.setQueryString(QueryString(request))
 
