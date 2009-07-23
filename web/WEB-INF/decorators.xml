@@ -3,4 +3,5 @@
           <pattern>/*</pattern>
     </decorator>
     <decorator name="body" page="body.st"/>
+    <decorator name="div" page="div.st"/>
 </decorators>

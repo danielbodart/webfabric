@@ -17,8 +17,5 @@
     <p>Absolute path include: expected: 'Test' actual: '$include.("/test.html").title$'</p>
 
     <p>Relative path include: expected: 'Relative' actual: '$include.("relative.html").title$'</p>
-
-    <a class="include" href="test.html">test.html</a>
-
 </body>
 </html>
