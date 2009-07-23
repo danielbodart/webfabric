@@ -12,14 +12,14 @@ class SiteMeshServlet extends HttpServlet{
     val content = request.getParameter("content")
 
     new UrlPageLoader().load(content) match {
-      case page: HTMLPage => {
+      case page: Some[HTMLPage] => {
         val decoratorUrl = new Url(request.getParameter("decorator"))
         val template: StringTemplate = getTemplate(decoratorUrl)
         val decorator = new StringTemplateDecorator(template)
 
         decorator.setBase(new ContextPath(decoratorUrl.parent.toString))
         decorator.setInclude(new PageMap)
-        decorator.setPage(page)
+        decorator.setPage(page.get)
         decorator.setQueryString(QueryString(request))
 
         decorator.writeTo(response.getWriter)
