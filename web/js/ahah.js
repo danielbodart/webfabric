@@ -1,10 +1,13 @@
 function Include(element){
+    var url = element.href;
     var params = {'decorator': 'body'};
-    if( element.href.contains("#") ) {
-        var id = element.href.split("#")[1];
+    if( url.contains("#") ) {
+        var parts = url.split("#");
+        url = parts[0];
+        var id = parts[1];
         params = { 'decorator': 'div', 'id': id }
     }
-    jQuery.get(element.href, params, function(data) {
+    jQuery.get(url, params, function(data) {
         jQuery(element).replaceWith(data);
     });
 }
