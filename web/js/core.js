@@ -24,6 +24,8 @@ String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g, '');
 };
 
+String.Empty = "";
+
 /* Array */
 
 if ( typeof(Array.prototype.indexOf) == "undefined"){
@@ -113,7 +115,7 @@ StringBuilder.prototype.append = function(value){
 };
 
 StringBuilder.prototype.toString = function(separator) {
-    return this.buffer.join(separator || "");
+    return this.buffer.join(separator || String.Empty);
 };
 
 /* Object */
