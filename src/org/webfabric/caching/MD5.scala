@@ -1,10 +1,10 @@
 package org.webfabric.caching
 
+import apache.commons.codec.binary.{Hex, Base64}
 import java.io.{InputStream, OutputStream}
 import java.lang.String
 import java.math.BigInteger
 import java.security.{DigestInputStream, DigestOutputStream, MessageDigest}
-import sun.misc.BASE64Encoder;
 
 class MD5{
   val digest = MessageDigest.getInstance("MD5")
@@ -17,13 +17,13 @@ class MD5{
     new DigestInputStream(inputStream, digest)
   }
 
-  def asHex:String = {
-    new BigInteger(1, bytes).toString(16)
+  lazy val asHex:String = {
+    new String(Hex.encodeHex(bytes))
   }
 
-  def asBase64:String = {
-    new BASE64Encoder().encode(bytes)
+  lazy val asBase64:String = {
+    new String(Base64.encodeBase64(bytes))
   }
 
-  lazy val bytes = digest.digest
+  lazy val bytes: Array[byte] = digest.digest
 }

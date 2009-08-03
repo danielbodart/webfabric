@@ -55,6 +55,7 @@ class MD5Test {
 
     // verify
     assertEquals("900150983cd24fb0d6963f7d28e17f72", md5.asHex)
+    assertEquals("kAFQmDzST7DWlj99KOF/cg==", md5.asBase64)
     assertEquals("900150983cd24fb0d6963f7d28e17f72", md5.asHex)
   }
 
