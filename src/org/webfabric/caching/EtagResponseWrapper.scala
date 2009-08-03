@@ -3,6 +3,7 @@ package org.webfabric.caching
 
 import com.opensymphony.module.sitemesh.util.FastByteArrayOutputStream
 import java.io.{OutputStream, PrintWriter}
+import java.util.Date
 import javax.servlet.http.{HttpServletResponse, HttpServletResponseWrapper}
 import javax.servlet.ServletOutputStream
 
@@ -18,11 +19,12 @@ class EtagResponseWrapper(servletResponse: HttpServletResponse) extends HttpServ
   lazy override val getWriter = new PrintWriter(wrapped)
 
   def writeToUnderlyingResponse() {
+    servletResponse.setDateHeader("Last-Modified", new Date().getTime)
     servletResponse.setHeader("ETag", etag)
     servletResponse.setHeader("Content-MD5", contentMD5)
     buffer.writeTo(servletResponse.getOutputStream)
   }
 
-  def etag = md5.asHex
+  def etag = '"' + md5.asHex + '"'
   def contentMD5 = md5.asBase64
 }
