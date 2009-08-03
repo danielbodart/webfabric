@@ -24,7 +24,7 @@
     $body$
 </div>
 <div class="footer">
-    copyleft webfabric.com
+    copyleft webfabric.com 2009
 </div>
 </body>
 </html>
