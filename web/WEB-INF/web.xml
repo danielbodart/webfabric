@@ -24,6 +24,30 @@
         <url-pattern>/sitemesh</url-pattern>
     </servlet-mapping>
 
+    <!--<filter>-->
+        <!--<filter-name>gzip</filter-name>-->
+        <!--<filter-class>org.mortbay.servlet.GzipFilter</filter-class>-->
+        <!--<init-param>-->
+            <!--<param-name>mimeTypes</param-name>-->
+            <!--<param-value>text/html</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+
+    <!--<filter-mapping>-->
+        <!--<filter-name>gzip</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <filter>
+        <filter-name>etag</filter-name>
+        <filter-class>org.webfabric.caching.StrongEtagFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>etag</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>sitemesh</filter-name>
         <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>

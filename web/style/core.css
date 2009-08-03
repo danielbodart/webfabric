@@ -1,27 +1,21 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #ddd;
+    background-color: #fff;
     color: #333;
     font-family: Arial, Helvetica, Verdana, sans-serif;
     font-size: 11pt;
 }
 
 .content, .footer {
-    background-color: white;
     line-height: 1.35em;
-    margin: 0 0 0 15%;
-    border-left: 1px #bbb solid;
-    border-right: 1px #bbb solid;
+    margin: 0;
     padding: 0 1em 2em 1em;
-    width: 96ex;
     overflow: hidden;
 }
 
 .footer {
     margin-bottom: 3em;
-    border: 1px #bbb solid;
-    border-top: 1px #fff solid;
 }
 
 .header {
@@ -30,7 +24,7 @@ html, body {
 }
 
 .header img, .header .menu {
-    margin: 0 0 0 15%;
+    margin: 0 0 0 1em;
     border-left: 1px #fff solid;
     padding: 0;
 }
@@ -62,9 +56,9 @@ img {
 
 .menu {
     overflow: hidden;
-    width: 96ex;
+    width: auto;
 }
-
+    
 .menu li {
     list-style: none;
     float: left;
@@ -81,21 +75,4 @@ img {
 
 .menu li:hover, .menu a:hover {
     background-color: #c6f;
-}
-
-.links li {
-    list-style: none;
-    padding-left: 19px;
-}
-
-.links .google {
-    background: url( "http://maps.google.co.uk/favicon.ico" ) no-repeat;
-}
-
-.links .streetmap {
-    background: url( "http://www.streetmap.co.uk/favicon.ico" ) no-repeat;
-}
-
-.links .tfl {
-    background: url( "http://journeyplanner.tfl.gov.uk/favicon.ico" ) no-repeat;
 }

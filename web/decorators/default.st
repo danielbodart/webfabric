@@ -10,17 +10,17 @@
     $head$
 </head>
 <body>
+<h1>webfabric.com : $title$</h1>
 <div class="header">
     <ul class="menu">
         <li class="item"><a href="$base$/">webfabric</a></li>
         <li class="item"><a href="$base$/test/">tests</a></li>
         <li class="item"><a href="http://webfabric.googlecode.com/">code</a></li>
         <li class="item"><a href="http://server.bodar.com/teamcity/">build</a></li>
+        <li class="item"><a href="http://appengine.google.com/dashboard?&amp;app_id=webfabric">dashboard</a></li>
     </ul>
 </div>
 <div class="content">
-    <h1>webfabric.com : $title$</h1>
-
     $body$
 </div>
 <div class="footer">
