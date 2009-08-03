@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>webfabric.com : $title$</title>
+    <title>webfabric.org : $title$</title>
     <link type="text/css" rel="stylesheet" href="$base$/style/core.css"/>
     <script type="text/javascript" src="$base$/js/jquery-1.3.2.min.js"></script>
     <script type="text/javascript" src="$base$/js/core.js"></script>
@@ -10,7 +10,7 @@
     $head$
 </head>
 <body>
-<h1>webfabric.com : $title$</h1>
+<h1>webfabric.org : $title$</h1>
 <div class="header">
     <ul class="menu">
         <li class="item"><a href="$base$/">webfabric</a></li>
