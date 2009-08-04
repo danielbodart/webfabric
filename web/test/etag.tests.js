@@ -26,7 +26,6 @@ test("Sets Content-MD5 to the MD5 digest of the content in base64 encoding", fun
     });
 });
 
-
 test("Sets Last-Modified to server time", function() {
     expect(1);
     stop();
