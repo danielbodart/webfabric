@@ -24,7 +24,27 @@
         <url-pattern>/sitemesh</url-pattern>
     </servlet-mapping>
 
-     <filter>
+    <filter>
+        <filter-name>no-session</filter-name>
+        <filter-class>org.webfabric.caching.NoSessionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>no-session</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>caching</filter-name>
+        <filter-class>org.webfabric.caching.AutoCacheFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>caching</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>etag</filter-name>
         <filter-class>org.webfabric.caching.StrongEtagFilter</filter-class>
     </filter>

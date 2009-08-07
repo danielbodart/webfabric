@@ -1,7 +1,5 @@
 package org.webfabric.caching
 
-import com.opensymphony.module.sitemesh.filter.DebugResponseWrapper
-import java.lang.String
 import javax.servlet._
 import http.{HttpServletResponse, HttpServletRequest}
 

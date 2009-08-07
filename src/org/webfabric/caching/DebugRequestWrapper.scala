@@ -24,4 +24,19 @@ class DebugRequestWrapper(request: HttpServletRequest) extends HttpServletReques
     System.out.println("getHeaderNames()")
     super.getHeaderNames
   }
+
+  override def getCookies = {
+    System.out.println("getCookies()")
+    super.getCookies
+  }
+
+  override def getSession(create: Boolean) = {
+    System.out.println("getSession(" + create + ")")
+    super.getSession(create)
+  }
+
+  override def getSession = {
+    System.out.println("getSession()")
+    super.getSession
+  }
 }

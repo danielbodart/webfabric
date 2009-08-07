@@ -1,7 +1,6 @@
 package org.webfabric.web.sitemesh
 
 import antlr.stringtemplate.StringTemplate
-import com.opensymphony.module.sitemesh.HTMLPage
 import io.{Url, HierarchicalPath}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import servlet.{QueryString, ContextPath}
@@ -12,14 +11,14 @@ class SiteMeshServlet extends HttpServlet{
     val content = request.getParameter("content")
 
     new UrlPageLoader().load(content) match {
-      case page: Some[HTMLPage] => {
+      case Some(page) => {
         val decoratorUrl = new Url(request.getParameter("decorator"))
         val template: StringTemplate = getTemplate(decoratorUrl)
         val decorator = new StringTemplateDecorator(template)
 
         decorator.setBase(new ContextPath(decoratorUrl.parent.toString))
         decorator.setInclude(new PageMap)
-        decorator.setPage(page.get)
+        decorator.setPage(page)
         decorator.setQueryString(QueryString(request))
 
         decorator.writeTo(response.getWriter)
@@ -36,5 +35,4 @@ class SiteMeshServlet extends HttpServlet{
     val StringTemplateDecoratorServlet.TemplateName(name) = url.path.file
     templates.getInstanceOf(name)
   }
-
 }
