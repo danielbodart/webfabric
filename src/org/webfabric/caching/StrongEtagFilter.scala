@@ -18,7 +18,8 @@ class StrongEtagFilter extends Filter {
     wrappedResponse.getWriter.flush
     if (wrappedResponse.buffer.size > 0) {
       if (request.getHeader("If-None-Match") == wrappedResponse.etag) {
-        response.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+        response.reset
+        response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
       } else {
         wrappedResponse.writeToUnderlyingResponse
       }

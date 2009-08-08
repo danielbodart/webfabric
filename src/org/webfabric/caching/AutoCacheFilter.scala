@@ -49,16 +49,16 @@ class AutoCacheFilter extends Filter {
 
     chain.doFilter(requestWrapper, responseWrapper)
 
+    val calendar = Calendar.getInstance
+    responseWrapper.setDateHeader("Date", calendar.getTimeInMillis)
     noCache match {
       case true => {
         responseWrapper.setHeader("Cache-Control", "no-cache")
         responseWrapper.setDateHeader("Expires", 0)
-
       }
       case false => {
         val seconds = 60
         responseWrapper.setHeader("Cache-Control", "public, max-age=" + seconds)
-        val calendar = Calendar.getInstance
         calendar.add(Calendar.SECOND, seconds)
         responseWrapper.setDateHeader("Expires", calendar.getTimeInMillis)
       }

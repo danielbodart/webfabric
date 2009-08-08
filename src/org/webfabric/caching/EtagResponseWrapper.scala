@@ -19,7 +19,9 @@ class EtagResponseWrapper(servletResponse: HttpServletResponse) extends HttpServ
   lazy override val getWriter = new PrintWriter(wrapped)
 
   def writeToUnderlyingResponse() {
-    servletResponse.setDateHeader("Last-Modified", new Date().getTime)
+    val time = new Date().getTime
+    servletResponse.setDateHeader("Date", time)
+    servletResponse.setDateHeader("Last-Modified", time)
     servletResponse.setHeader("ETag", etag)
     servletResponse.setHeader("Content-MD5", contentMD5)
     buffer.writeTo(servletResponse.getOutputStream)
