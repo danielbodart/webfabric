@@ -1,6 +1,7 @@
 package org.webfabric.caching
 
 import com.opensymphony.module.sitemesh.filter.DebugResponseWrapper
+import java.util.{Calendar, Date}
 import javax.servlet._
 import http._
 class AutoCacheFilter extends Filter {
@@ -48,9 +49,19 @@ class AutoCacheFilter extends Filter {
 
     chain.doFilter(requestWrapper, responseWrapper)
 
-    responseWrapper.setHeader("Cache-Control", noCache match {
-      case true => "no-cache"
-      case false => "public, max-age=60"
-    })
+    noCache match {
+      case true => {
+        responseWrapper.setHeader("Cache-Control", "no-cache")
+        responseWrapper.setDateHeader("Expires", 0)
+
+      }
+      case false => {
+        val seconds = 60
+        responseWrapper.setHeader("Cache-Control", "public, max-age=" + seconds)
+        val calendar = Calendar.getInstance
+        calendar.add(Calendar.SECOND, seconds)
+        responseWrapper.setDateHeader("Expires", calendar.getTimeInMillis)
+      }
+    }
   }
 }
