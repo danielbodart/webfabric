@@ -1,11 +1,19 @@
 package org.webfabric.caching
 
-import com.opensymphony.module.sitemesh.filter.DebugResponseWrapper
-import java.util.{Calendar, Date}
+import java.util.{Calendar}
 import javax.servlet._
 import http._
+
 class AutoCacheFilter extends Filter {
-  def init(config: FilterConfig) = {}
+  var seconds = 60
+
+  def init(config: FilterConfig) = {
+     try {
+       seconds = config.getInitParameter("seconds").toInt
+     } catch {
+       case e:NumberFormatException => 
+     }
+  }
 
   def destroy = {}
 
@@ -13,55 +21,9 @@ class AutoCacheFilter extends Filter {
     val request = servletRequest.asInstanceOf[HttpServletRequest];
     val response = servletResponse.asInstanceOf[HttpServletResponse];
 
-    var noCache = false
-    val requestWrapper = new HttpServletRequestWrapper(request) {
-      override def getCookies = {
-        val cookies = super.getCookies
-        if( cookies !=  null) {
-          noCache = true
-        }
-        cookies
-      }
+    val cachePolicy = new CachePolicy(seconds)
+    chain.doFilter(new CachePolicyRequestWrapper(request, cachePolicy), new CachePolicyResponseWrapper(response, cachePolicy))
 
-      override def getSession(create: Boolean) = {
-        val session  = super.getSession(create)
-        if( session !=  null){
-          noCache = true
-        }
-        session
-      }
-
-      override def getSession = {
-        val session  = super.getSession
-        if( session !=  null){
-          noCache = true
-        }
-        session
-      }
-    }
-
-    val responseWrapper = new HttpServletResponseWrapper(response) {
-      override def addCookie(cookie: Cookie) = {
-        noCache = true
-        super.addCookie(cookie)
-      }
-    }
-
-    chain.doFilter(requestWrapper, responseWrapper)
-
-    val calendar = Calendar.getInstance
-    responseWrapper.setDateHeader("Date", calendar.getTimeInMillis)
-    noCache match {
-      case true => {
-        responseWrapper.setHeader("Cache-Control", "no-cache")
-        responseWrapper.setDateHeader("Expires", 0)
-      }
-      case false => {
-        val seconds = 60
-        responseWrapper.setHeader("Cache-Control", "public, max-age=" + seconds)
-        calendar.add(Calendar.SECOND, seconds)
-        responseWrapper.setDateHeader("Expires", calendar.getTimeInMillis)
-      }
-    }
+    cachePolicy.writeTo(response)
   }
 }
