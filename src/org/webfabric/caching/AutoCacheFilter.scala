@@ -21,9 +21,14 @@ class AutoCacheFilter extends Filter {
     val request = servletRequest.asInstanceOf[HttpServletRequest];
     val response = servletResponse.asInstanceOf[HttpServletResponse];
 
-    val cachePolicy = new CachePolicy(seconds)
-    chain.doFilter(new CachePolicyRequestWrapper(request, cachePolicy), new CachePolicyResponseWrapper(response, cachePolicy))
+    request.getMethod match {
+      case "GET" => {
+        val cachePolicy = new CachePolicy(seconds)
+        chain.doFilter(new CachePolicyRequestWrapper(request, cachePolicy), new CachePolicyResponseWrapper(response, cachePolicy))
 
-    cachePolicy.writeTo(response)
+        cachePolicy.writeTo(response)
+      }
+      case _ => chain.doFilter(servletRequest, servletResponse)
+    }
   }
 }
