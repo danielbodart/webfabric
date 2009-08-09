@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="release" basedir="build">
+<project default="release">
 
     <property name="distribution" value="output/dist"/>
     <property file="${distribution}/build.properties"/>
