@@ -27,15 +27,17 @@ test("Sets Content-MD5 to the MD5 digest of the content in base64 encoding", fun
 });
 
 test("Sets Last-Modified to server time", function() {
-    expect(1);
+    expect(3);
     stop();
     jQuery.ajax({
       type: "GET",
       url: "/test/abc.txt",
       complete: function(req, textStatus){
-          var lastModified = req.getResponseHeader('Last-Modified');
-          var serverTime = new Date(lastModified);
-          ok(!isNaN(serverTime), "Server time: " + serverTime)
+          var date = new Date(req.getResponseHeader('Date'));
+          ok(!isNaN(date), "Date: " + date)
+          var lastModified = new Date(req.getResponseHeader('Last-Modified'));
+          ok(!isNaN(lastModified), "Last-Modified: " + lastModified)
+          ok(lastModified <= date, "Last-Modified =< Date")          
           start();
       }
     });
