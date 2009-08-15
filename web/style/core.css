@@ -31,17 +31,16 @@ html, body {
 
 h1, h2, h3 {
     margin: 1em 0;
-    border-bottom: 1px dashed #333;
     clear: both;
 }
 
 h1 {
     background: white top left no-repeat url(logo.gif);
-    border: none;
-    font-size: 130%;
+    font-size: 180%;
     padding: 10px 0 10px 60px;
-    height: 30px;
-    margin: 20px;
+    line-height: 1em;
+    margin: 15px;
+    color: #666;
 }
 
 h2 {
