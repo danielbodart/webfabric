@@ -65,7 +65,7 @@ img {
 
 .menu {
     overflow: hidden;
-    width: auto;
+    width: 100%;
 }
     
 .menu li {
