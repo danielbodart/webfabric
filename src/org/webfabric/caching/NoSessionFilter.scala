@@ -1,5 +1,6 @@
 package org.webfabric.caching
 
+import java.util.logging.Logger
 import javax.servlet._
 import http.{HttpServletRequestWrapper, HttpServletRequest}
 
@@ -14,7 +15,7 @@ class NoSessionFilter extends Filter {
     val requestWrapper = new HttpServletRequestWrapper(request) {
       override def getSession(create: Boolean) = {
         if(create){
-          System.out.println("NoSessionFilter: warning someone is trying to create a session!")
+          NoSessionFilter.log.warning("Attempt to create Http Session denide")
         }
         null
       }
@@ -24,4 +25,8 @@ class NoSessionFilter extends Filter {
 
     chain.doFilter(requestWrapper, servletResponse)
   }
+}
+
+object NoSessionFilter{
+  val log: Logger = Logger.getLogger(NoSessionFilter.getClass.getName);
 }
