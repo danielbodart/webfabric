@@ -36,8 +36,12 @@ h1, h2, h3 {
 }
 
 h1 {
+    background: white top left no-repeat url(logo.gif);
+    border: none;
     font-size: 130%;
-    padding: 0.25em 0;
+    padding: 10px 0 10px 60px;
+    height: 30px;
+    margin: 20px;
 }
 
 h2 {
