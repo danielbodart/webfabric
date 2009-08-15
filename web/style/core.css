@@ -36,11 +36,17 @@ h1, h2, h3 {
 
 h1 {
     background: white top left no-repeat url(logo.gif);
-    font-size: 180%;
-    padding: 10px 0 10px 60px;
-    line-height: 1em;
+    font-size: 170%;
+    padding: 0 0 15px 60px;
+    height: 35px;
     margin: 15px;
     color: #666;
+}
+
+p.summary {
+    margin: -35px 0 15px 75px;    
+    font-style:italic;
+    font-size: 90%;
 }
 
 h2 {

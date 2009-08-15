@@ -11,6 +11,7 @@
 </head>
 <body>
 <h1>webfabric.org : $title$</h1>
+<p class="summary">Bringing together the best of the web</p>
 <div class="header">
     <ul class="menu">
         <li class="item"><a href="$base$/">webfabric</a></li>
