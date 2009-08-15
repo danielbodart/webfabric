@@ -1,10 +1,10 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 import java.util.{Calendar}
 import javax.servlet._
 import http._
 
-class AutoCacheFilter extends Filter {
+class CacheControlFilter extends Filter {
   var seconds = 60
 
   def init(config: FilterConfig) = {

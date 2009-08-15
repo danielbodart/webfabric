@@ -1,4 +1,4 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 
 import com.opensymphony.module.sitemesh.util.FastByteArrayOutputStream

@@ -1,12 +1,8 @@
 package org.webfabric.stringtemplate
 
 
-import com.opensymphony.module.sitemesh.{Page, HTMLPage}
-import io.Converter
-import java.io.IOException
-import java.net.URL
+import com.opensymphony.module.sitemesh.{HTMLPage}
 import java.util.{Map => JavaMap}
-import web.sitemesh.DivCapturingPageParser
 
 class PageMap(pageLoader:PageLoader) extends JavaMap[String, HTMLPage]{
   def this() = this(new UrlPageLoader)

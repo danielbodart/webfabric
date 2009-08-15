@@ -1,4 +1,4 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 import io.RelativeResource
 import java.io._

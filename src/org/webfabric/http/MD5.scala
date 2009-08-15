@@ -1,4 +1,4 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 import apache.commons.codec.binary.{Hex, Base64}
 import java.io.{InputStream, OutputStream}

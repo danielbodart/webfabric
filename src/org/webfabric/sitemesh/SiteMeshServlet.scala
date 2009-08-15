@@ -1,4 +1,4 @@
-package org.webfabric.web.sitemesh
+package org.webfabric.sitemesh
 
 import antlr.stringtemplate.StringTemplate
 import io.{Url, HierarchicalPath}

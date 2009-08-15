@@ -61,7 +61,7 @@
     <target name="build" depends="clean, compile, test, package" description="build all"/>
 
     <target name="server" depends="build" description="run web server">
-        <java classname="org.webfabric.web.RunWebServer" fork="true">
+        <java classname="org.webfabric.jetty.RunWebServer" fork="true">
             <classpath>
                 <path refid="all.jars"/>
                 <pathelement path="${java.class.path}"/>

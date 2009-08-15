@@ -1,4 +1,4 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 
 import javax.servlet.http.{HttpServletRequest, HttpServletRequestWrapper}

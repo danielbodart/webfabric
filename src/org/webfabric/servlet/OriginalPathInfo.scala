@@ -1,4 +1,4 @@
-package org.webfabric.web.servlet;
+package org.webfabric.servlet;
 
 
 

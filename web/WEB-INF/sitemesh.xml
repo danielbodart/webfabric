@@ -3,7 +3,7 @@
     <excludes file="${decorators-file}"/>
 
 	<page-parsers>
-		<parser content-type="text/html" class="org.webfabric.web.sitemesh.DivCapturingPageParser" />
+		<parser content-type="text/html" class="org.webfabric.sitemesh.DivCapturingPageParser" />
 	</page-parsers>
 
 	<decorator-mappers>

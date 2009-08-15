@@ -1,6 +1,6 @@
-package org.webfabric.web.sitemesh
+package org.webfabric.sitemesh
 
-import _root_.org.webfabric.web.servlet.{QueryString, ContextPath}
+import _root_.org.webfabric.servlet.{QueryString, ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}

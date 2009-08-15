@@ -1,8 +1,8 @@
-package org.webfabric.web.sitemesh
+package org.webfabric.sitemesh
 
 import javax.servlet.http._
 import stringtemplate._
-import web.servlet._
+import servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import io.{Url, Path}
 import antlr.stringtemplate.{StringTemplate}

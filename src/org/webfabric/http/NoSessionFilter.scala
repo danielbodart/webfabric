@@ -1,4 +1,4 @@
-package org.webfabric.caching
+package org.webfabric.http
 
 import java.util.logging.Logger
 import javax.servlet._
