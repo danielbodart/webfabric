@@ -167,7 +167,7 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="Mercurial" />
+    <mapping directory="" vcs="" />
   </component>
   <component name="libraryTable">
     <library name="sitemesh">

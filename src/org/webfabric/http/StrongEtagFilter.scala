@@ -3,15 +3,9 @@ package org.webfabric.http
 import javax.servlet._
 import http.{HttpServletResponse, HttpServletRequest}
 
-class StrongEtagFilter extends Filter {
-  def destroy = {}
+class StrongEtagFilter extends GetFilter {
 
-  def init(config: FilterConfig) = {}
-
-  def doFilter(servletRequest: ServletRequest, servletResponse: ServletResponse, chain: FilterChain) = {
-    val request = servletRequest.asInstanceOf[HttpServletRequest];
-    val response = servletResponse.asInstanceOf[HttpServletResponse];
-
+  def doGet(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) = {
     val wrappedResponse = new EtagResponseWrapper(response)
     chain.doFilter(new EtagRequestWrapper(request), wrappedResponse)
 
