@@ -1,4 +1,4 @@
-package org.webfabric.web
+package org.webfabric.jetty
 
 
 object RunWebServer {
