@@ -39,7 +39,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="codecs" level="project" />
-    <orderEntry type="library" name="lesscss" level="project" />
   </component>
 </module>
 
