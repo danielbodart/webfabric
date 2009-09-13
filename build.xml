@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="webfabric" default="build">
 
-
     <property name="build.number" value="dev"/>
     <property name="build.name" value="${ant.project.name}.${build.number}"/>
     <property name="build" value="${basedir}/build"/>
