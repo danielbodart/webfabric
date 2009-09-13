@@ -2,6 +2,7 @@
 <project default="release">
 
     <property name="distribution" value="output/dist"/>
+    <property file="webfabric.properties"/>
     <property file="${distribution}/build.properties"/>
     <property name="release.version" value="0.${build.number}.${stored.build.number}"/>
     <property name="release.name" value="webfabric.${release.version}"/>

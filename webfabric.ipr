@@ -213,6 +213,13 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="lesscss">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/lesscss-1.1.8.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
 </project>
 
