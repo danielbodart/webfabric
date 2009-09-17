@@ -1,6 +1,5 @@
 package org.webfabric.stringtemplate
 
-
 import com.opensymphony.module.sitemesh.{HTMLPage}
 import java.util.{Map => JavaMap}
 

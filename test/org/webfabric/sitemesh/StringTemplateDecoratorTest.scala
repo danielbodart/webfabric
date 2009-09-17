@@ -1,11 +1,11 @@
 package org.webfabric.sitemesh
 
-import _root_.org.webfabric.servlet.{QueryString, ContextPath}
-import antlr.stringtemplate.StringTemplate
+import _root_.org.webfabric.servlet.{ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.junit.Test
 import org.junit.Assert.assertEquals
-import stringtemplate.{PageMap, PageMapTest}
+import org.webfabric.stringtemplate.{PageMapTest, PageMap}
+import org.antlr.stringtemplate.StringTemplate
 
 class StringTemplateDecoratorTest {
   @Test

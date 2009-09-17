@@ -1,10 +1,8 @@
 package org.webfabric.stringtemplate
 
-
-import _root_.junit.framework.AssertionFailedError
 import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage
-import org.junit.{Test, Assert}
-import org.junit.Assert.{assertNotNull, assertEquals, fail}
+import org.junit.{Test}
+import org.junit.Assert.{assertEquals, fail}
 
 class PageLoadersTest {
   @Test
@@ -12,7 +10,7 @@ class PageLoadersTest {
     // setup
     val unsuccessful = new PageLoader{ def load(path:String ) = None }
     val successful = new PageLoader{ def load(path:String ) = Some(page) }
-    val fails = new PageLoader{ def load(path:String ) = throw new AssertionFailedError("Should have stopped before getting here") }
+    val fails = new PageLoader{ def load(path:String ) = throw new AssertionError("Should have stopped before getting here") }
     val loaders = new PageLoaders(unsuccessful, successful, fails)
 
     // execute & verify

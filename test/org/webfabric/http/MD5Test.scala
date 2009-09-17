@@ -1,9 +1,9 @@
 package org.webfabric.http
 
-import io.RelativeResource
 import java.io._
 import org.junit.{Test}
 import org.junit.Assert.{assertEquals}
+import org.webfabric.io.RelativeResource
 
 class MD5Test {
   @Test

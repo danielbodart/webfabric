@@ -1,6 +1,6 @@
 package org.webfabric.io
 
-import java.io.{InputStreamReader, Reader, BufferedReader, InputStream}
+import java.io.{InputStreamReader, Reader, InputStream}
 import java.net.{URI, URL, URLConnection}
 
 class Url(val url: String) {

@@ -2,8 +2,6 @@ package org.webfabric.io
 
 import org.junit.Test
 import org.junit.Assert.assertEquals;
-
-import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 

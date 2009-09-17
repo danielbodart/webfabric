@@ -1,6 +1,5 @@
 package org.webfabric.http
 
-import java.util.{Calendar}
 import javax.servlet._
 import http._
 

@@ -1,6 +1,5 @@
 package org.webfabric.servlet
 
-
 import javax.servlet.http.HttpServletRequest
 import java.util.{Map => JavaMap}
 

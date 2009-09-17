@@ -1,6 +1,5 @@
 package org.webfabric.http
 
-
 import javax.servlet.http.{HttpServletRequest, HttpServletRequestWrapper}
 
 class CachePolicyRequestWrapper(request: HttpServletRequest, cachePolicy: CachePolicy) extends HttpServletRequestWrapper(request) {

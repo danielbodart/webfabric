@@ -1,6 +1,5 @@
 package org.webfabric.sitemesh
 
-
 import com.opensymphony.module.sitemesh.html.rules.PageBuilder
 import com.opensymphony.module.sitemesh.html.State
 

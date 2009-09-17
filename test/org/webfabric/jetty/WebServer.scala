@@ -1,8 +1,8 @@
 package org.webfabric.jetty
 
-import mortbay.jetty.nio.SelectChannelConnector
-import mortbay.jetty.webapp.WebAppContext
-import mortbay.jetty.{Server}
+import org.mortbay.jetty.nio.SelectChannelConnector
+import org.mortbay.jetty.webapp.WebAppContext
+import org.mortbay.jetty.{Server}
 
 class WebServer(port: Int) {
   val server = new Server()

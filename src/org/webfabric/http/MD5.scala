@@ -1,9 +1,8 @@
 package org.webfabric.http
 
-import apache.commons.codec.binary.{Hex, Base64}
+import org.apache.commons.codec.binary.{Hex, Base64}
 import java.io.{InputStream, OutputStream}
 import java.lang.String
-import java.math.BigInteger
 import java.security.{DigestInputStream, DigestOutputStream, MessageDigest}
 
 class MD5{

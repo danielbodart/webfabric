@@ -1,6 +1,5 @@
 package org.webfabric.io
 
-
 import org.junit.Test
 import org.junit.Assert.{assertEquals, assertTrue}
 

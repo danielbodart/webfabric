@@ -1,11 +1,9 @@
 package org.webfabric.stringtemplate
 
-
-import _root_.org.webfabric.io.{Url, RelativeResource}
-import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
-import java.net.URL
-import org.junit.{Test, Assert}
-import org.junit.Assert.{assertNotNull, assertEquals, fail}
+import org.webfabric.io.{Url, RelativeResource}
+import org.antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
+import org.junit.{Test}
+import org.junit.Assert.{assertNotNull, assertEquals}
 
 class UrlStringTemplateGroupTest {
   @Test {val expected = classOf[IllegalArgumentException]}

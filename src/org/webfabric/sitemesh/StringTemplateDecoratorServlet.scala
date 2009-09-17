@@ -1,11 +1,11 @@
 package org.webfabric.sitemesh
 
 import javax.servlet.http._
-import stringtemplate._
-import servlet._
+import org.webfabric.stringtemplate._
+import org.webfabric.servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
-import io.{Url, Path}
-import antlr.stringtemplate.{StringTemplate}
+import org.webfabric.io.{Url}
+import org.antlr.stringtemplate.{StringTemplate}
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   override def doPost(request: HttpServletRequest, response: HttpServletResponse) = {

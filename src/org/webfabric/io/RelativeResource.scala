@@ -1,7 +1,5 @@
 package org.webfabric.io
 
-import java.net.URL
-import scala.reflect.Manifest
 import java.io.InputStream;
 
 object RelativeResource {

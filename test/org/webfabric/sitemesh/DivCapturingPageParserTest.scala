@@ -2,7 +2,6 @@ package org.webfabric.sitemesh
 
 import org.junit.Test;
 import org.junit.Assert.assertEquals;
-import com.opensymphony.module.sitemesh.Page;
 
 class DivCapturingPageParserTest {
   @Test

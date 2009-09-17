@@ -1,6 +1,5 @@
 package org.webfabric.http
 
-
 import com.opensymphony.module.sitemesh.util.FastByteArrayOutputStream
 import java.io.{OutputStream, PrintWriter}
 import java.util.Date

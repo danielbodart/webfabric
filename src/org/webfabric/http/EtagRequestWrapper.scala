@@ -1,6 +1,5 @@
 package org.webfabric.http
 
-
 import java.lang.String
 import javax.servlet.http.{HttpServletRequestWrapper, HttpServletRequest}
 

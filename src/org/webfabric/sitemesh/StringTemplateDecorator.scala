@@ -1,10 +1,10 @@
 package org.webfabric.sitemesh
 
-import _root_.org.webfabric.servlet.{QueryString, ContextPath}
+import org.webfabric.servlet.{QueryString, ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
-import stringtemplate.PageMap
+import org.webfabric.stringtemplate.PageMap
 
 class StringTemplateDecorator(template: StringTemplate) {
   def setInclude(include: PageMap): StringTemplateDecorator = {

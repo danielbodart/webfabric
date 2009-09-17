@@ -1,8 +1,7 @@
 package org.webfabric.io
 
-
-import junit.Test
-import junit.Assert.{assertEquals}
+import org.junit.Assert.{assertEquals}
+import org.junit.Test
 
 class UrlTest{
   @Test

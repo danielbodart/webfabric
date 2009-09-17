@@ -1,7 +1,7 @@
 package org.webfabric.stringtemplate
 
-import junit.Test
-import junit.Assert.{assertEquals, fail}
+import org.junit.Test
+import org.junit.Assert.{fail}
 
 class UrlPageLoaderTest {
   @Test

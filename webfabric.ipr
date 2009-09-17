@@ -77,7 +77,7 @@
       </profile>
     </profiles>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="MISSPELLED" />
+      <item index="0" class="java.lang.String" itemvalue="TYPO" />
       <item index="1" class="java.lang.String" itemvalue="INFO" />
       <item index="2" class="java.lang.String" itemvalue="WARNING" />
       <item index="3" class="java.lang.String" itemvalue="ERROR" />
@@ -118,6 +118,9 @@
   </component>
   <component name="ProjectDetails">
     <option name="projectName" value="webfabric" />
+  </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="dan" />
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">

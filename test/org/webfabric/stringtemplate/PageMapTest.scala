@@ -1,11 +1,9 @@
 package org.webfabric.stringtemplate
 
-import antlr.stringtemplate.StringTemplate
-import io.{HierarchicalPath, Url, RelativeResource}
-import java.lang.String
-import java.net.URL
-import junit.Test
-import junit.Assert.{assertEquals}
+import org.antlr.stringtemplate.StringTemplate
+import org.webfabric.io.{Url, RelativeResource}
+import org.junit.Test
+import org.junit.Assert.{assertEquals}
 
 class PageMapTest{
   @Test

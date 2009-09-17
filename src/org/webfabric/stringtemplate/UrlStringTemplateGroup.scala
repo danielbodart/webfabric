@@ -2,8 +2,8 @@ package org.webfabric.stringtemplate
 
 import java.net.URL
 import org.webfabric.io.Url
-import antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
-import java.io.{InputStreamReader, BufferedReader, IOException}
+import org.antlr.stringtemplate.{StringTemplateGroup, StringTemplate}
+import java.io.{BufferedReader, IOException}
 import java.lang.String
 
 class UrlStringTemplateGroup(name: String, baseUrl: URL) extends StringTemplateGroup(name, baseUrl.toString) {
