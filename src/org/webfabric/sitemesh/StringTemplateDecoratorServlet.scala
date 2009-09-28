@@ -36,13 +36,13 @@ class StringTemplateDecoratorServlet extends HttpServlet {
       ServletPath(request),
       PathInfo(request))
 
-    val StringTemplateDecoratorServlet.TemplateName(name) = possiblePaths.find(_ != null).get
-    val groups = new UrlStringTemplateGroup("decorators", getBaseUrl())
+    val StringTemplateDecoratorServlet.TemplateName(path, name) = possiblePaths.find(_ != null).get
+    val groups = new UrlStringTemplateGroup("decorators", getBaseUrl(path))
     return groups.getInstanceOf(name)
   }
 
-  def getBaseUrl(): Url = {
-    getServletContext().getResource("/")
+  def getBaseUrl(path:String): Url = {
+    getServletContext().getResource(path)
   }
 
   def getPage(request: HttpServletRequest): Option[HTMLPage] = {
@@ -59,5 +59,5 @@ class StringTemplateDecoratorServlet extends HttpServlet {
 }
 
 object StringTemplateDecoratorServlet {
-  val TemplateName = """(.+)\.st$""".r
+  val TemplateName = """(?:(.+)/)?(.+)\.st$""".r
 }

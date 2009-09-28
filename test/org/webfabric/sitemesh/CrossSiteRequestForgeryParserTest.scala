@@ -1,7 +1,7 @@
 package org.webfabric.sitemesh
 
 import org.junit.Test
-import org.junit.Assert.assertEquals;
+import org.junit.Assert.assertEquals
 
 class CrossSiteRequestForgeryParserTest {
   @Test
