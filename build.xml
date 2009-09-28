@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="webfabric" default="build">
+
+    <property name="build.number" value="dev"/>
+    <property name="build" value="${basedir}/build"/>
+    <property name="artifacts" value="${build}/artifacts"/>
+    <property name="reports" value="${artifacts}/reports"/>
+    <property name="src" value="${basedir}/src"/>
+    <property name="test" value="${basedir}/test"/>
+    <property name="release.name" value="${ant.project.name}"/>
+    <property name="release.version" value="0.${build.number}"/>
+    <property name="release.jar" value="${release.name}.jar"/>
+    <property name="release.jar.path" value="${artifacts}/${release.jar}"/>
+    <property name="test.jar.path" value="${artifacts}/${release.name}.test.jar"/>
+
+    <import file="${build}/macros.xml"/>
+
+    <path id="all.dependancies">
+        <fileset id="build.dependancies" dir="build/lib" includes="**/*.jar"/>
+        <fileset id="release.dependancies" dir="lib" includes="**/*.jar"/>
+    </path>
+
+    <path id="all.jars">
+        <path refid="all.dependancies"/>
+        <path path="${release.jar.path}"/>
+        <path path="${test.jar.path}"/>
+    </path>
+
+    <target name="clean" description="cleanup all">
+        <delete dir="${artifacts}"/>
+    </target>
+
+    <target name="compile">
+        <compile.and.jar src="${src}" jar="${release.jar.path}" classpathref="all.dependancies" version="${release.version}"/>
+        <compile.and.jar src="${test}" jar="${test.jar.path}" classpathref="all.jars" version="${release.version}"/>
+    </target>
+
+    <target name="test">
+        <test jar="${test.jar.path}" classpathref="all.jars" reports="${reports}"/>
+    </target>
+
+    <target name="package">
+        <mkdir dir="${artifacts}"/>
+
+        <property name="release.src" value="${release.name}.src.zip"/>
+        <zip destfile="${artifacts}/${release.src}" basedir="src"/>
+        
+        <property name="release.war" value="${release.name}.war"/>
+        <war destfile="${artifacts}/${release.war}" webxml="web/WEB-INF/web.xml">
+            <lib file="${release.jar.path}"/>
+            <lib refid="release.dependancies"/>
+            <fileset dir="web" casesensitive="yes">
+                <include name="**/*"/>
+            </fileset>
+        </war>
+
+        <propertyfile file="${artifacts}/release.properties">
+            <entry key="release.version" value="${release.version}"/>
+            <entry key="release.name" value="${release.name}"/>
+            <entry key="release.files" value="${release.jar},${release.src},${release.war}"/>
+            <entry key="${release.jar}.description" value="Core WebFabric Library (${release.version})"/>
+            <entry key="${release.jar}.labels" value="Featured"/>
+            <entry key="${release.src}.description" value="Source zip for IDE intellisense support (${release.version})"/>
+            <entry key="${release.src}.labels" value="Featured"/>
+            <entry key="${release.war}.description" value="WebFabric example War see http://webfabric.org/ (${release.version})"/>
+            <entry key="${release.war}.labels" value="Featured"/>
+        </propertyfile>
+
+        <propertyfile file="${artifacts}/deploy.properties">
+            <entry key="deploy.name" value="${release.name}"/>
+            <entry key="deploy.war" value="${release.war}"/>
+        </propertyfile>
+    </target>
+
+    <target name="build" depends="clean, compile, test, package" description="build all"/>
+
+    <target name="server" depends="build" description="run web server">
+        <java classname="org.webfabric.jetty.RunWebServer" fork="true">
+            <classpath>
+                <path refid="all.jars"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
