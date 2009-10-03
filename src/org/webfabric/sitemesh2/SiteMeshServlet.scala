@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh
+package org.webfabric.sitemesh2
 
 import org.antlr.stringtemplate.StringTemplate
 import org.webfabric.io.{Url}

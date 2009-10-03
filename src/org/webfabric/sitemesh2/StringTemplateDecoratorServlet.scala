@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh
+package org.webfabric.sitemesh2
 
 import javax.servlet.http._
 import org.webfabric.stringtemplate._
