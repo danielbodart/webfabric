@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>sitemesh-stringtemplate</servlet-name>
-        <servlet-class>org.webfabric.sitemesh.StringTemplateDecoratorServlet</servlet-class>
+        <servlet-class>org.webfabric.sitemesh2.StringTemplateDecoratorServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>sitemesh-service</servlet-name>
-        <servlet-class>org.webfabric.sitemesh.SiteMeshServlet</servlet-class>
+        <servlet-class>org.webfabric.sitemesh2.SiteMeshServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

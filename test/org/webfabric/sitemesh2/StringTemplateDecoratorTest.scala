@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh
+package org.webfabric.sitemesh2
 
 import _root_.org.webfabric.servlet.{ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage

@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh
+package org.webfabric.sitemesh2
 
 import com.opensymphony.module.sitemesh.html.rules.PageBuilder
 import com.opensymphony.module.sitemesh.html.{BasicRule, Tag}
