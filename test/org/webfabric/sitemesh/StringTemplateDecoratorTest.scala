@@ -1,11 +1,12 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh
 
-import _root_.org.webfabric.servlet.{ContextPath}
+import org.webfabric.servlet.{ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.webfabric.stringtemplate.{PageMapTest, PageMap}
 import org.antlr.stringtemplate.StringTemplate
+import org.webfabric.sitemesh2.{PagePropertyMap, DivCapturingPageParser}
 
 class StringTemplateDecoratorTest {
   @Test
@@ -95,7 +96,7 @@ class StringTemplateDecoratorTest {
   }
 
   def GetResult(decorator: StringTemplateDecorator, html: HTMLPage): String = {
-    decorator.setPage(html).toString()
+    decorator.setContent(new PagePropertyMap(html)).toString()
   }
 
   def createPage(html: String): HTMLPage = {

@@ -2,13 +2,14 @@ package org.webfabric.stringtemplate
 
 import com.opensymphony.module.sitemesh.{HTMLPage}
 import java.util.{HashMap, Map}
+import org.webfabric.collections.UnsupportedMap
 
-class PageMap(pageLoader:PageLoader) extends Map[String, HTMLPage]{
+class PageMap(pageLoader:PageLoader) extends UnsupportedMap[String, HTMLPage]{
   def this() = this(new UrlPageLoader)
 
   var cache:Map[String, HTMLPage] = new HashMap()
 
-  def containsKey(key: Any) = key match{
+  override def containsKey(key: Any) = key match{
     case path:String => {
       if(!cache.containsKey(path)){
         loadPage(path)
@@ -18,7 +19,7 @@ class PageMap(pageLoader:PageLoader) extends Map[String, HTMLPage]{
     case _ => false
   }
 
-  def get(key: Any) = key match{
+  override def get(key: Any) = key match{
     case path:String => {
       cache.get(path)
     }
@@ -31,24 +32,4 @@ class PageMap(pageLoader:PageLoader) extends Map[String, HTMLPage]{
       case _ =>
     }
   }
-
-  def keySet = throw new UnsupportedOperationException
-
-  def put(key: String, value: HTMLPage) = throw new UnsupportedOperationException
-
-  def isEmpty = throw new UnsupportedOperationException
-
-  def remove(key: Any) = throw new UnsupportedOperationException
-
-  def size = throw new UnsupportedOperationException
-
-  def clear = throw new UnsupportedOperationException
-
-  def values = throw new UnsupportedOperationException
-
-  def entrySet = throw new UnsupportedOperationException
-
-  def containsValue(value: Any) = throw new UnsupportedOperationException
-
-  def putAll(m: Map[_ <: String, _ <: HTMLPage]) = throw new UnsupportedOperationException
 }
