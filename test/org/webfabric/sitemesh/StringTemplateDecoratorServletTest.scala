@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh
 
 import org.junit.Test
 import org.junit.Assert.assertThat

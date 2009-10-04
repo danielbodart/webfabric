@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh3
+package org.webfabric.sitemesh.v3
 
 import org.junit.Test
 import org.junit.Assert.{assertEquals,assertTrue}

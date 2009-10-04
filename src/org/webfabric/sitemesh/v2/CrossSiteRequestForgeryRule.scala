@@ -1,8 +1,9 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh.v2
 
 import com.opensymphony.module.sitemesh.html.rules.PageBuilder
 import com.opensymphony.module.sitemesh.html.{BasicRule, Tag}
 import java.lang.String
+import org.webfabric.sitemesh.TokenProvider
 
 class CrossSiteRequestForgeryRule(pageBuilder: PageBuilder, tokenProvider:TokenProvider) extends BasicRule("form") {
   def process(tag: Tag): Unit = {

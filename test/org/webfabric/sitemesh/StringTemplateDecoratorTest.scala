@@ -6,7 +6,7 @@ import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.webfabric.stringtemplate.{PageMapTest, PageMap}
 import org.antlr.stringtemplate.StringTemplate
-import org.webfabric.sitemesh2.{PagePropertyMap, DivCapturingPageParser}
+import org.webfabric.sitemesh.v2.{PagePropertyMap, DivCapturingPageParser}
 
 class StringTemplateDecoratorTest {
   @Test

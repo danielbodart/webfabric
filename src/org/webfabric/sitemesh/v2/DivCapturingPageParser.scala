@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh.v2
 
 import com.opensymphony.module.sitemesh.html.State
 import com.opensymphony.module.sitemesh.html.rules.PageBuilder

@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh3
+package org.webfabric.sitemesh.v3
 
 import org.sitemesh.content.ContentProperty
 import java.util.{ArrayList, Collection}
