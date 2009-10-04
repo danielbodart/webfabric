@@ -6,7 +6,9 @@ import org.webfabric.servlet._
 import org.webfabric.io.{Url}
 import org.antlr.stringtemplate.{StringTemplate}
 import org.sitemesh.webapp.WebAppContext
-import org.sitemesh.content.{Content, ContentProperty}
+import org.sitemesh.content.{Content}
+import java.util.Map
+import org.webfabric.sitemesh.StringTemplateDecorator
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   override def doPost(request: HttpServletRequest, response: HttpServletResponse) = {
@@ -21,7 +23,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     val templateDecorator = new StringTemplateDecorator(getTemplate(request))
 
     getContent(request) match {
-      case Some(content: Content) => templateDecorator.setPage(content.getExtractedProperties)
+      case Some(content:Map[_,_]) => templateDecorator.setContent(content)
       case None =>
     }
 
@@ -47,9 +49,9 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     getServletContext().getResource(path)
   }
 
-  def getContent(request: HttpServletRequest): Option[Content] = {
+  def getContent(request: HttpServletRequest): Option[Map[_,_]] = {
     request.getAttribute(WebAppContext.CONTENT_KEY) match {
-      case content: Content => Some(content)
+      case content: Content => Some(new ContentPropertyMap(content.getExtractedProperties))
       case _ => None
     }
   }

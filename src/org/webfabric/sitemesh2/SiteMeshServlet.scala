@@ -5,6 +5,7 @@ import org.webfabric.io.{Url}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import org.webfabric.servlet.{QueryString, ContextPath}
 import org.webfabric.stringtemplate.{PageMap, UrlStringTemplateGroup, UrlPageLoader}
+import org.webfabric.sitemesh.StringTemplateDecorator
 
 class SiteMeshServlet extends HttpServlet{
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {
@@ -18,7 +19,7 @@ class SiteMeshServlet extends HttpServlet{
 
         decorator.setBase(new ContextPath(decoratorUrl.parent.toString))
         decorator.setInclude(new PageMap)
-        decorator.setPage(page)
+        decorator.setContent(new PagePropertyMap(page))
         decorator.setQueryString(QueryString(request))
 
         decorator.writeTo(response.getWriter)

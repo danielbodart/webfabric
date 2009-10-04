@@ -6,6 +6,8 @@ import org.webfabric.servlet._
 import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import org.webfabric.io.{Url}
 import org.antlr.stringtemplate.{StringTemplate}
+import java.util.Map
+import org.webfabric.sitemesh.StringTemplateDecorator
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   override def doPost(request: HttpServletRequest, response: HttpServletResponse) = {
@@ -22,8 +24,8 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     templateDecorator.setQueryString(QueryString(request))
     templateDecorator.setInclude(getPageMap(request, response))
 
-    getPage(request) match {
-      case Some(page) => templateDecorator.setPage(page)
+    getContent(request) match {
+      case Some(content) => templateDecorator.setContent(content)
       case None =>
     }
 
@@ -45,9 +47,9 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     getServletContext().getResource(path)
   }
 
-  def getPage(request: HttpServletRequest): Option[HTMLPage] = {
+  def getContent(request: HttpServletRequest): Option[Map[_,_]] = {
     request.getAttribute(RequestConstants.PAGE) match {
-      case page: HTMLPage => Some(page)
+      case page: HTMLPage => Some(new PagePropertyMap(page))
       case _ => None
     }
   }
