@@ -1,10 +1,10 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh3
 
 import org.webfabric.servlet.{QueryString, ContextPath}
-import java.io.{Writer, StringWriter}
-import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
 import org.webfabric.stringtemplate.PageMap
-import com.opensymphony.module.sitemesh.HTMLPage
+import java.io.{StringWriter, Writer}
+import org.antlr.stringtemplate.{NoIndentWriter, StringTemplate}
+import org.sitemesh.content.{ContentProperty}
 
 class StringTemplateDecorator(template: StringTemplate) {
   def setInclude(include: PageMap): StringTemplateDecorator = {
@@ -22,11 +22,11 @@ class StringTemplateDecorator(template: StringTemplate) {
     this
   }
 
-  def setPage(page: HTMLPage ): StringTemplateDecorator = {
-    template.setAttribute("properties", page.getProperties)
-    template.setAttribute("head", page.getHead)
-    template.setAttribute("title", page.getTitle)
-    template.setAttribute("body", page.getBody)
+  def setPage(content: ContentProperty): StringTemplateDecorator = {
+    template.setAttribute("properties", new ContentPropertyMap(content))
+    template.setAttribute("title", content.getChild("title").getValue)
+    template.setAttribute("head", content.getChild("head").getValue)
+    template.setAttribute("body", content.getChild("body").getValue)
     this
   }
 
