@@ -5,7 +5,7 @@ import com.opensymphony.module.sitemesh.{Config, HTMLPage, Factory}
 
 import java.io.IOException
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
-import javax.servlet.{ServletException, RequestDispatcher, ServletConfig}
+import javax.servlet.{ServletException, ServletConfig}
 
 class ServletPageLoader(request: HttpServletRequest, response: HttpServletResponse, servletConfig: ServletConfig) extends PageLoader {
   def load(path: String): Option[HTMLPage] = {

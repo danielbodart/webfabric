@@ -1,0 +1,4 @@
+<sitemesh>
+  <mapping path="/*" decorator="/decorators/default.st"/>
+  <queryString name="decorator" decorator="/decorators/{value}.st"/>
+</sitemesh>

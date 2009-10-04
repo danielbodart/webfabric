@@ -1,1 +1,1 @@
-$query.("id"):{id|$page.properties.({div.$id$})$}$
+$query.("id"):{id|$properties.({div.$id$})$}$

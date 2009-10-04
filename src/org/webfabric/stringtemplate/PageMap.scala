@@ -1,33 +1,33 @@
 package org.webfabric.stringtemplate
 
 import com.opensymphony.module.sitemesh.{HTMLPage}
-import java.util.{Map => JavaMap}
+import java.util.{HashMap, Map}
 
-class PageMap(pageLoader:PageLoader) extends JavaMap[String, HTMLPage]{
+class PageMap(pageLoader:PageLoader) extends Map[String, HTMLPage]{
   def this() = this(new UrlPageLoader)
 
-  var cache:Map[String, HTMLPage] = Map()
+  var cache:Map[String, HTMLPage] = new HashMap()
 
   def containsKey(key: Any) = key match{
     case path:String => {
-      if(!cache.contains(path)){
+      if(!cache.containsKey(path)){
         loadPage(path)
       }
-      cache.contains(path)
+      cache.containsKey(path)
     }
     case _ => false
   }
 
   def get(key: Any) = key match{
     case path:String => {
-      cache(path)
+      cache.get(path)
     }
     case _ => error("No page available for '{0}'".format(key))
   }
 
   def loadPage(path:String){
     pageLoader.load(path) match {
-      case Some(page) => cache += (path -> page)
+      case Some(page) => cache.put(path, page)
       case _ =>
     }
   }
@@ -50,5 +50,5 @@ class PageMap(pageLoader:PageLoader) extends JavaMap[String, HTMLPage]{
 
   def containsValue(value: Any) = throw new UnsupportedOperationException
 
-  def putAll(m: JavaMap[_ <: String, _ <: HTMLPage]) = throw new UnsupportedOperationException
+  def putAll(m: Map[_ <: String, _ <: HTMLPage]) = throw new UnsupportedOperationException
 }

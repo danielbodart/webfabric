@@ -1,11 +1,15 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh3
 
-import _root_.org.webfabric.servlet.{ContextPath}
+import org.webfabric.servlet.{ContextPath}
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.webfabric.stringtemplate.{PageMapTest, PageMap}
 import org.antlr.stringtemplate.StringTemplate
+import org.sitemesh.content.tagrules.TagBasedContentProcessor
+import org.sitemesh.content.tagrules.html.{DivExtractingTagRuleBundle, CoreHtmlTagRuleBundle}
+import java.nio.CharBuffer
+import org.sitemesh.content.{ContentProperty, ContentProcessor}
 
 class StringTemplateDecoratorTest {
   @Test
@@ -41,15 +45,15 @@ class StringTemplateDecoratorTest {
   @Test
   def SupportsPage = {
     // setup
-    val html = createPage("<html><head><title>Some title</title></head></html>")
-    val template = new StringTemplate("$properties.title$")
+    val html = createPage("""<html><head><title>Some title</title></head><body><div id="foo">bar</div></body></html>""")
+    val template = new StringTemplate("$properties.div.foo$")
     val decorator = new StringTemplateDecorator(template)
 
     // execute
     val result = GetResult(decorator, html)
 
     // verify
-    assertEquals("Some title", result)
+    assertEquals("bar", result)
   }
 
   @Test
@@ -94,12 +98,12 @@ class StringTemplateDecoratorTest {
     assertEquals("Some title", result)
   }
 
-  def GetResult(decorator: StringTemplateDecorator, html: HTMLPage): String = {
+  def GetResult(decorator: StringTemplateDecorator, html:ContentProperty): String = {
     decorator.setPage(html).toString()
   }
 
-  def createPage(html: String): HTMLPage = {
-    val pageParser = new DivCapturingPageParser()
-    pageParser.parse(html)
+  def createPage(html: String): ContentProperty = {
+    val contentProcessor:ContentProcessor = new TagBasedContentProcessor(new CoreHtmlTagRuleBundle(), new DivExtractingTagRuleBundle());
+    contentProcessor.build(CharBuffer.wrap(html), null).getExtractedProperties
   }
 }

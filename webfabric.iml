@@ -17,7 +17,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="sitemesh" level="project" />
+    <orderEntry type="library" name="sitemesh2" level="project" />
     <orderEntry type="library" name="stringtemplate" level="project" />
     <orderEntry type="library" name="build.dependancies" level="project" />
     <orderEntry type="module-library">
@@ -40,6 +40,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="codecs" level="project" />
+    <orderEntry type="library" name="sitemesh3" level="project" />
   </component>
 </module>
 

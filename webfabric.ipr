@@ -173,7 +173,7 @@
     <mapping directory="" vcs="" />
   </component>
   <component name="libraryTable">
-    <library name="sitemesh">
+    <library name="sitemesh2">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/sitemesh-2.4.2.jar!/" />
       </CLASSES>
@@ -215,6 +215,15 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="sitemesh3">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/sitemesh-3.0.0-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/sitemesh-3.0.0-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
     </library>
   </component>
 </project>
