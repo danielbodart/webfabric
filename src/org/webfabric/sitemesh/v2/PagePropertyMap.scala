@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh.v2
 
 import org.webfabric.collections.UnsupportedMap
 import com.opensymphony.module.sitemesh.HTMLPage

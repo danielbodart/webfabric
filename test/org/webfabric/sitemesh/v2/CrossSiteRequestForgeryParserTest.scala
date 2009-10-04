@@ -1,7 +1,8 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh.v2
 
 import org.junit.Test
 import org.junit.Assert.assertEquals
+import org.webfabric.sitemesh.TokenProvider
 
 class CrossSiteRequestForgeryParserTest {
   @Test

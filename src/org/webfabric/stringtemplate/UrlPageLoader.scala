@@ -3,7 +3,7 @@ package org.webfabric.stringtemplate
 import com.opensymphony.module.sitemesh.HTMLPage
 import org.webfabric.io.{Converter, Url}
 import java.io.IOException
-import org.webfabric.sitemesh2.DivCapturingPageParser
+import org.webfabric.sitemesh.v2.DivCapturingPageParser
 
 class UrlPageLoader extends PageLoader{
   def load(path:String): Option[HTMLPage] = {

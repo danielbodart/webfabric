@@ -1,11 +1,11 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh
 
 import org.antlr.stringtemplate.StringTemplate
 import org.webfabric.io.{Url}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import org.webfabric.servlet.{QueryString, ContextPath}
 import org.webfabric.stringtemplate.{PageMap, UrlStringTemplateGroup, UrlPageLoader}
-import org.webfabric.sitemesh.StringTemplateDecorator
+import v2.PagePropertyMap
 
 class SiteMeshServlet extends HttpServlet{
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {

@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh3
+package org.webfabric.sitemesh.v3
 
 import org.sitemesh.webapp.WebAppContext
 import org.sitemesh.DecoratorSelector

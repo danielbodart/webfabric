@@ -1,15 +1,13 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh
 
 import javax.servlet.http._
 import org.webfabric.stringtemplate._
 import org.webfabric.servlet._
-import com.opensymphony.module.sitemesh.{HTMLPage, RequestConstants}
 import org.webfabric.io.{Url}
 import org.antlr.stringtemplate.{StringTemplate}
-import java.util.Map
-import org.webfabric.sitemesh.StringTemplateDecorator
 
 class StringTemplateDecoratorServlet extends HttpServlet {
+  val contentProvider = new AutoDetectingContentProvider()
   override def doPost(request: HttpServletRequest, response: HttpServletResponse) = {
     handle(request, response)
   }
@@ -24,7 +22,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
     templateDecorator.setQueryString(QueryString(request))
     templateDecorator.setInclude(getPageMap(request, response))
 
-    getContent(request) match {
+    contentProvider.getContent(request) match {
       case Some(content) => templateDecorator.setContent(content)
       case None =>
     }
@@ -45,13 +43,6 @@ class StringTemplateDecoratorServlet extends HttpServlet {
 
   def getBaseUrl(path:String): Url = {
     getServletContext().getResource(path)
-  }
-
-  def getContent(request: HttpServletRequest): Option[Map[_,_]] = {
-    request.getAttribute(RequestConstants.PAGE) match {
-      case page: HTMLPage => Some(new PagePropertyMap(page))
-      case _ => None
-    }
   }
 
   def getPageMap(request: HttpServletRequest, response: HttpServletResponse):PageMap = {

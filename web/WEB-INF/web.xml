@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>sitemesh-service</servlet-name>
-        <servlet-class>org.webfabric.sitemesh2.SiteMeshServlet</servlet-class>
+        <servlet-class>org.webfabric.sitemesh.SiteMeshServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -48,37 +48,27 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <servlet>
+        <servlet-name>sitemesh-stringtemplate</servlet-name>
+        <servlet-class>org.webfabric.sitemesh.StringTemplateDecoratorServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>sitemesh-stringtemplate</servlet-name>
+        <url-pattern>*.st</url-pattern>
+    </servlet-mapping>
+
     <!--
-    <servlet>
-        <servlet-name>sitemesh3-stringtemplate</servlet-name>
-        <servlet-class>org.webfabric.sitemesh3.StringTemplateDecoratorServlet</servlet-class>
-    </servlet>
+        <filter>
+          <filter-name>sitemesh3</filter-name>
+          <filter-class>org.webfabric.sitemesh.v3.ConfigurableSiteMeshFilter</filter-class>
+        </filter>
 
-    <servlet-mapping>
-        <servlet-name>sitemesh3-stringtemplate</servlet-name>
-        <url-pattern>*.st</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-      <filter-name>sitemesh3</filter-name>
-      <filter-class>org.webfabric.sitemesh3.ConfigurableSiteMeshFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-      <filter-name>sitemesh3</filter-name>
-      <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
--->
-    <servlet>
-        <servlet-name>sitemesh2-stringtemplate</servlet-name>
-        <servlet-class>org.webfabric.sitemesh2.StringTemplateDecoratorServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>sitemesh2-stringtemplate</servlet-name>
-        <url-pattern>*.st</url-pattern>
-    </servlet-mapping>
+        <filter-mapping>
+          <filter-name>sitemesh3</filter-name>
+          <url-pattern>/*</url-pattern>
+        </filter-mapping>
+    -->
 
     <filter>
         <filter-name>sitemesh2</filter-name>

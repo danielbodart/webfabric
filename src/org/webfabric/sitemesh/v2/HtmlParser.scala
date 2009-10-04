@@ -1,4 +1,4 @@
-package org.webfabric.sitemesh2
+package org.webfabric.sitemesh.v2
 
 import com.opensymphony.module.sitemesh.HTMLPage
 import com.opensymphony.module.sitemesh.parser.HTMLPageParser
