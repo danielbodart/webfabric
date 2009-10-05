@@ -8,8 +8,7 @@ import org.webfabric.sitemesh.v2.DivCapturingPageParser
 class UrlPageLoader extends PageLoader{
   def load(path:String): Option[HTMLPage] = {
     try{
-      val url = new Url(path);
-      val html = Converter.asString(url.inputStream)
+      val html = Converter.asString(new Url(path).inputStream)
       val parser = new DivCapturingPageParser()
       Some(parser.parse(html))
     } catch {
