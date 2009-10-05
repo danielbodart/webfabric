@@ -9,16 +9,15 @@ import javax.servlet.{ServletException, ServletConfig}
 
 class ServletPageLoader(request: HttpServletRequest, response: HttpServletResponse, servletConfig: ServletConfig) extends PageLoader {
   def load(path: String): Option[HTMLPage] = {
-    val requestWrapper = new PageRequestWrapper(request)
-    val responseWrapper = new PageResponseWrapper(response, factory)
-    responseWrapper.setContentType("text/html")
-    val dispatcher = request.getRequestDispatcher(path)
     try {
-      dispatcher.include(requestWrapper, responseWrapper)
+      val dispatcher = request.getRequestDispatcher(path)
+      val responseWrapper = new PageResponseWrapper(response, factory)
+      responseWrapper.setContentType("text/html")
+      dispatcher.include(new PageRequestWrapper(request), responseWrapper)
       Some(responseWrapper.getPage.asInstanceOf[HTMLPage])
     } catch {
       case ex: ServletException => None
-      case ex: IOException => None;
+      case ex: IOException => None
     }
   }
 
