@@ -2,26 +2,39 @@ package org.webfabric.collections
 
 trait Iterable[T] extends java.lang.Iterable[T] {
   def foreach(handler: (T) => Unit) = Iterable.foreach(this, handler)
-  def tryPick[S](handler: (T) => Option[S]): Option[S] = Iterable.tryPick(this, handler)
+
+  def tryPick[S](converter: (T) => Option[S]): Option[S] = Iterable.tryPick(this, converter)
+
+  def map[S](converter: (T) => S): Iterable[S] = Iterable.map(this, converter)
+
+  def flatMap[S](converter: (T) => java.lang.Iterable[S]): Iterable[S] = Iterable.flatMap(this, converter)
+
+  def filter(predicate: (T) => Boolean): Iterable[T] = Iterable.filter(this, predicate)
 
 }
 
 object Iterable {
-  def foreach[T](iterable: java.lang.Iterable[T], handler: (T) => Unit) {
-    val iterator = iterable.iterator
-    while (iterator.hasNext) {
-      handler(iterator.next)
+  def foreach[T](iterable: java.lang.Iterable[T], handler: (T) => Unit) =
+    Iterator.foreach(iterable.iterator, handler)
+
+  def tryPick[T, S](iterable: java.lang.Iterable[T], converter: (T) => Option[S]): Option[S] =
+    Iterator.tryPick(iterable.iterator, converter)
+
+  def map[T, S](iterable: java.lang.Iterable[T], converter: (T) => S): Iterable[S] = {
+    new Iterable[S] {
+      def iterator = new MapIterator[T,S](iterable.iterator, converter)
     }
   }
 
-  def tryPick[T,S](iterable: java.lang.Iterable[T], handler: (T) => Option[S]): Option[S] = {
-    val iterator = iterable.iterator
-    while (iterator.hasNext) {
-      handler(iterator.next) match {
-        case some:Some[_] => return some
-        case _ =>
-      }
+  def flatMap[T, S](iterable: java.lang.Iterable[T], converter: (T) => java.lang.Iterable[S]): Iterable[S] = {
+    new Iterable[S] {
+      def iterator = new FlatMapIterator[T,S](iterable.iterator, converter)
     }
-    None
+  }
+
+  def filter[T](iterable: java.lang.Iterable[T], predicate: (T) => Boolean): Iterable[T] = {
+    new Iterable[T] {
+      def iterator = new FilterIterator[T](iterable.iterator, predicate)
+    }
   }
 }
