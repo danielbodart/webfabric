@@ -1,13 +1,13 @@
 package org.webfabric.stringtemplate
 
-import com.opensymphony.module.sitemesh.{HTMLPage}
 import java.util.{HashMap, Map}
 import org.webfabric.collections.UnsupportedMap
+import org.webfabric.sitemesh.PropertyMap
 
-class PageMap(pageLoader:PageLoader) extends UnsupportedMap[String, HTMLPage]{
+class PageMap(pageLoader:PageLoader) extends UnsupportedMap[String, PropertyMap]{
   def this() = this(new UrlPageLoader)
 
-  var cache:Map[String, HTMLPage] = new HashMap()
+  var cache:Map[String, PropertyMap] = new HashMap()
 
   override def containsKey(key: Any) = key match{
     case path:String => {

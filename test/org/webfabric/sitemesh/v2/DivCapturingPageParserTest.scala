@@ -1,6 +1,7 @@
 package org.webfabric.sitemesh.v2
 
-import org.junit.Test;
+import org.junit.Test
+import org.webfabric.sitemesh.PropertyMap;
 import org.junit.Assert.assertEquals;
 
 class DivCapturingPageParserTest {
@@ -14,12 +15,12 @@ class DivCapturingPageParserTest {
     var pageParser = new DivCapturingPageParser();
 
     // execute
-    var page = pageParser.parse(html);
+    var page:PropertyMap = pageParser.parse(html);
 
     // verify
-    assertEquals(body, page.getBody());
-    assertEquals(outer, page.getProperty("div.outer"));
-    assertEquals(inner, page.getProperty("div.inner"));
+    assertEquals(body, page.get("body"));
+    assertEquals(outer, page.get("div.outer"));
+    assertEquals(inner, page.get("div.inner"));
   }
 
   @Test
@@ -32,7 +33,7 @@ class DivCapturingPageParserTest {
     var page = pageParser.parse(html);
 
     // verify
-    assertEquals("<div id='target'>content</div>", page.getBody());
+    assertEquals("<div id='target'>content</div>", page.get("body"));
   }
 
   @Test
@@ -45,6 +46,6 @@ class DivCapturingPageParserTest {
     var page = pageParser.parse(html);
 
     // verify
-    assertEquals("content", page.getProperty("div.target"));
+    assertEquals("content", page.get("div.target"));
   }
 }

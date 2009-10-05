@@ -1,7 +1,7 @@
 package org.webfabric.stringtemplate
 
-import com.opensymphony.module.sitemesh.HTMLPage
+import org.webfabric.sitemesh.PropertyMap
 
 trait PageLoader {
-  def load(path:String): Option[HTMLPage]
+  def load(path:String): Option[PropertyMap]
 }

@@ -19,7 +19,7 @@ class SiteMeshServlet extends HttpServlet{
 
         decorator.setBase(new ContextPath(decoratorUrl.parent.toString))
         decorator.setInclude(new PageMap)
-        decorator.setContent(new PagePropertyMap(page))
+        decorator.setContent(page)
         decorator.setQueryString(QueryString(request))
 
         decorator.writeTo(response.getWriter)
