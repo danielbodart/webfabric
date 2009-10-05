@@ -1,4 +1,4 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh.v2
 
 import com.opensymphony.module.sitemesh.filter.{PageResponseWrapper, PageRequestWrapper}
 import com.opensymphony.module.sitemesh.{Config, HTMLPage, Factory}
@@ -6,8 +6,7 @@ import com.opensymphony.module.sitemesh.{Config, HTMLPage, Factory}
 import java.io.IOException
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest}
 import javax.servlet.{ServletException, ServletConfig}
-import org.webfabric.sitemesh.PropertyMap
-import org.webfabric.sitemesh.v2.PagePropertyMap
+import org.webfabric.sitemesh.{PageLoader, PropertyMap}
 
 class ServletPageLoader(request: HttpServletRequest, response: HttpServletResponse, servletConfig: ServletConfig) extends PageLoader {
   def load(path: String): Option[PropertyMap] = {

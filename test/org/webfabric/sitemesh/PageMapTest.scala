@@ -1,4 +1,4 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh
 
 import org.antlr.stringtemplate.StringTemplate
 import org.webfabric.io.{Url, RelativeResource}

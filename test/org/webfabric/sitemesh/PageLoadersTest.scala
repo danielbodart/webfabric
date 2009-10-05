@@ -1,4 +1,4 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh
 
 import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage
 import org.junit.{Test}

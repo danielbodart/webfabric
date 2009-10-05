@@ -1,11 +1,10 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh
 
 import java.util.{HashMap, Map}
 import org.webfabric.collections.UnsupportedMap
-import org.webfabric.sitemesh.PropertyMap
 
 class PageMap(pageLoader:PageLoader) extends UnsupportedMap[String, PropertyMap]{
-  def this() = this(new UrlPageLoader)
+  def this() = this(new v2.UrlPageLoader)
 
   var cache:Map[String, PropertyMap] = new HashMap()
 

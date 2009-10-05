@@ -1,4 +1,4 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh.v2
 
 import org.junit.Test
 import org.junit.Assert.{fail}
