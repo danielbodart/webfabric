@@ -3,8 +3,6 @@ package org.webfabric.sitemesh
 import org.webfabric.servlet.{QueryString, ContextPath}
 import java.io.{Writer, StringWriter}
 import org.antlr.stringtemplate.{StringTemplate, NoIndentWriter}
-import org.webfabric.stringtemplate.PageMap
-import java.util.Map
 
 class StringTemplateDecorator(template: StringTemplate) {
   def setInclude(include: PageMap): StringTemplateDecorator = {

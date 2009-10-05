@@ -46,7 +46,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
   }
 
   def getPageMap(request: HttpServletRequest, response: HttpServletResponse):PageMap = {
-    val loaders = new PageLoaders(new UrlPageLoader, new ServletPageLoader(request, response, getServletConfig))
+    val loaders = new PageLoaders(new v2.UrlPageLoader, new v2.ServletPageLoader(request, response, getServletConfig))
     new PageMap(loaders)
   }
 }

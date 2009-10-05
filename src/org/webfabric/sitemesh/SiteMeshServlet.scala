@@ -4,14 +4,13 @@ import org.antlr.stringtemplate.StringTemplate
 import org.webfabric.io.{Url}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import org.webfabric.servlet.{QueryString, ContextPath}
-import org.webfabric.stringtemplate.{PageMap, UrlStringTemplateGroup, UrlPageLoader}
-import v2.PagePropertyMap
+import org.webfabric.stringtemplate.UrlStringTemplateGroup
 
 class SiteMeshServlet extends HttpServlet{
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {
     val content = request.getParameter("content")
 
-    new UrlPageLoader().load(content) match {
+    new v2.UrlPageLoader().load(content) match {
       case Some(page) => {
         val decoratorUrl = new Url(request.getParameter("decorator"))
         val template: StringTemplate = getTemplate(decoratorUrl)

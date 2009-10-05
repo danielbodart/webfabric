@@ -1,9 +1,8 @@
-package org.webfabric.stringtemplate
+package org.webfabric.sitemesh.v2
 
 import org.webfabric.io.{Converter, Url}
 import java.io.IOException
-import org.webfabric.sitemesh.v2.DivCapturingPageParser
-import org.webfabric.sitemesh.PropertyMap
+import org.webfabric.sitemesh.{PropertyMap, PageLoader}
 
 class UrlPageLoader extends PageLoader{
   def load(path:String): Option[PropertyMap] = {
