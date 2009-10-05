@@ -19,7 +19,7 @@ class CrossSiteRequestForgeryParserTest {
     val page = pageParser.parse(html);
 
     // verify
-    assertEquals(token, page.getProperty("csrf.token:/blah"))
+    assertEquals(token, page.get("csrf.token:/blah"))
   }
 
   @Test
@@ -37,6 +37,6 @@ class CrossSiteRequestForgeryParserTest {
 
     // verify
     val hiddenInput = "<input type=\"hidden\" name=\"csrf.token\" value=\"" + token + "\"/>"
-    assertEquals("<form method='post'>" + hiddenInput + "content</form>", page.getBody);
+    assertEquals("<form method='post'>" + hiddenInput + "content</form>", page.get("body"));
   }
 }

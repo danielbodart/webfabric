@@ -22,7 +22,7 @@ class StringTemplateDecorator(template: StringTemplate) {
     this
   }
 
-  def setContent(properties: Map[_, _] ): StringTemplateDecorator = {
+  def setContent(properties: PropertyMap ): StringTemplateDecorator = {
     template.setAttribute("properties", properties)
     template.setAttribute("head", properties.get("head"))
     template.setAttribute("title", properties.get("title"))

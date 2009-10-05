@@ -95,11 +95,11 @@ class StringTemplateDecoratorTest {
     assertEquals("Some title", result)
   }
 
-  def GetResult(decorator: StringTemplateDecorator, html: HTMLPage): String = {
-    decorator.setContent(new PagePropertyMap(html)).toString()
+  def GetResult(decorator: StringTemplateDecorator, html: PropertyMap): String = {
+    decorator.setContent(html).toString()
   }
 
-  def createPage(html: String): HTMLPage = {
+  def createPage(html: String): PropertyMap = {
     val pageParser = new DivCapturingPageParser()
     pageParser.parse(html)
   }
