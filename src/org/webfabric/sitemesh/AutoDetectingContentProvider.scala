@@ -12,7 +12,7 @@ class AutoDetectingContentProvider extends ContentProvider{
     (request: HttpServletRequest) => { new PagePropertiesProvider().getContent(request) }
     )
 
-  def getContent(request: HttpServletRequest): Option[Map[_,_]] = {
+  def getContent(request: HttpServletRequest): Option[PropertyMap] = {
     providers.tryPick( provider => {
         try {
           provider(request)

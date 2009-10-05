@@ -1,9 +1,9 @@
 package org.webfabric.sitemesh.v2
 
-import org.webfabric.collections.UnsupportedMap
 import com.opensymphony.module.sitemesh.HTMLPage
+import org.webfabric.sitemesh.PropertyMap
 
-class PagePropertyMap(page: HTMLPage) extends UnsupportedMap[String, Any] {
+class PagePropertyMap(page: HTMLPage) extends PropertyMap {
   override def containsKey(key: Any):Boolean = key match {
     case "head" => true
     case "body" => true
