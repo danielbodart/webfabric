@@ -1,15 +1,40 @@
 package org.webfabric.collections
 
 import org.junit.Test
-import org.junit.Assert.{assertThat,fail}
+import org.junit.Assert.{assertThat, fail}
 import org.hamcrest.CoreMatchers._
-
 
 class IterableTest {
   @Test
+  def supportsFoldLeft(): Unit = {
+    // setup
+    val numbers = List(1,2)
+
+    // execute
+    val result:Int = numbers.foldLeft[Int](3, _+_)
+
+    // verify
+    assertThat(result, is(equalTo(6)))
+  }
+
+  @Test
+  def comprehensionMethodsCanBeUsedAsAStream(): Unit = {
+    // setup
+    val numbers = List(() => 1, () => 2, () => throw new AssertionError("Should never get here"))
+
+    // execute
+    val results = numbers.map(_()).flatMap((i: Int) => List(i, i + 2)).filter(_ % 2 == 0)
+
+    // verify
+    val iterator = results.iterator
+    assertThat(iterator.next, is(equalTo(2)))
+    assertThat(iterator.next, is(equalTo(4)))
+  }
+
+  @Test
   def supportsFlatMap(): Unit = {
     // setup & execute
-    val results = List("the", "quick").flatMap( item => List(1,2) )
+    val results = List("the", "quick").flatMap(item => List(1, 2))
 
     // verify
     val iterator = results.iterator
@@ -22,16 +47,16 @@ class IterableTest {
   @Test
   def supportsForCondition(): Unit = {
     // setup & execute
-    val results = for(item <- List(1,2,3,4) if item % 2 == 0) yield item
+    val results = for (item <- List(1, 2, 3, 4) if item % 2 == 0) yield item
 
     // verify
-    for(result <- results) if (result == 1 || result == 3) fail("filter did not work")
+    for (result <- results) if (result == 1 || result == 3) fail("filter did not work")
   }
 
   @Test
   def supportsFilter(): Unit = {
     // setup & execute
-    val results = List(1,2,3,4).filter(_ % 2 == 0)
+    val results = List(1, 2, 3, 4).filter(_ % 2 == 0)
 
     // verify
     val iterator = results.iterator
@@ -42,10 +67,10 @@ class IterableTest {
   @Test
   def supportsYield(): Unit = {
     // setup & execute
-    val results = for( item <- List(3)) yield item * 4
+    val results = for (item <- List(3)) yield item * 4
 
     // verify
-    for(result <- results) assertThat(result, is(equalTo(12)))
+    for (result <- results) assertThat(result, is(equalTo(12)))
   }
 
   @Test
@@ -54,7 +79,7 @@ class IterableTest {
     val results = List(3).map(_ * 4)
 
     // verify
-    for(result <- results) assertThat(result, is(equalTo(12)))
+    for (result <- results) assertThat(result, is(equalTo(12)))
   }
 
   @Test

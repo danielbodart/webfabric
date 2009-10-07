@@ -1,6 +1,14 @@
 package org.webfabric.collections
 
-object Iterator{
+object Iterator {
+  def foldLeft[T, S](iterator: java.util.Iterator[T], initialValue: S, handler: (S, T) => S): S = {
+    var accumilator = initialValue
+    while (iterator.hasNext) {
+      accumilator = handler(accumilator, iterator.next)
+    }
+    accumilator
+  }
+
   def foreach[T](iterator: java.util.Iterator[T], handler: (T) => Unit) {
     while (iterator.hasNext) {
       handler(iterator.next)
