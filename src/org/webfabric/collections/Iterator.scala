@@ -1,6 +1,14 @@
 package org.webfabric.collections
 
 object Iterator {
+  def find[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Option[T]= {
+    while (iterator.hasNext) {
+      val item = iterator.next
+      if(predicate(item)) return Some(item)
+    }
+    None
+  }
+
   def foldLeft[T, S](iterator: java.util.Iterator[T], initialValue: S, handler: (S, T) => S): S = {
     var accumilator = initialValue
     while (iterator.hasNext) {

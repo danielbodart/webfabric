@@ -1,6 +1,8 @@
 package org.webfabric.collections
 
-class List[T] extends java.util.ArrayList[T] with Iterable[T]
+class List[T](collection: java.util.Collection[T]) extends java.util.ArrayList[T](collection) with Iterable[T]{
+  def this() = this(new java.util.ArrayList[T])
+}
 
 object List {
   def apply[T](values: T*): List[T] = {

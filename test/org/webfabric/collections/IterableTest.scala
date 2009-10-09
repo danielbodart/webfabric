@@ -6,6 +6,18 @@ import org.hamcrest.CoreMatchers._
 
 class IterableTest {
   @Test
+  def supportsFind(): Unit = {
+    // setup
+    val numbers = List(1,2,4)
+
+    // execute
+    val result:Option[Int] = numbers.find(_ %2 == 0)
+
+    // verify
+    assertThat(result.get, is(equalTo(2)))
+  }
+
+  @Test
   def supportsFoldLeft(): Unit = {
     // setup
     val numbers = List(1,2)
