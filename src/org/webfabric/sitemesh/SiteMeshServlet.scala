@@ -5,12 +5,14 @@ import org.webfabric.io.{Url}
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import org.webfabric.servlet.{QueryString, ContextPath}
 import org.webfabric.stringtemplate.UrlStringTemplateGroup
+import com.opensymphony.module.sitemesh.multipass.DivExtractingPageParser
+import v2.DivCapturingPageParser
 
 class SiteMeshServlet extends HttpServlet{
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {
     val content = request.getParameter("content")
 
-    new v2.UrlPageLoader().load(content) match {
+    new UrlPageLoader(new DivCapturingPageParser).load(content) match {
       case Some(page) => {
         val decoratorUrl = new Url(request.getParameter("decorator"))
         val template: StringTemplate = getTemplate(decoratorUrl)
