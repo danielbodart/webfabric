@@ -2,7 +2,6 @@ package org.webfabric.sitemesh
 
 import javax.servlet.http.HttpServletRequest
 import org.webfabric.collections.List
-import java.util.Map
 import v2.PagePropertiesProvider
 import v3.ContentPropertiesProvider
 
