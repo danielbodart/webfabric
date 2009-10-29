@@ -4,7 +4,7 @@ import java.util.{HashMap, Map}
 import org.webfabric.collections.UnsupportedMap
 
 class PageMap(pageLoader:PageLoader) extends UnsupportedMap[String, PropertyMap]{
-  def this() = this(new UrlPageLoader(new v2.DivCapturingPageParser))
+  def this() = this(new UrlPageLoader)
 
   var cache:Map[String, PropertyMap] = new HashMap()
 

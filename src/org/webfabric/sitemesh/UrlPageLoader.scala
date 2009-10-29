@@ -7,6 +7,8 @@ import java.io.IOException
 import java.lang.String
 
 class UrlPageLoader(parser: PropertyMapParser) extends PageLoader {
+  def this() = this(new AutoDetectingPropertyMapParser)
+
   def load(path: String): Option[PropertyMap] = {
     try {
       val html: String = Converter.asString(new Url(path).inputStream)

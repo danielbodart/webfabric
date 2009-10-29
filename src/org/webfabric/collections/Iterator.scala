@@ -32,4 +32,11 @@ object Iterator {
     }
     None
   }
+
+  def pick[T, S](iterator: java.util.Iterator[T], handler: (T) => Option[S]): S = {
+    tryPick(iterator, handler) match {
+      case Some(result) => result
+      case _ => throw new NoSuchElementException
+    }
+  }
 }
