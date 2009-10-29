@@ -9,6 +9,8 @@ trait Iterable[T] extends java.lang.Iterable[T] {
 
   def tryPick[S](converter: (T) => Option[S]): Option[S] = Iterable.tryPick(this, converter)
 
+  def pick[S](converter: (T) => Option[S]): S = Iterable.pick(this, converter)
+
   def map[S](converter: (T) => S): Iterable[S] = Iterable.map(this, converter)
 
   def flatMap[S](converter: (T) => java.lang.Iterable[S]): Iterable[S] = Iterable.flatMap(this, converter)
@@ -28,6 +30,9 @@ object Iterable {
 
   def tryPick[T, S](iterable: java.lang.Iterable[T], converter: (T) => Option[S]): Option[S] =
     Iterator.tryPick(iterable.iterator, converter)
+
+  def pick[T, S](iterable: java.lang.Iterable[T], converter: (T) => Option[S]): S =
+    Iterator.pick(iterable.iterator, converter)
 
   def map[T, S](iterable: java.lang.Iterable[T], converter: (T) => S): Iterable[S] = {
     new Iterable[S] {

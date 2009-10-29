@@ -5,7 +5,6 @@ import org.webfabric.stringtemplate._
 import org.webfabric.servlet._
 import org.webfabric.io.{Url}
 import org.antlr.stringtemplate.{StringTemplate}
-import v2.DivCapturingPageParser
 
 class StringTemplateDecoratorServlet extends HttpServlet {
   val contentProvider = new AutoDetectingContentProvider()
@@ -47,7 +46,7 @@ class StringTemplateDecoratorServlet extends HttpServlet {
   }
 
   def getPageMap(request: HttpServletRequest, response: HttpServletResponse):PageMap = {
-    val loaders = new PageLoaders(new UrlPageLoader(new DivCapturingPageParser), new v2.ServletPageLoader(request, response, getServletConfig))
+    val loaders = new PageLoaders(new UrlPageLoader, new v2.ServletPageLoader(request, response, getServletConfig))
     new PageMap(loaders)
   }
 }
