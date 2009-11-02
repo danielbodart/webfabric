@@ -1,10 +1,14 @@
 package org.webfabric.collections
 
 object Iterator {
-  def find[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Option[T]= {
+  def head[T](iterator: java.util.Iterator[T]): T = {
+    if (iterator.hasNext) iterator.next else throw new NoSuchElementException
+  }
+
+  def find[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Option[T] = {
     while (iterator.hasNext) {
       val item = iterator.next
-      if(predicate(item)) return Some(item)
+      if (predicate(item)) return Some(item)
     }
     None
   }

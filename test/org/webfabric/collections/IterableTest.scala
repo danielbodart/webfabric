@@ -6,6 +6,15 @@ import org.hamcrest.CoreMatchers._
 
 class IterableTest {
   @Test
+  def supportsHead(): Unit = {
+    // setup
+    val numbers = List(1,2,4)
+
+    // execute & verify
+    assertThat(numbers.head, is(equalTo(1)))
+  }
+
+  @Test
   def supportsFind(): Unit = {
     // setup
     val numbers = List(1,2,4)
