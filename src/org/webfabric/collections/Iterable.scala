@@ -20,6 +20,7 @@ trait Iterable[T] extends java.lang.Iterable[T] {
   def filter(predicate: (T) => Boolean): Iterable[T] = Iterable.filter(this, predicate)
 }
 
+
 object Iterable {
   def head[T](iterable: java.lang.Iterable[T]): T =
     Iterator.head(iterable.iterator)
