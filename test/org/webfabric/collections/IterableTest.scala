@@ -1,10 +1,11 @@
 package org.webfabric.collections
 
 import org.junit.Test
-import org.junit.Assert.{assertThat, fail}
+import org.junit.Assert._
 import org.hamcrest.CoreMatchers._
 
 class IterableTest {
+
   @Test
   def supportsHead(): Unit = {
     // setup
@@ -84,6 +85,22 @@ class IterableTest {
     assertThat(iterator.next, is(equalTo(2)))
     assertThat(iterator.next, is(equalTo(4)))
   }
+  
+  @Test
+  def supportsFilterButDoesNotConsumeItemWhenCallingHasNext(): Unit = {
+    // setup & execute
+    val results = List(1, 2, 3, 4).filter(_ % 2 == 0)
+
+    // verify
+    val iterator = results.iterator
+    assertThat(iterator.hasNext, is(true))
+    assertThat(iterator.hasNext, is(true))
+    assertThat(iterator.next, is(equalTo(2)))
+    assertThat(iterator.hasNext, is(true))
+    assertThat(iterator.hasNext, is(true))
+    assertThat(iterator.next, is(equalTo(4)))
+    assertThat(iterator.hasNext, is(false))
+   }
 
   @Test
   def supportsYield(): Unit = {
