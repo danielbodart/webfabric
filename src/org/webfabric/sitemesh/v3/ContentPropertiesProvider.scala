@@ -8,7 +8,7 @@ import org.webfabric.sitemesh.{PropertyMap, ContentProvider}
 class ContentPropertiesProvider extends ContentProvider{
   def getContent(request: HttpServletRequest): Option[PropertyMap] = {
     request.getAttribute(WebAppContext.CONTENT_KEY) match {
-      case content: Content => Some(new ContentPropertyMap(content.getExtractedProperties))
+      case content: Content => Some(new PropertyMap(new ContentPropertyAdapter(content.getExtractedProperties)))
       case _ => None
     }
   }

@@ -1,14 +1,13 @@
 package org.webfabric.http
 
-import com.opensymphony.module.sitemesh.util.FastByteArrayOutputStream
-import java.io.{OutputStream, PrintWriter}
 import java.util.Date
 import javax.servlet.http.{HttpServletResponse, HttpServletResponseWrapper}
 import javax.servlet.ServletOutputStream
+import java.io.{ByteArrayOutputStream, OutputStream, PrintWriter}
 
 class EtagResponseWrapper(servletResponse: HttpServletResponse) extends HttpServletResponseWrapper(servletResponse){
   lazy val md5 = new MD5
-  lazy val buffer = new FastByteArrayOutputStream
+  lazy val buffer = new ByteArrayOutputStream
   lazy val wrapped: OutputStream = md5.wrap(buffer)
 
   lazy override val getOutputStream = new ServletOutputStream {

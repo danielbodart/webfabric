@@ -58,7 +58,7 @@
         <url-pattern>*.st</url-pattern>
     </servlet-mapping>
 
-    <!--
+
         <filter>
           <filter-name>sitemesh3</filter-name>
           <filter-class>org.webfabric.sitemesh.v3.ConfigurableSiteMeshFilter</filter-class>
@@ -68,9 +68,8 @@
           <filter-name>sitemesh3</filter-name>
           <url-pattern>/*</url-pattern>
         </filter-mapping>
-    -->
 
-    <filter>
+    <!--filter>
         <filter-name>sitemesh2</filter-name>
         <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
     </filter>
@@ -78,6 +77,6 @@
     <filter-mapping>
         <filter-name>sitemesh2</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping-->
 
 </web-app>

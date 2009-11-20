@@ -1,9 +1,7 @@
 package org.webfabric.sitemesh
 
-import com.opensymphony.module.sitemesh.parser.TokenizedHTMLPage
 import org.junit.{Test}
 import org.junit.Assert.{assertEquals, fail}
-import org.webfabric.sitemesh.v2.PagePropertyMap
 
 class PageLoadersTest {
   @Test
@@ -21,5 +19,5 @@ class PageLoadersTest {
     }
   }
 
-  val page = new PagePropertyMap(new TokenizedHTMLPage(new Array[Char](0), null, null))
+  val page = new PropertyMap(null)
 }

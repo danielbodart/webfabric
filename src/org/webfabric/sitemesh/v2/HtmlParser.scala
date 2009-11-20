@@ -6,6 +6,6 @@ import org.webfabric.sitemesh.{PropertyMapParser, PropertyMap}
 
 trait HtmlParser extends HTMLPageParser with PropertyMapParser {
   def parse(html:String): PropertyMap = {
-    new PagePropertyMap(parse(html.toCharArray).asInstanceOf[HTMLPage])
+    new PropertyMap(PageAdapter.parse(parse(html.toCharArray).asInstanceOf[HTMLPage]))
   }
 }

@@ -7,7 +7,7 @@ import org.webfabric.sitemesh.{PropertyMap, ContentProvider}
 class PagePropertiesProvider extends ContentProvider{
   def getContent(request: HttpServletRequest): Option[PropertyMap] = {
     request.getAttribute(RequestConstants.PAGE) match {
-      case page: HTMLPage => Some(new PagePropertyMap(page))
+      case page: HTMLPage => Some(new PropertyMap(PageAdapter.parse(page)))
       case _ => None
     }
   }

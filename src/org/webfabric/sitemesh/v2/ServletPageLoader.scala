@@ -15,7 +15,7 @@ class ServletPageLoader(request: HttpServletRequest, response: HttpServletRespon
       val responseWrapper = new PageResponseWrapper(response, factory)
       responseWrapper.setContentType("text/html")
       dispatcher.include(new PageRequestWrapper(request), responseWrapper)
-      Some(new PagePropertyMap(responseWrapper.getPage.asInstanceOf[HTMLPage]))
+      Some(new PropertyMap(PageAdapter.parse(responseWrapper.getPage.asInstanceOf[HTMLPage])))
     } catch {
       case ex: ServletException => None
       case ex: IOException => None
