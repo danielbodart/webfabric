@@ -2,7 +2,7 @@ package org.webfabric.sitemesh.v2
 
 import org.junit.Test
 import org.junit.Assert.assertEquals
-import org.webfabric.sitemesh.TokenProvider
+import org.webfabric.sitemesh.{PropertyMap, TokenProvider}
 
 class CrossSiteRequestForgeryParserTest {
   @Test
@@ -19,7 +19,7 @@ class CrossSiteRequestForgeryParserTest {
     val page = pageParser.parse(html);
 
     // verify
-    assertEquals(token, page.get("csrf.token:/blah"))
+    assertEquals(token, page.get("csrf").asInstanceOf[PropertyMap].get("token:/blah").toString)
   }
 
   @Test
@@ -37,6 +37,6 @@ class CrossSiteRequestForgeryParserTest {
 
     // verify
     val hiddenInput = "<input type=\"hidden\" name=\"csrf.token\" value=\"" + token + "\"/>"
-    assertEquals("<form method='post'>" + hiddenInput + "content</form>", page.get("body"));
+    assertEquals("<form method='post'>" + hiddenInput + "content</form>", page.get("body").toString);
   }
 }

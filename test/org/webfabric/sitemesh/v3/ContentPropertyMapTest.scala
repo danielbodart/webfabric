@@ -13,7 +13,7 @@ class ContentPropertyMapTest{
   def changesValuesToBeValueSoThatStringTemplateWorksCorrectly(): Unit = {
     // setup
     val contentProperties = extractContentProperties("<html><head><title>foo</title></head></html>")
-    val map = new ContentPropertyMap(contentProperties)
+    val map = new PropertyMap(contentProperties)
 
     // execute & verify
     assertTrue(map.containsKey("title"))
@@ -27,16 +27,16 @@ class ContentPropertyMapTest{
   def supportsChildProperty(): Unit = {
     // setup
     val contentProperties = extractContentProperties("<html><head><title>foo</title></head></html>")
-    val map = new ContentPropertyMap(contentProperties)
+    val map = new PropertyMap(contentProperties)
 
     // execute & verify
     assertTrue(map.containsKey("title"))
     assertEquals(map.get("title").toString, "foo")
   }
 
-  def extractContentProperties(html: String): ContentProperty = {
+  def extractContentProperties(html: String): Property = {
     val contentProcessor = new TagBasedContentProcessor(new CoreHtmlTagRuleBundle(), new DivExtractingTagRuleBundle());
-    contentProcessor.build(CharBuffer.wrap(html), null).getExtractedProperties
+    new ContentPropertyAdapter(contentProcessor.build(CharBuffer.wrap(html), null).getExtractedProperties)
   }
 
 }
