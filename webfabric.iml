@@ -2,7 +2,18 @@
 <module relativePaths="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Scala" name="Scala">
-      <configuration />
+      <configuration>
+        <option name="myScalaCompilerJarPaths">
+          <array>
+            <option value="$MODULE_DIR$/../../.IntelliJIdea90/config/plugins/Scala/lib/scala-compiler.jar" />
+          </array>
+        </option>
+        <option name="myScalaSdkJarPaths">
+          <array>
+            <option value="$MODULE_DIR$/../../.IntelliJIdea90/config/plugins/Scala/lib/scala-library.jar" />
+          </array>
+        </option>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
@@ -41,6 +52,8 @@
     </orderEntry>
     <orderEntry type="library" name="codecs" level="project" />
     <orderEntry type="library" name="sitemesh3" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="google.app.engine" level="project" />
   </component>
 </module>
 
