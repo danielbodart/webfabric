@@ -1,7 +1,7 @@
 package org.webfabric.properties
 
-import PropertiesRepository.mapToIterable
-import java.util.{UUID, Properties, Map}
+import java.util.{UUID, Properties}
+import org.webfabric.collections.Map.toIterable
 import com.google.appengine.api.datastore._
 
 class PropertiesRepository(datastore: DatastoreService) extends Repository[UUID, Properties] {
@@ -25,11 +25,4 @@ class PropertiesRepository(datastore: DatastoreService) extends Repository[UUID,
     entity.getProperties.foreach(entry => properties.setProperty(entry.getKey, entry.getValue.toString))
     properties
   }
-}
-
-object PropertiesRepository {
-  implicit def mapToIterable[K, V](m: Map[K, V]): org.webfabric.collections.Iterable[Map.Entry[K, V]] =
-    new org.webfabric.collections.Iterable[Map.Entry[K, V]] {
-      def iterator = m.entrySet.iterator
-    }
 }
