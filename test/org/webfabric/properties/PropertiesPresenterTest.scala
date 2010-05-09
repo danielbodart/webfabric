@@ -3,7 +3,8 @@ package org.webfabric.properties
 import org.hamcrest.CoreMatchers._
 import org.junit.Assert._
 import org.junit._
-import java.util.{Properties, Map, HashMap}
+import java.util.{Properties}
+import org.webfabric.collections.Map
 import java.io.{StringReader, Writer, StringWriter}
 
 class PropertiesPresenterTest extends LocalDatastore {
@@ -11,22 +12,23 @@ class PropertiesPresenterTest extends LocalDatastore {
   def get {
     // setup
     val repository = new PropertiesRepository(datastoreService)
-    val properties = new Properties
-    properties.setProperty("foo", "bar")
-    var uuid = repository.set(null, properties)
+    val expected = new Properties
+    expected.setProperty("foo", "bar")
+    var uuid = repository.set(null, expected)
 
     val presenter = new PropertiesPresenter(repository)
 
     // execute
-    var result = present(presenter, map("uuid" -> uuid))
+    var result = present(presenter, Map("uuid" -> Array(uuid.toString)))
 
     // verify
     var actual = new Properties()
     actual.load(new StringReader(result))
-    assertThat(actual, is(properties))
+    assertThat(actual, is(expected))
   }
 
-  def present(presenter: Presenter[Map[String, Object], Writer], map: Map[String, Object]): String = {
+  def present(presenter: Presenter[java.util.Map[String, Array[String]], Writer],
+              map: java.util.Map[String, Array[String]]): String = {
     val writer = new StringWriter
     presenter.present(map, writer)
     writer.toString
@@ -37,11 +39,4 @@ class PropertiesPresenterTest extends LocalDatastore {
     properties.store(writer, null)
     writer.toString
   }
-
-  def map(pairs: (String, Object)*): Map[String, Object] = {
-    val result = new HashMap[String, Object]
-    pairs.foreach(pair => result.put(pair._1, pair._2))
-    result
-  }
-
 }
