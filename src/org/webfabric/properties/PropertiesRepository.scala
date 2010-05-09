@@ -21,8 +21,12 @@ class PropertiesRepository(datastore: DatastoreService) extends Repository[UUID,
 
   def get(key: UUID): Properties = {
     val properties = new Properties
-    val entity = datastore.get(convert(key))
-    entity.getProperties.foreach(entry => properties.setProperty(entry.getKey, entry.getValue.toString))
+    try {
+      val entity = datastore.get(convert(key))
+      entity.getProperties.foreach(entry => properties.setProperty(entry.getKey, entry.getValue.toString))
+    } catch {
+      case e: EntityNotFoundException => 
+    }
     properties
   }
 }

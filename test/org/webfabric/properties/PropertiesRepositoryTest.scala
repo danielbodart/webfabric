@@ -42,13 +42,18 @@ class PropertiesRepositoryTest extends LocalDatastore {
     assertThat(result.getProperty(name), is(value))
   }
 
-  @Test {val expected = classOf[EntityNotFoundException]}
+  @Test
   def invalidKey {
     // setup
     val repository = new PropertiesRepository(datastoreService)
 
     // execute
     var key = UUID.randomUUID
-    repository.get(key)
+    var properties = repository.get(key)
+    
+    // verify
+    assertThat(properties, is(empty))
   }
+
+  val empty = new Properties
 }
