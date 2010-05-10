@@ -24,7 +24,7 @@ class PropertiesServlet extends HttpServlet{
   override def doDelete(request: HttpServletRequest, response: HttpServletResponse) = {
     val repository = new PropertiesRepository(DatastoreServiceFactory.getDatastoreService)
     var uuid = UUID.fromString(request.getParameter("uuid"))
-    repository.set(uuid, null)
+    repository.remove(uuid)
     response.setStatus(204, "Deleted")
   }
 }
