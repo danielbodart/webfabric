@@ -9,6 +9,11 @@ import java.util.UUID
 class WebPropertiesTest {
   def url: Url = Url("http://www.webfabric.org/properties/?uuid=" + UUID.randomUUID.toString)
 
+  @After
+  def cleanup{
+    Console.println(url.delete)
+  }
+
   @Test
   def canGetProperties {
     val properties = new WebProperties(url)
@@ -25,6 +30,5 @@ class WebPropertiesTest {
 
     properties = new WebProperties(sameUrl)
     assertThat(properties.entrySet.size, is(1))
-
   }
 }

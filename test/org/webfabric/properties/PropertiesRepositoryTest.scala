@@ -8,6 +8,24 @@ import com.google.appengine.api.datastore.EntityNotFoundException
 
 class PropertiesRepositoryTest extends LocalDatastore {
   @Test
+  def deletesProperties {
+    // setup
+    val properties = new Properties
+    var name = "name"
+    var value = "value"
+    properties.setProperty(name, value)
+    val repository = new PropertiesRepository(datastoreService)
+    val key = repository.set(null, properties)
+    assertThat(repository.get(key), is(not(empty)))
+
+    // execute
+    repository.remove(key)
+
+    // verify
+    assertThat(repository.get(key), is(empty))
+  }
+
+@Test
   def storesProperties {
     // setup
     val properties = new Properties

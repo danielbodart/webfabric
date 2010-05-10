@@ -40,11 +40,20 @@ class Url(val url: String) {
     new URL(url.toString).openConnection().asInstanceOf[HttpURLConnection]
   }
 
-  def outputStream:OutputStream = {
-    val urlConnection:HttpURLConnection = openConnection
-    urlConnection.setDoOutput(true);
-    urlConnection.setRequestMethod("PUT");
-    urlConnection.getOutputStream
+  def put( handler: (OutputStream) => Unit): (Int, String) = {
+    val urlConnection:HttpURLConnection = this.openConnection
+    urlConnection.setDoOutput(true)
+    urlConnection.setRequestMethod("PUT")
+    var outputStream = urlConnection.getOutputStream
+    handler(outputStream)
+    outputStream.close
+    (urlConnection.getResponseCode, urlConnection.getResponseMessage)
+  }
+
+  def delete: (Int, String) = {
+    val urlConnection:HttpURLConnection = this.openConnection
+    urlConnection.setRequestMethod("DELETE")
+    (urlConnection.getResponseCode, urlConnection.getResponseMessage)
   }
 
   override def toString = url
