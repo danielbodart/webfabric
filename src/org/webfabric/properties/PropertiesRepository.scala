@@ -29,4 +29,8 @@ class PropertiesRepository(datastore: DatastoreService) extends Repository[UUID,
     }
     properties
   }
+
+  def remove(key: UUID) {
+    datastore.delete(convert(key))
+  }
 }
