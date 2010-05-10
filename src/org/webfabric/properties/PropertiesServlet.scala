@@ -8,6 +8,7 @@ class PropertiesServlet extends HttpServlet{
   override def doGet(request: HttpServletRequest, response: HttpServletResponse) = {
     val repository = new PropertiesRepository(DatastoreServiceFactory.getDatastoreService)
     val presenter = new PropertiesPresenter(repository)
+    response.setHeader("Content-Type", "text/plain")
     presenter.present(request.getParameterMap.asInstanceOf[java.util.Map[String, Array[String]]], response.getWriter)
   }
 
