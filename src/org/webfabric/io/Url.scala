@@ -1,7 +1,7 @@
 package org.webfabric.io
 
-import java.io.{InputStreamReader, Reader, InputStream}
-import java.net.{URI, URL, URLConnection}
+import java.io.{OutputStream, InputStreamReader, Reader, InputStream}
+import java.net.{HttpURLConnection, URI, URL, URLConnection}
 
 class Url(val url: String) {
   def replacePath(path: Path): Url = {
@@ -34,6 +34,17 @@ class Url(val url: String) {
     val urlConnection:URLConnection = new URL(url.toString).openConnection()
     urlConnection.setUseCaches(true)
     urlConnection.getInputStream
+  }
+
+  def openConnection: HttpURLConnection = {
+    new URL(url.toString).openConnection().asInstanceOf[HttpURLConnection]
+  }
+
+  def outputStream:OutputStream = {
+    val urlConnection:HttpURLConnection = openConnection
+    urlConnection.setDoOutput(true);
+    urlConnection.setRequestMethod("PUT");
+    urlConnection.getOutputStream
   }
 
   override def toString = url
