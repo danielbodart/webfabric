@@ -16,7 +16,7 @@
 
     <servlet-mapping>
         <servlet-name>RestletServlet</servlet-name>
-        <url-pattern>/properties-rest</url-pattern>
+        <url-pattern>/properties-rest/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
