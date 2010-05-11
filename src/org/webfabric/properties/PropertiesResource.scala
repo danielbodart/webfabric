@@ -1,9 +1,9 @@
 package org.webfabric.properties
 
 import com.google.appengine.api.datastore.{DatastoreServiceFactory}
-import javax.ws.rs.core.StreamingOutput
 import java.util.{Properties, UUID}
 import javax.ws.rs._
+import core.{Response, StreamingOutput}
 import java.io.{InputStream, OutputStream}
 
 @Path("properties")
@@ -29,6 +29,7 @@ class PropertiesResource(repository: PropertiesRepository) {
     val properties = new Properties
     properties.load(input)
     repository.set(uuid, properties)
+    Response.noContent
   }
 
   @DELETE
@@ -36,5 +37,6 @@ class PropertiesResource(repository: PropertiesRepository) {
   def delete(@PathParam("id") id: String) = {
     var uuid = UUID.fromString(id)
     repository.remove(uuid)
+    Response.noContent
   }
 }
