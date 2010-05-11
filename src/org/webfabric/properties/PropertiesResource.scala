@@ -6,13 +6,13 @@ import java.util.{Properties, UUID}
 import javax.ws.rs._
 import java.io.{InputStream, OutputStream}
 
-@Path("rest")
+@Path("properties")
 class PropertiesResource(repository: PropertiesRepository) {
   def this() = this (new PropertiesRepository(DatastoreServiceFactory.getDatastoreService))
 
   @GET
   @Path("{id}")
-  //@Produces(Array("text/plain"))
+  @Produces(Array("text/plain"))
   def get(@PathParam("id") id: String): StreamingOutput = {
     var uuid = UUID.fromString(id)
     var properties = repository.get(uuid)
