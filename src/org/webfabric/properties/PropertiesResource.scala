@@ -8,6 +8,7 @@ import java.io.{InputStream, OutputStream}
 
 @Path("properties")
 class PropertiesResource(repository: PropertiesRepository) {
+  def this() = this(null) 
 
   @GET
   @Path("{id}")
