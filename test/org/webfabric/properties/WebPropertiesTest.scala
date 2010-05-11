@@ -7,7 +7,7 @@ import org.webfabric.io.Url
 import java.util.UUID
 
 class WebPropertiesTest {
-  def url: Url = Url("http://www.webfabric.org/properties/?uuid=" + UUID.randomUUID.toString)
+  def url: Url = Url("http://www.webfabric.org/rest/properties/" + UUID.randomUUID.toString)
   
   @After
   def cleanup:Unit = url.delete
