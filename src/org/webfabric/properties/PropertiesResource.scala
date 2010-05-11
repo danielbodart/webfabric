@@ -23,7 +23,7 @@ class PropertiesResource(repository: PropertiesRepository) {
 
   @PUT
   @Path("{id}")
-  //@Consumes(Array("text/plain"))
+  @Consumes(Array("text/plain"))
   def put(@PathParam("id") id: String, input: InputStream) = {
     var uuid = UUID.fromString(id)
     val properties = new Properties
