@@ -10,9 +10,7 @@ class WebPropertiesTest {
   def url: Url = Url("http://www.webfabric.org/properties/?uuid=" + UUID.randomUUID.toString)
 
   @After
-  def cleanup{
-    Console.println(url.delete)
-  }
+  def cleanup:Unit = url.delete
 
   @Test
   def canGetProperties {
