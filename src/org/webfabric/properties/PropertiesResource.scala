@@ -6,7 +6,7 @@ import java.util.{Properties, UUID}
 import javax.ws.rs._
 import java.io.{InputStream, OutputStream}
 
-@Path("properties-rest")
+@Path("rest")
 class PropertiesResource(repository: PropertiesRepository) {
   def this() = this (new PropertiesRepository(DatastoreServiceFactory.getDatastoreService))
 
