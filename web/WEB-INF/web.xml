@@ -6,7 +6,7 @@
 
     <context-param>
         <param-name>org.restlet.application</param-name>
-        <param-value>org.webfabric.properties.PropertiesApplication</param-value>
+        <param-value>org.webfabric.properties.RootApplication</param-value>
     </context-param>
 
     <servlet>
