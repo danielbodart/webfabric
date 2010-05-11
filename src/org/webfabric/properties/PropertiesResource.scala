@@ -12,7 +12,7 @@ class PropertiesResource(repository: PropertiesRepository) {
 
   @GET
   @Path("{id}")
-  @Produces(Array("text/plain"))
+  //@Produces(Array("text/plain"))
   def get(@PathParam("id") id: String): StreamingOutput = {
     var uuid = UUID.fromString(id)
     var properties = repository.get(uuid)
