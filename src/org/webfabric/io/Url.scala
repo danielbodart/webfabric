@@ -40,10 +40,11 @@ class Url(val url: String) {
     new URL(url.toString).openConnection().asInstanceOf[HttpURLConnection]
   }
 
-  def put( handler: (OutputStream) => Unit): (Int, String) = {
+  def put( mimeType:String, handler: (OutputStream) => Unit): (Int, String) = {
     val urlConnection:HttpURLConnection = this.openConnection
     urlConnection.setDoOutput(true)
     urlConnection.setRequestMethod("PUT")
+    urlConnection.setRequestProperty("Content-Type", mimeType)
     var outputStream = urlConnection.getOutputStream
     handler(outputStream)
     outputStream.close
