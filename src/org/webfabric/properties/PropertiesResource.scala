@@ -1,31 +1,50 @@
 package org.webfabric.properties
 
-import com.google.appengine.api.datastore.{DatastoreServiceFactory}
 import java.util.{Properties, UUID}
 import javax.ws.rs._
 import core.{Response, StreamingOutput}
-import java.io.{InputStream, OutputStream}
+import org.antlr.stringtemplate.{AutoIndentWriter, StringTemplateGroup}
+import java.io._
 
-@Path("properties")
-class PropertiesResource(repository: PropertiesRepository) {
-  def this() = this(null) 
+@Path("properties/{id}")
+class PropertiesResource(repository: PropertiesRepository, templates:StringTemplateGroup) {
+  def this() = this(null, null)
 
   @GET
-  @Path("{id}")
   @Produces(Array("text/plain"))
-  def get(@PathParam("id") id: String): StreamingOutput = {
-    var uuid = UUID.fromString(id)
-    var properties = repository.get(uuid)
+  def getProperties(@PathParam("id") id: String): StreamingOutput = {
+    val uuid = UUID.fromString(id)
+    val properties = repository.get(uuid)
     new StreamingOutput() {
       def write(out: OutputStream) = properties.store(out, null)
     }
   }
 
+  @GET
+  @Produces(Array("text/html"))
+  def getHtml(@PathParam("id") id: String): String = {
+    val uuid = UUID.fromString(id)
+    val properties = repository.get(uuid)
+    val template = templates.getInstanceOf("editor")
+    val writer = new StringWriter
+    properties.store(writer, null)
+    template.setAttribute("properties", writer.toString)
+    template.toString
+  }
+
+  @POST
+  def post(@PathParam("id") id: String, @FormParam("properties") input:String) = {
+    val uuid = UUID.fromString(id)
+    val properties = new Properties
+    properties.load( new StringReader(input))
+    repository.set(uuid, properties)
+    Response.noContent
+  }
+
   @PUT
-  @Path("{id}")
   @Consumes(Array("text/plain"))
   def put(@PathParam("id") id: String, input: InputStream) = {
-    var uuid = UUID.fromString(id)
+    val uuid = UUID.fromString(id)
     val properties = new Properties
     properties.load(input)
     repository.set(uuid, properties)
@@ -33,9 +52,8 @@ class PropertiesResource(repository: PropertiesRepository) {
   }
 
   @DELETE
-  @Path("{id}")
   def delete(@PathParam("id") id: String) = {
-    var uuid = UUID.fromString(id)
+    val uuid = UUID.fromString(id)
     repository.remove(uuid)
     Response.noContent
   }
