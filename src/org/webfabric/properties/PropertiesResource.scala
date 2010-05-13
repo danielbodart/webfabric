@@ -3,7 +3,7 @@ package org.webfabric.properties
 import java.util.{Properties, UUID}
 import javax.ws.rs._
 import core.{Response, StreamingOutput}
-import org.antlr.stringtemplate.{AutoIndentWriter, StringTemplateGroup}
+import org.antlr.stringtemplate.{StringTemplateGroup}
 import java.io._
 
 @Path("properties/{id}")
@@ -38,7 +38,7 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
     val properties = new Properties
     properties.load( new StringReader(input))
     repository.set(uuid, properties)
-    Response.noContent
+    Response.noContent.build
   }
 
   @PUT
@@ -48,13 +48,13 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
     val properties = new Properties
     properties.load(input)
     repository.set(uuid, properties)
-    Response.noContent
+    Response.noContent.build
   }
 
   @DELETE
   def delete(@PathParam("id") id: String) = {
     val uuid = UUID.fromString(id)
     repository.remove(uuid)
-    Response.noContent
+    Response.noContent.build
   }
 }

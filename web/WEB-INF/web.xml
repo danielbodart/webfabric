@@ -73,16 +73,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--<filter>-->
-        <!--<filter-name>local</filter-name>-->
-        <!--<filter-class>org.webfabric.http.LocalDatastoreFilter</filter-class>-->
-    <!--</filter>-->
-
-    <!--<filter-mapping>-->
-        <!--<filter-name>local</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
-
     <servlet>
         <servlet-name>sitemesh-stringtemplate</servlet-name>
         <servlet-class>org.webfabric.sitemesh.StringTemplateDecoratorServlet</servlet-class>
