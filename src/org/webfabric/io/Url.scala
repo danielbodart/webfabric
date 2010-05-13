@@ -40,6 +40,16 @@ class Url(val url: String) {
     new URL(url.toString).openConnection().asInstanceOf[HttpURLConnection]
   }
 
+  def get( mimeType:String, handler: (InputStream) => Unit): (Int, String) = {
+    val urlConnection:HttpURLConnection = this.openConnection
+    urlConnection.setUseCaches(true)
+    urlConnection.setRequestProperty("Accept", mimeType)
+    val inputStream = urlConnection.getInputStream
+    handler(inputStream)
+    inputStream.close
+    (urlConnection.getResponseCode, urlConnection.getResponseMessage)
+  }
+
   def put( mimeType:String, handler: (OutputStream) => Unit): (Int, String) = {
     val urlConnection:HttpURLConnection = this.openConnection
     urlConnection.setDoOutput(true)
