@@ -3,6 +3,8 @@ package org.webfabric.collections
 trait Iterable[T] extends java.lang.Iterable[T] {
   def head: T = Iterable.head(this)
 
+  def headOption: Option[T] = Iterable.headOption(this)
+
   def find(predicate: (T) => Boolean): Option[T] = Iterable.find(this, predicate)
 
   def foldLeft[S](initialValue: S, handler: (S, T) => S) = Iterable.foldLeft(this, initialValue, handler)
@@ -24,6 +26,9 @@ trait Iterable[T] extends java.lang.Iterable[T] {
 object Iterable {
   def head[T](iterable: java.lang.Iterable[T]): T =
     Iterator.head(iterable.iterator)
+
+  def headOption[T](iterable: java.lang.Iterable[T]): Option[T] =
+    Iterator.headOption(iterable.iterator)
 
   def find[T](iterable: java.lang.Iterable[T], predicate: (T) => Boolean): Option[T] =
     Iterator.find(iterable.iterator, predicate)
@@ -55,6 +60,12 @@ object Iterable {
   def filter[T](iterable: java.lang.Iterable[T], predicate: (T) => Boolean): Iterable[T] = {
     new Iterable[T] {
       def iterator = new FilterIterator[T](iterable.iterator, predicate)
+    }
+  }
+
+  implicit def toMyIterable[T](scalaIterable:scala.Iterable[T]):Iterable[T] ={
+    new Iterable[T] {
+      def iterator = Iterator.toMyIterator(scalaIterable.elements)
     }
   }
 }
