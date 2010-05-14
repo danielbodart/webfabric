@@ -5,6 +5,10 @@ object Iterator {
     if (iterator.hasNext) iterator.next else throw new NoSuchElementException
   }
 
+  def headOption[T](iterator: java.util.Iterator[T]): Option[T] = {
+    if (iterator.hasNext) Some(iterator.next) else None
+  }
+
   def find[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Option[T] = {
     while (iterator.hasNext) {
       val item = iterator.next
@@ -43,4 +47,13 @@ object Iterator {
       case _ => throw new NoSuchElementException
     }
   }
+
+  implicit def toMyIterator[T](scalaIterator:scala.Iterator[T]):java.util.Iterator[T] =
+    new java.util.Iterator[T] {
+      def remove = throw new UnsupportedOperationException
+
+      def next = scalaIterator.next
+
+      def hasNext = scalaIterator.hasNext
+    }
 }
