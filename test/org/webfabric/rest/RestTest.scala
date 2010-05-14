@@ -4,7 +4,7 @@ import org.hamcrest.CoreMatchers._
 import org.junit.Assert._
 import org.junit._
 import org.webfabric.rest.RestTest._
-import javax.ws.rs.{QueryParam, GET, Path}
+import javax.ws.rs._
 
 class RestTest {
   @Test
@@ -20,6 +20,13 @@ class RestTest {
     engine.add(classOf[GettableWithQuery])
     assertThat(engine.get("foo", QueryParameters("name" -> "value")), is("value"))
   } 
+
+  @Test
+  def canPostWithFormParameter() {
+    val engine = new RestEngine
+    engine.add(classOf[Postable])
+    assertThat(engine.post("foo", QueryParameters(), FormParameters("name" -> "value")), is("value"))
+  }
 }
 
 object RestTest {
@@ -35,6 +42,14 @@ object RestTest {
   class GettableWithQuery {
     @GET
     def get(@QueryParam("name") name:String):String = {
+      name
+    }
+  }
+
+  @Path("foo")
+  class Postable {
+    @POST
+    def post(@FormParam("name") name:String):String = {
       name
     }
   }
