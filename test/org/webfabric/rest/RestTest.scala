@@ -5,6 +5,8 @@ import org.junit.Assert._
 import org.junit._
 import org.webfabric.rest.RestTest._
 import javax.ws.rs._
+import core.StreamingOutput
+import java.io._
 
 class RestTest {
   @Test
@@ -19,7 +21,7 @@ class RestTest {
     val engine = new RestEngine
     engine.add(classOf[GettableWithQuery])
     assertThat(engine.get("foo", QueryParameters("name" -> "value")), is("value"))
-  } 
+  }
 
   @Test
   def canPostWithFormParameter() {
@@ -40,7 +42,18 @@ class RestTest {
     val engine = new RestEngine
     engine.add(classOf[MutlilpleGets])
     assertThat(engine.get("foo"), is("no parameters"))
-    assertThat(engine.get("foo", QueryParameters("arg" -> "match" )), is("match"))
+    assertThat(engine.get("foo", QueryParameters("arg" -> "match")), is("match"))
+  }
+
+  @Test
+  def canStreamOutput() {
+    val engine = new RestEngine
+    engine.add(classOf[StreamOutput])
+    val out = new ByteArrayOutputStream
+
+    engine.handle("GET", "foo", QueryParameters(), FormParameters(), out)
+
+    assertThat(out.toString, is("stream"))
   }
 }
 
@@ -48,7 +61,7 @@ object RestTest {
   @Path("foo")
   class Gettable {
     @GET
-    def get():String = {
+    def get(): String = {
       "bar"
     }
   }
@@ -56,7 +69,7 @@ object RestTest {
   @Path("foo")
   class GettableWithQuery {
     @GET
-    def get(@QueryParam("name") name:String):String = {
+    def get(@QueryParam("name") name: String): String = {
       name
     }
   }
@@ -64,7 +77,7 @@ object RestTest {
   @Path("foo")
   class Postable {
     @POST
-    def post(@FormParam("name") name:String):String = {
+    def post(@FormParam("name") name: String): String = {
       name
     }
   }
@@ -73,7 +86,7 @@ object RestTest {
   class MutlilplePaths {
     @GET
     @Path("bar")
-    def get():String = {
+    def get(): String = {
       "found"
     }
   }
@@ -81,12 +94,27 @@ object RestTest {
   @Path("foo")
   class MutlilpleGets {
     @GET
-    def get():String = {
+    def get(): String = {
       "no parameters"
     }
+
     @GET
-    def get(@QueryParam("arg") arg:String):String = {
+    def get(@QueryParam("arg") arg: String): String = {
       arg
+    }
+  }
+
+  @Path("foo")
+  class StreamOutput {
+    @GET
+    def get(): StreamingOutput = {
+      new StreamingOutput {
+        def write(out: OutputStream) = {
+          var streamWriter = new OutputStreamWriter(out)
+          streamWriter.write("stream")
+          streamWriter.flush
+        }
+      }
     }
   }
 }

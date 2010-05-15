@@ -6,6 +6,8 @@ import com.googlecode.yadic.SimpleContainer
 import org.webfabric.collections.List
 import javax.ws.rs.{HttpMethod}
 import java.lang.{String, Class}
+import javax.ws.rs.core.StreamingOutput
+import java.io.{OutputStreamWriter, ByteArrayOutputStream, OutputStream}
 
 class RestEngine {
   val activators = List[HttpMethodActivator]()
@@ -29,21 +31,34 @@ class RestEngine {
   def get(path: String): String = get(path, new QueryParameters)
 
   def get(path: String, query: QueryParameters): String = {
-    activate(HttpMethod.GET, path, query, FormParameters())
+    handle(HttpMethod.GET, path, query, FormParameters())
   }
 
-  def post(path: String, query: QueryParameters, form:FormParameters): String = {
-    activate(HttpMethod.POST, path, query, form)
+  def post(path: String, query: QueryParameters, form: FormParameters): String = {
+    handle(HttpMethod.POST, path, query, form)
   }
 
-  def activate(httpMethod: String, path: String, query: QueryParameters, form:FormParameters): String = {
+  def handle(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): String = {
+    val out = new ByteArrayOutputStream
+    handle(httpMethod, path, query, form, out)
+    out.toString
+  }
+
+  def handle(httpMethod: String, path: String, query: QueryParameters, form: FormParameters, output:OutputStream) {
     findActivator(httpMethod, path, query, form) match {
-      case Some(activator) => activator.activate(container, query, form).asInstanceOf[String]
+      case Some(activator) => activator.activate(container, query, form) match {
+          case value: String => {
+            var streamWriter = new OutputStreamWriter(output)
+            streamWriter.write(value)
+            streamWriter.flush
+          }
+          case streaming: StreamingOutput => streaming.write(output)
+      }
       case _ => error("No match found")
     }
   }
 
-  def findActivator(httpMethod: String, path: String, query: QueryParameters, form:FormParameters): Option[HttpMethodActivator] = {
+  def findActivator(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): Option[HttpMethodActivator] = {
     activators.filter(activator => activator.isMatch(httpMethod, path, query, form)).headOption
   }
 }

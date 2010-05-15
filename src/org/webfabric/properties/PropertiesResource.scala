@@ -3,8 +3,8 @@ package org.webfabric.properties
 import java.util.{Properties, UUID}
 import javax.ws.rs._
 import core.{Response, StreamingOutput}
-import org.antlr.stringtemplate.{StringTemplateGroup}
 import java.io._
+import org.antlr.stringtemplate.{AutoIndentWriter, StringTemplateGroup}
 
 @Path("properties/{id}")
 class PropertiesResource(repository: PropertiesRepository, templates:StringTemplateGroup) {
@@ -15,21 +15,27 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   def getProperties(@PathParam("id") id: String): StreamingOutput = {
     val uuid = UUID.fromString(id)
     val properties = repository.get(uuid)
-    new StreamingOutput() {
+    new StreamingOutput {
       def write(out: OutputStream) = properties.store(out, null)
     }
   }
 
   @GET
   @Produces(Array("text/html"))
-  def getHtml(@PathParam("id") id: String): String = {
+  def getHtml(@PathParam("id") id: String): StreamingOutput = {
     val uuid = UUID.fromString(id)
     val properties = repository.get(uuid)
     val template = templates.getInstanceOf("editor")
     val writer = new StringWriter
     properties.store(writer, null)
     template.setAttribute("properties", writer.toString)
-    template.toString
+    new StreamingOutput{
+      def write(output: OutputStream) = {
+        var streamWriter = new OutputStreamWriter(output)
+        template.write(new AutoIndentWriter(streamWriter))
+        streamWriter.flush
+      }
+    }
   }
 
   @POST
