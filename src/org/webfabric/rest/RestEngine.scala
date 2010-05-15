@@ -4,8 +4,7 @@ import org.webfabric.collections.Iterable.toMyIterable
 import java.lang.reflect.Method
 import com.googlecode.yadic.SimpleContainer
 import org.webfabric.collections.List
-import java.lang.annotation.Annotation
-import javax.ws.rs.{HttpMethod, QueryParam, GET, Path}
+import javax.ws.rs.{HttpMethod}
 import java.lang.{String, Class}
 
 class RestEngine {
@@ -21,9 +20,8 @@ class RestEngine {
 
   def add(resource: Class[_]): Unit = {
     container.add(resource)
-    val path = resource.getAnnotation(classOf[Path])
-    resource.getMethods.foreach((method: Method) => getHttpMethod(method) match {
-      case Some(httpMethod) => activators.add(new HttpMethodActivator(httpMethod.value, path.value, resource, method))
+    resource.getMethods.foreach(method => getHttpMethod(method) match {
+      case Some(httpMethod) => activators.add(new HttpMethodActivator(httpMethod.value, resource, method))
       case _ =>
     })
   }

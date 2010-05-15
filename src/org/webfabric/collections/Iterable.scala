@@ -20,6 +20,10 @@ trait Iterable[T] extends java.lang.Iterable[T] {
   def flatMap[S](converter: (T) => java.lang.Iterable[S]): Iterable[S] = Iterable.flatMap(this, converter)
 
   def filter(predicate: (T) => Boolean): Iterable[T] = Iterable.filter(this, predicate)
+
+  def mkString(start: String, separator: String, end: String): String = Iterable.mkString(this, start, separator, end)
+
+  def mkString(separator: String): String = Iterable.mkString(this, "", separator, "")
 }
 
 
@@ -63,9 +67,14 @@ object Iterable {
     }
   }
 
-  implicit def toMyIterable[T](scalaIterable:scala.Iterable[T]):Iterable[T] ={
+  implicit def toMyIterable[T](scalaIterable: scala.Iterable[T]): Iterable[T] = {
     new Iterable[T] {
       def iterator = Iterator.toMyIterator(scalaIterable.elements)
     }
+  }
+
+  def mkString[T](iterable:java.lang.Iterable[T], separator:String):String = mkString(iterable, "", separator, "")
+  def mkString[T](iterable:java.lang.Iterable[T], start:String, separator:String, end:String):String ={
+    Iterator.mkString(iterable.iterator, start, separator, end)
   }
 }
