@@ -17,4 +17,8 @@ class Parameters{
   def getValue(name:String):String = {
     values.get(name).get(0)
   }
+
+  def contains(name:String):Boolean = {
+    values.containsKey(name)
+  }
 }

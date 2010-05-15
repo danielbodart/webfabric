@@ -56,4 +56,16 @@ object Iterator {
 
       def hasNext = scalaIterator.hasNext
     }
+
+  def mkString[T](iterator: java.util.Iterator[T], separator:String):String = mkString(iterator, "", separator, "")
+  def mkString[T](iterator: java.util.Iterator[T], start:String, separator:String, end:String):String ={
+    val builder = new StringBuilder
+    builder.append(start)
+    if (iterator.hasNext) builder.append(iterator.next)
+    while (iterator.hasNext) {
+      builder.append(separator); builder.append(iterator.next)
+    }
+    builder.append(end)
+    builder.toString
+  }
 }

@@ -27,6 +27,21 @@ class RestTest {
     engine.add(classOf[Postable])
     assertThat(engine.post("foo", QueryParameters(), FormParameters("name" -> "value")), is("value"))
   }
+
+  @Test
+  def canHandlePathsOnMethodAsWellAsClass() {
+    val engine = new RestEngine
+    engine.add(classOf[MutlilplePaths])
+    assertThat(engine.get("foo/bar"), is("found"))
+  }
+
+  @Test
+  def canDetermineMethodWhenThereIsAChoice() {
+    val engine = new RestEngine
+    engine.add(classOf[MutlilpleGets])
+    assertThat(engine.get("foo"), is("no parameters"))
+    assertThat(engine.get("foo", QueryParameters("arg" -> "match" )), is("match"))
+  }
 }
 
 object RestTest {
@@ -51,6 +66,27 @@ object RestTest {
     @POST
     def post(@FormParam("name") name:String):String = {
       name
+    }
+  }
+
+  @Path("foo")
+  class MutlilplePaths {
+    @GET
+    @Path("bar")
+    def get():String = {
+      "found"
+    }
+  }
+
+  @Path("foo")
+  class MutlilpleGets {
+    @GET
+    def get():String = {
+      "no parameters"
+    }
+    @GET
+    def get(@QueryParam("arg") arg:String):String = {
+      arg
     }
   }
 }
