@@ -218,7 +218,9 @@
         <root url="jar://$PROJECT_DIR$/lib/org.restlet.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/lib/javax.ws.rs.jar!/" />
+      </SOURCES>
     </library>
     <library name="yadic">
       <CLASSES>
