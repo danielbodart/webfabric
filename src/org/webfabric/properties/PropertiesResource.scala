@@ -39,28 +39,25 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   }
 
   @POST
-  def post(@PathParam("id") id: String, @FormParam("properties") input:String) = {
+  def post(@PathParam("id") id: String, @FormParam("properties") input:String):Unit = {
     val uuid = UUID.fromString(id)
     val properties = new Properties
     properties.load( new StringReader(input))
     repository.set(uuid, properties)
-    Response.noContent.build
   }
 
   @PUT
   @Consumes(Array("text/plain"))
-  def put(@PathParam("id") id: String, input: InputStream) = {
+  def put(@PathParam("id") id: String, input: InputStream):Unit = {
     val uuid = UUID.fromString(id)
     val properties = new Properties
     properties.load(input)
     repository.set(uuid, properties)
-    Response.noContent.build
   }
 
   @DELETE
-  def delete(@PathParam("id") id: String) = {
+  def delete(@PathParam("id") id: String):Unit = {
     val uuid = UUID.fromString(id)
     repository.remove(uuid)
-    Response.noContent.build
   }
 }

@@ -55,6 +55,13 @@ class RestTest {
 
     assertThat(out.toString, is("stream"))
   }
+
+  @Test
+  def supportsNoContent() {
+    val engine = new RestEngine
+    engine.add(classOf[NoContent])
+    assertThat(engine.post( "foo", QueryParameters(), FormParameters()), is(nullValue[String]))
+  }
 }
 
 object RestTest {
@@ -115,6 +122,15 @@ object RestTest {
           streamWriter.flush
         }
       }
+    }
+  }
+
+  @Path("foo")
+  class NoContent {
+    var count = 0
+    @POST
+    def post(): Unit = {
+      count = count + 1
     }
   }
 }
