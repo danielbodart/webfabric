@@ -1,14 +1,14 @@
 package org.webfabric.rest
 
 import java.lang.reflect.Method
-import org.webfabric.collections.List
+import org.webfabric.collections.{List}
 import com.googlecode.yadic.SimpleContainer
 import javax.ws.rs.{PathParam, Path, FormParam, QueryParam}
-import java.lang.annotation.Annotation
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) {
-  lazy val parameters: List[Annotation] = {
-    val result = List[Annotation]()
+  type Param = {def value(): String}
+  lazy val parameters: List[Param] = {
+    val result = List[Param]()
     method.getParameterAnnotations.foreach(_(0) match {
       case query: QueryParam => result.add(query)
       case form: FormParam => result.add(form)
@@ -36,7 +36,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     })
   }
 
-  def activate(container: SimpleContainer, pathToCheck:String, query: QueryParameters, form: FormParameters): Object = {
+  def activate(container: SimpleContainer, pathToCheck: String, query: QueryParameters, form: FormParameters): Object = {
     val resourceInstance = container.resolve(resource)
     method.invoke(resourceInstance, getParameters(pathTemplate.extract(pathToCheck), query, form): _*)
   }
