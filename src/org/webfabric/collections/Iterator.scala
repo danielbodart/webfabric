@@ -68,4 +68,10 @@ object Iterator {
     builder.append(end)
     builder.toString
   }
+
+  def toList[T](iterator:java.util.Iterator[T]):List[T] = {
+    val result = List[T]()
+    foreach[T](iterator, result.add(_))
+    result
+  }
 }

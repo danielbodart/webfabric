@@ -54,7 +54,7 @@ class RestEngine {
 
   def activate(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): Object = {
     findActivator(httpMethod, path, query, form) match {
-      case Some(activator) => activator.activate(container, query, form)
+      case Some(activator) => activator.activate(container, path, query, form)
       case _ => error("No match found")
     }
   }

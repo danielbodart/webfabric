@@ -62,6 +62,13 @@ class RestTest {
     engine.add(classOf[NoContent])
     assertThat(engine.post( "foo", QueryParameters(), FormParameters()), is(nullValue[String]))
   }
+
+  @Test
+  def supportsPathParameter() {
+    val engine = new RestEngine
+    engine.add(classOf[PathParameter])
+    assertThat(engine.get( "path/bar", QueryParameters()), is("bar"))
+  }
 }
 
 object RestTest {
@@ -131,6 +138,14 @@ object RestTest {
     @POST
     def post(): Unit = {
       count = count + 1
+    }
+  }
+
+  @Path("path/{id}")
+  class PathParameter {
+    @GET
+    def get(@PathParam("id") id:String): String = {
+      id
     }
   }
 }

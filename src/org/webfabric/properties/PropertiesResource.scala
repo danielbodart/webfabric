@@ -2,7 +2,7 @@ package org.webfabric.properties
 
 import java.util.{Properties, UUID}
 import javax.ws.rs._
-import core.{Response, StreamingOutput}
+import core.{StreamingOutput}
 import java.io._
 import org.antlr.stringtemplate.{AutoIndentWriter, StringTemplateGroup}
 

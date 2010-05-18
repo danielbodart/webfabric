@@ -24,6 +24,10 @@ trait Iterable[T] extends java.lang.Iterable[T] {
   def mkString(start: String, separator: String, end: String): String = Iterable.mkString(this, start, separator, end)
 
   def mkString(separator: String): String = Iterable.mkString(this, "", separator, "")
+
+  def toList:List[T] = Iterable.toList(this)
+
+  def zip[S](list:java.lang.Iterable[S]): Iterable[(T,S)]  = Iterable.zip(this, list)
 }
 
 
@@ -77,4 +81,14 @@ object Iterable {
   def mkString[T](iterable:java.lang.Iterable[T], start:String, separator:String, end:String):String ={
     Iterator.mkString(iterable.iterator, start, separator, end)
   }
+
+  def toList[T](iterable:java.lang.Iterable[T]):List[T] = Iterator.toList[T](iterable.iterator)
+
+  def zip[T,S](iterable:java.lang.Iterable[T], anotherIterable:java.lang.Iterable[S]): Iterable[(T,S)]  = {
+    new Iterable[(T,S)] {
+      def iterator = new ZipIterator[T,S](iterable.iterator, anotherIterable.iterator)
+    }
+  }
+
+
 }
