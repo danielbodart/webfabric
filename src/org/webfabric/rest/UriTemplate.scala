@@ -6,12 +6,10 @@ import org.webfabric.regex.{Regex}
 import java.util.regex.Pattern
 
 class UriTemplate(template: String) {
-  def isMatch(uri: String): Boolean = {
-    regex.isMatch(uri)
-  }
+  def isMatch(uri: String): Boolean = templateRegex.isMatch(uri)
 
   def extract(uri: String): PathParameters = {
-    var values = regex.matches(uri).map(m => m.groups.get(1).value)
+    var values = templateRegex.matches(uri).map(m => m.groups.get(1).value)
     names.zip(values).foldLeft(PathParameters(), (parameters: PathParameters, pair: (String, String)) => {
       parameters.add(pair._1, pair._2)
       parameters
@@ -24,21 +22,9 @@ class UriTemplate(template: String) {
 
   lazy val matches = UriTemplate.pathParameters.matches(template)
   lazy val names = matches.map(m => m.groups.get(1).value)
-  lazy val regex = {
-    val builder = new StringBuilder
-    var position = 0;
-    matches.foreach(m => {
-      builder.append(Pattern.quote(template.substring(position, m.start)))
-      builder.append("""([^/]+)""")
-      position = m.end
-    })
-    builder.append(Pattern.quote(template.substring(position)))
-    new Regex(builder.toString)
-  }
+  lazy val templateRegex = new Regex(matches.replace(notMatched => Pattern.quote(notMatched), matched => """([^/]+)"""))
 }
 
 object UriTemplate {
   val pathParameters = new Regex("""\{(\w+)(?:\:(\w+))?\}""")
-
-
 }
