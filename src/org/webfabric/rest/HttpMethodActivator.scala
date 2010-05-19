@@ -31,9 +31,9 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     }
   }
 
-  def isMatch(httpMethodToCheck: String, pathToCheck: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): Boolean = {
-    httpMethod.equals(httpMethodToCheck) && pathTemplate.isMatch(pathToCheck) &&
-            mimeTypesMatch(headers) && parametersMatch(query, form, pathTemplate.extract(pathToCheck))
+  def isMatch(request:Request): Boolean = {
+    httpMethod.equals(request.method) && pathTemplate.isMatch(request.path) &&
+            mimeTypesMatch(request.headers) && parametersMatch(request)
   }
   
   def mimeTypesMatch(headers: HeaderParameters):Boolean = {
@@ -41,25 +41,25 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     expected.equals(producesMimetype)
   }
 
-  def parametersMatch(queryParameters: QueryParameters, formParameters: FormParameters, pathParameters: PathParameters): Boolean = {
+  def parametersMatch(request:Request): Boolean = {
     parameters.foldLeft(true, (isMatch: Boolean, parameter) => parameter match {
-      case query: QueryParam => isMatch && queryParameters.contains(query.value)
-      case form: FormParam => isMatch && formParameters.contains(form.value)
-      case path: PathParam => isMatch && pathParameters.contains(path.value)
+      case query: QueryParam => isMatch && request.query.contains(query.value)
+      case form: FormParam => isMatch && request.form.contains(form.value)
+      case path: PathParam => isMatch && pathTemplate.extract(request.path).contains(path.value)
     })
   }
 
-  def activate(container: SimpleContainer, pathToCheck: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): Object = {
+  def activate(container: SimpleContainer, request:Request): Object = {
     val resourceInstance = container.resolve(resource)
-    method.invoke(resourceInstance, getParameters(pathTemplate.extract(pathToCheck), query, form): _*)
+    method.invoke(resourceInstance, getParameters(request): _*)
   }
 
-  def getParameters(pathParameters: PathParameters, queryParameters: QueryParameters, formParameters: FormParameters): Array[Object] = {
+  def getParameters(request:Request): Array[Object] = {
     val results = List[Object]()
     parameters.foreach(_ match {
-      case query: QueryParam => results.add(queryParameters.getValue(query.value))
-      case form: FormParam => results.add(formParameters.getValue(form.value))
-      case path: PathParam => results.add(pathParameters.getValue(path.value))
+      case query: QueryParam => results.add(request.query.getValue(query.value))
+      case form: FormParam => results.add(request.form.getValue(form.value))
+      case path: PathParam => results.add(pathTemplate.extract(request.path).getValue(path.value))
     })
     results.toArray
   }

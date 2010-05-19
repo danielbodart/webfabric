@@ -7,50 +7,51 @@ import org.webfabric.rest.RestTest._
 import javax.ws.rs._
 import core.StreamingOutput
 import java.io._
+import Request._
 
 class RestTest {
   @Test
   def canGet() {
     val engine = new RestEngine
     engine.add(classOf[Gettable])
-    assertThat(engine.get("foo"), is("bar"))
+    assertThat(engine.handle(get("foo")), is("bar"))
   }
 
   @Test
   def canGetWithQueryParameter() {
     val engine = new RestEngine
     engine.add(classOf[GettableWithQuery])
-    assertThat(engine.get("foo", QueryParameters("name" -> "value")), is("value"))
+    assertThat(engine.handle(get("foo", QueryParameters("name" -> "value"))), is("value"))
   }
 
   @Test
   def canPostWithFormParameter() {
     val engine = new RestEngine
     engine.add(classOf[Postable])
-    assertThat(engine.post("foo", QueryParameters(), FormParameters("name" -> "value")), is("value"))
+    assertThat(engine.handle(post("foo", FormParameters("name" -> "value"))), is("value"))
   }
 
   @Test
   def canHandlePathsOnMethodAsWellAsClass() {
     val engine = new RestEngine
     engine.add(classOf[MutlilplePaths])
-    assertThat(engine.get("foo/bar"), is("found"))
+    assertThat(engine.handle(get("foo/bar")), is("found"))
   }
 
   @Test
   def canDetermineMethodWhenThereIsAChoice() {
     val engine = new RestEngine
     engine.add(classOf[MutlilpleGets])
-    assertThat(engine.get("foo"), is("no parameters"))
-    assertThat(engine.get("foo", QueryParameters("arg" -> "match")), is("match"))
+    assertThat(engine.handle(get("foo")), is("no parameters"))
+    assertThat(engine.handle(get("foo", QueryParameters("arg" -> "match"))), is("match"))
   }
 
   @Test
   def canDetermineGetMethodBasedOnMimeType() {
     val engine = new RestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    assertThat(engine.handle(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters()), is("plain"))
-    assertThat(engine.handle(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters()), is("html"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters())), is("plain"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters())), is("html"))
   }
 
   @Test
@@ -59,7 +60,7 @@ class RestTest {
     engine.add(classOf[StreamOutput])
     val out = new ByteArrayOutputStream
 
-    engine.handle("GET", "foo", HeaderParameters(), QueryParameters(), FormParameters(), out)
+    engine.handle(get("foo"), out)
 
     assertThat(out.toString, is("stream"))
   }
@@ -68,14 +69,14 @@ class RestTest {
   def supportsNoContent() {
     val engine = new RestEngine
     engine.add(classOf[NoContent])
-    assertThat(engine.post( "foo", QueryParameters(), FormParameters()), is(nullValue[String]))
+    assertThat(engine.handle(post( "foo", FormParameters())), is(nullValue[String]))
   }
 
   @Test
   def supportsPathParameter() {
     val engine = new RestEngine
     engine.add(classOf[PathParameter])
-    assertThat(engine.get( "path/bar", QueryParameters()), is("bar"))
+    assertThat(engine.handle(get( "path/bar")), is("bar"))
   }
 }
 
