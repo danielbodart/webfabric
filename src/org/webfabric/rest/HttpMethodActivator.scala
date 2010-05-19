@@ -3,7 +3,7 @@ package org.webfabric.rest
 import java.lang.reflect.Method
 import org.webfabric.collections.{List}
 import com.googlecode.yadic.SimpleContainer
-import javax.ws.rs.{PathParam, Path, FormParam, QueryParam}
+import javax.ws.rs._
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) {
   type Param = {def value(): String}
@@ -23,20 +23,33 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
   }
 
-  def isMatch(httpMethodToCheck: String, pathToCheck: String, query: QueryParameters, form: FormParameters): Boolean = {
-    httpMethod.equals(httpMethodToCheck) && pathTemplate.isMatch(pathToCheck) &&
-            parametersMatch(query, form, pathTemplate.extract(pathToCheck))
+  lazy val producesMimetype: String = {
+    val result = List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null)
+    result.headOption match {
+      case Some(produces) => produces.value.first
+      case None => "*/*"
+    }
   }
 
-  def parametersMatch(queryParameters: QueryParameters, formParameters: FormParameters, pathParameters: PathParameters):Boolean = {
-    parameters.foldLeft(true, (isMatch:Boolean, parameter) => parameter match {
+  def isMatch(httpMethodToCheck: String, pathToCheck: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): Boolean = {
+    httpMethod.equals(httpMethodToCheck) && pathTemplate.isMatch(pathToCheck) &&
+            mimeTypesMatch(headers) && parametersMatch(query, form, pathTemplate.extract(pathToCheck))
+  }
+  
+  def mimeTypesMatch(headers: HeaderParameters):Boolean = {
+    val expected = if(headers.contains("Accept")) headers.getValue("Accept") else "*/*"
+    expected.equals(producesMimetype)
+  }
+
+  def parametersMatch(queryParameters: QueryParameters, formParameters: FormParameters, pathParameters: PathParameters): Boolean = {
+    parameters.foldLeft(true, (isMatch: Boolean, parameter) => parameter match {
       case query: QueryParam => isMatch && queryParameters.contains(query.value)
       case form: FormParam => isMatch && formParameters.contains(form.value)
       case path: PathParam => isMatch && pathParameters.contains(path.value)
     })
   }
 
-  def activate(container: SimpleContainer, pathToCheck: String, query: QueryParameters, form: FormParameters): Object = {
+  def activate(container: SimpleContainer, pathToCheck: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): Object = {
     val resourceInstance = container.resolve(resource)
     method.invoke(resourceInstance, getParameters(pathTemplate.extract(pathToCheck), query, form): _*)
   }
@@ -44,8 +57,8 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   def getParameters(pathParameters: PathParameters, queryParameters: QueryParameters, formParameters: FormParameters): Array[Object] = {
     val results = List[Object]()
     parameters.foreach(_ match {
-      case query: QueryParam  => results.add(queryParameters.getValue(query.value))
-      case form: FormParam  => results.add(formParameters.getValue(form.value))
+      case query: QueryParam => results.add(queryParameters.getValue(query.value))
+      case form: FormParam => results.add(formParameters.getValue(form.value))
       case path: PathParam => results.add(pathParameters.getValue(path.value))
     })
     results.toArray

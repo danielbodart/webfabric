@@ -46,12 +46,20 @@ class RestTest {
   }
 
   @Test
+  def canDetermineGetMethodBasedOnMimeType() {
+    val engine = new RestEngine
+    engine.add(classOf[GetsWithMimeTypes])
+    assertThat(engine.handle(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters()), is("plain"))
+    assertThat(engine.handle(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters()), is("html"))
+  }
+
+  @Test
   def canStreamOutput() {
     val engine = new RestEngine
     engine.add(classOf[StreamOutput])
     val out = new ByteArrayOutputStream
 
-    engine.handle("GET", "foo", QueryParameters(), FormParameters(), out)
+    engine.handle("GET", "foo", HeaderParameters(), QueryParameters(), FormParameters(), out)
 
     assertThat(out.toString, is("stream"))
   }
@@ -115,6 +123,21 @@ object RestTest {
     @GET
     def get(@QueryParam("arg") arg: String): String = {
       arg
+    }
+  }
+
+  @Path("text")
+  class GetsWithMimeTypes {
+    @GET
+    @Produces(Array("text/plain"))
+    def getPlain(): String = {
+      "plain"
+    }
+
+    @GET
+    @Produces(Array("text/html"))
+    def getHtml(): String = {
+      "html"
     }
   }
 

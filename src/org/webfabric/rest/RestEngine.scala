@@ -28,8 +28,8 @@ class RestEngine {
     }))
   }
 
-  def handle(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): String = {
-    activate(httpMethod, path, query, form) match {
+  def handle(httpMethod: String, path: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): String = {
+    activate(httpMethod, path, headers, query, form) match {
       case value: String => value
       case streaming: StreamingOutput => {
         val out = new ByteArrayOutputStream
@@ -40,8 +40,8 @@ class RestEngine {
     }
   }
 
-  def handle(httpMethod: String, path: String, query: QueryParameters, form: FormParameters, output: OutputStream): Unit = {
-    activate(httpMethod, path, query, form) match {
+  def handle(httpMethod: String, path: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters, output: OutputStream): Unit = {
+    activate(httpMethod, path, headers, query, form) match {
       case value: String => {
         var streamWriter = new OutputStreamWriter(output)
         streamWriter.write(value)
@@ -52,25 +52,25 @@ class RestEngine {
     }
   }
 
-  def activate(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): Object = {
-    findActivator(httpMethod, path, query, form) match {
-      case Some(activator) => activator.activate(container, path, query, form)
+  def activate(httpMethod: String, path: String,  headers: HeaderParameters, query: QueryParameters, form: FormParameters): Object = {
+    findActivator(httpMethod, path, headers, query, form) match {
+      case Some(activator) => activator.activate(container, path, headers, query, form)
       case _ => error("No match found")
     }
   }
 
-  def findActivator(httpMethod: String, path: String, query: QueryParameters, form: FormParameters): Option[HttpMethodActivator] = {
-    activators.filter(activator => activator.isMatch(httpMethod, path, query, form)).headOption
+  def findActivator(httpMethod: String, path: String, headers: HeaderParameters, query: QueryParameters, form: FormParameters): Option[HttpMethodActivator] = {
+    activators.filter(activator => activator.isMatch(httpMethod, path, headers, query, form)).headOption
   }
 
   def get(path: String): String = get(path, new QueryParameters)
 
   def get(path: String, query: QueryParameters): String = {
-    handle(HttpMethod.GET, path, query, FormParameters())
+    handle(HttpMethod.GET, path, HeaderParameters(), query, FormParameters())
   }
 
   def post(path: String, query: QueryParameters, form: FormParameters): String = {
-    handle(HttpMethod.POST, path, query, form)
+    handle(HttpMethod.POST, path, HeaderParameters(), query, form)
   }
 
 }
