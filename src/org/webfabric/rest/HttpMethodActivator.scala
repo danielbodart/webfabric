@@ -1,9 +1,9 @@
 package org.webfabric.rest
 
 import java.lang.reflect.Method
-import org.webfabric.collections.{List}
-import com.googlecode.yadic.SimpleContainer
+import org.webfabric.collections.{List,Map}
 import javax.ws.rs._
+import com.googlecode.yadic.{Resolver}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) {
   type Param = {def value(): String}
@@ -42,24 +42,26 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   }
 
   def parametersMatch(request:Request): Boolean = {
+    var pathParameters = pathTemplate.extract(request.path)
     parameters.foldLeft(true, (isMatch: Boolean, parameter) => parameter match {
       case query: QueryParam => isMatch && request.query.contains(query.value)
       case form: FormParam => isMatch && request.form.contains(form.value)
-      case path: PathParam => isMatch && pathTemplate.extract(request.path).contains(path.value)
+      case path: PathParam => isMatch && pathParameters.contains(path.value)
     })
   }
 
-  def activate(container: SimpleContainer, request:Request): Object = {
+  def activate(container: Resolver, request:Request): Object = {
     val resourceInstance = container.resolve(resource)
     method.invoke(resourceInstance, getParameters(request): _*)
   }
 
   def getParameters(request:Request): Array[Object] = {
+    var pathParameters = pathTemplate.extract(request.path)
     val results = List[Object]()
     parameters.foreach(_ match {
       case query: QueryParam => results.add(request.query.getValue(query.value))
       case form: FormParam => results.add(request.form.getValue(form.value))
-      case path: PathParam => results.add(pathTemplate.extract(request.path).getValue(path.value))
+      case path: PathParam => results.add(pathParameters.getValue(path.value))
     })
     results.toArray
   }
