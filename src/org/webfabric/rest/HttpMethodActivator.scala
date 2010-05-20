@@ -5,20 +5,16 @@ import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
+  val pathExtractor = new PathExtractor(resource, method)
+
   lazy val extractors = method.getParameterAnnotations.map(_(0) match {
       case query: QueryParam => new QueryParameterExtractor(query)
       case form: FormParam => new FormParameterExtractor(form)
-      case path: PathParam => new PathParameterExtractor(path, pathTemplate)
+      case path: PathParam => new PathParameterExtractor(path, pathExtractor)
       case _ => null
     }).filter(_ != null)
 
-  lazy val pathTemplate: UriTemplate = {
-    val paths = List(resource.getAnnotation(classOf[Path]), method.getAnnotation(classOf[Path]))
-    new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
-  }
-
-  val matchers = List(new MethodMatcher(httpMethod), new MimeMatcher(resource, method),
-    new Matcher[Request] { def isMatch(request: Request) = pathTemplate.isMatch(request.path)})
+  val matchers = List(new MethodMatcher(httpMethod), new MimeMatcher(resource, method), pathExtractor)
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
   
