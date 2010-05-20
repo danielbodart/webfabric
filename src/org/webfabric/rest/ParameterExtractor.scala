@@ -1,7 +1,6 @@
 package org.webfabric.rest
 
 
-trait ParameterExtractor {
-  def isMatch(request:Request):Boolean
+trait ParameterExtractor extends Matcher[Request] {
   def extract(request:Request):Object
 }

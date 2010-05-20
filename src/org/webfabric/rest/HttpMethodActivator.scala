@@ -1,11 +1,11 @@
 package org.webfabric.rest
 
 import java.lang.reflect.Method
-import org.webfabric.collections.{List,Map}
+import org.webfabric.collections.{List}
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
 
-class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) {
+class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
   lazy val extractors: List[ParameterExtractor] = {
     val result = List[ParameterExtractor]()
     method.getParameterAnnotations.foreach(_(0) match {

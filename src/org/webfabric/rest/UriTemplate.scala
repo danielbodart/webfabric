@@ -5,7 +5,7 @@ import org.webfabric.collections.{List, Iterable}
 import org.webfabric.regex.{Regex}
 import java.util.regex.Pattern
 
-class UriTemplate(template: String) {
+class UriTemplate(template: String) extends Matcher[String] {
   def isMatch(uri: String): Boolean = templateRegex.isMatch(uri)
 
   def extract(uri: String): PathParameters = {
