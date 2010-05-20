@@ -2,7 +2,7 @@ package org.webfabric.rest
 
 import javax.ws.rs.PathParam
 
-class PathParameterExtractor(param:PathParam, pathTemplate:UriTemplate) extends ParameterExtractor{
-  def isMatch(request:Request):Boolean = pathTemplate.extract(request.path).contains(param.value)
-  def extract(request:Request):Object = pathTemplate.extract(request.path).getValue(param.value)
+class PathParameterExtractor(param:PathParam, extractor:PathExtractor) extends ParameterExtractor{
+  def isMatch(request:Request):Boolean = extractor.extract(request).contains(param.value)
+  def extract(request:Request):Object = extractor.extract(request).getValue(param.value)
 }
