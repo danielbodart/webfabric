@@ -5,10 +5,9 @@ import java.lang.reflect.Method
 
 class MimeMatcher(resource:Class[_], method:Method) extends Matcher[Request] {
   lazy val producesMimetype: String = {
-    val result = List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null)
-    result.headOption match {
-      case Some(produces) => produces.value.first
-      case None => "*/*"
+    List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null) match {
+      case x :: xs => x.value.first
+      case Nil => "*/*"
     }
   }
 
