@@ -6,13 +6,12 @@ import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) {
-  type Param = {def value(): String}
-  lazy val parameters: List[Param] = {
-    val result = List[Param]()
+  lazy val extractors: List[ParameterExtractor] = {
+    val result = List[ParameterExtractor]()
     method.getParameterAnnotations.foreach(_(0) match {
-      case query: QueryParam => result.add(query)
-      case form: FormParam => result.add(form)
-      case path: PathParam => result.add(path)
+      case query: QueryParam => result.add(new QueryParameterExtractor(query))
+      case form: FormParam => result.add(new FormParameterExtractor(form))
+      case path: PathParam => result.add(new PathParameterExtractor(path))
       case _ =>
     })
     result
@@ -42,12 +41,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   }
 
   def parametersMatch(request:Request): Boolean = {
-    var pathParameters = pathTemplate.extract(request.path)
-    parameters.foldLeft(true, (isMatch: Boolean, parameter) => parameter match {
-      case query: QueryParam => isMatch && request.query.contains(query.value)
-      case form: FormParam => isMatch && request.form.contains(form.value)
-      case path: PathParam => isMatch && pathParameters.contains(path.value)
-    })
+    extractors.foldLeft(true, (isMatch: Boolean, extractor) => isMatch && extractor.isMatch(request, pathTemplate.extract(request.path)))
   }
 
   def activate(container: Resolver, request:Request): Object = {
@@ -56,13 +50,8 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   }
 
   def getParameters(request:Request): Array[Object] = {
-    var pathParameters = pathTemplate.extract(request.path)
     val results = List[Object]()
-    parameters.foreach(_ match {
-      case query: QueryParam => results.add(request.query.getValue(query.value))
-      case form: FormParam => results.add(request.form.getValue(form.value))
-      case path: PathParam => results.add(pathParameters.getValue(path.value))
-    })
+    extractors.foreach(extractor => results.add(extractor.extract(request, pathTemplate.extract(request.path))))
     results.toArray
   }
 }
