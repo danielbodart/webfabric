@@ -11,7 +11,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     method.getParameterAnnotations.foreach(_(0) match {
       case query: QueryParam => result.add(new QueryParameterExtractor(query))
       case form: FormParam => result.add(new FormParameterExtractor(form))
-      case path: PathParam => result.add(new PathParameterExtractor(path))
+      case path: PathParam => result.add(new PathParameterExtractor(path, pathTemplate))
       case _ =>
     })
     result
@@ -41,7 +41,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   }
 
   def parametersMatch(request:Request): Boolean = {
-    extractors.foldLeft(true, (isMatch: Boolean, extractor) => isMatch && extractor.isMatch(request, pathTemplate.extract(request.path)))
+    extractors.foldLeft(true, (isMatch: Boolean, extractor) => isMatch && extractor.isMatch(request))
   }
 
   def activate(container: Resolver, request:Request): Object = {
@@ -51,7 +51,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
 
   def getParameters(request:Request): Array[Object] = {
     val results = List[Object]()
-    extractors.foreach(extractor => results.add(extractor.extract(request, pathTemplate.extract(request.path))))
+    extractors.foreach(extractor => results.add(extractor.extract(request)))
     results.toArray
   }
 }
