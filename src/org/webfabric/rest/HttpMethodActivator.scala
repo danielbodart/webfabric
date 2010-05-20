@@ -22,24 +22,13 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
   }
 
-  lazy val producesMimetype: String = {
-    val result = List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null)
-    result.headOption match {
-      case Some(produces) => produces.value.first
-      case None => "*/*"
-    }
-  }
+  val mimeMatcher = new MimeMatcher(resource, method)
 
   def isMatch(request:Request): Boolean = {
     httpMethod.equals(request.method) && pathTemplate.isMatch(request.path) &&
-            mimeTypesMatch(request.headers) && parametersMatch(request)
+            mimeMatcher.isMatch(request) && parametersMatch(request)
   }
   
-  def mimeTypesMatch(headers: HeaderParameters):Boolean = {
-    val expected = if(headers.contains("Accept")) headers.getValue("Accept") else "*/*"
-    expected.equals(producesMimetype)
-  }
-
   def parametersMatch(request:Request): Boolean = {
     extractors.foldLeft(true, (isMatch: Boolean, extractor) => isMatch && extractor.isMatch(request))
   }
