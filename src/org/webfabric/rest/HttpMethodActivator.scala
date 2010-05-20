@@ -17,15 +17,11 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
   }
 
-  val mimeMatcher = new MimeMatcher(resource, method)
+  val matchers = List(new MethodMatcher(httpMethod), new MimeMatcher(resource, method),
+    new Matcher[Request] { def isMatch(request: Request) = pathTemplate.isMatch(request.path)})
 
-  def isMatch(request:Request): Boolean = {
-    httpMethod.equals(request.method) && pathTemplate.isMatch(request.path) &&
-            mimeMatcher.isMatch(request) && parametersMatch(request)
-  }
+  def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
   
-  def parametersMatch(request:Request): Boolean = extractors.forall(_.isMatch(request))
-
   def activate(container: Resolver, request:Request): Object = {
     val resourceInstance = container.resolve(resource)
     method.invoke(resourceInstance, getParameters(request): _*)
