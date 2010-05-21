@@ -16,7 +16,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
       case _ => null
     }}).filter(_ != null)
 
-  val matchers = List(new MethodMatcher(httpMethod), new MimeMatcher(resource, method), pathExtractor)
+  val matchers = List(new MethodMatcher(httpMethod), new ProducesMimeMatcher(resource, method), new ConsumesMimeMatcher(resource, method), pathExtractor)
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
   

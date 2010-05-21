@@ -3,7 +3,7 @@ package org.webfabric.rest
 import javax.ws.rs.Produces
 import java.lang.reflect.Method
 
-class MimeMatcher(resource:Class[_], method:Method) extends Matcher[Request] {
+class ProducesMimeMatcher(resource:Class[_], method:Method) extends Matcher[Request] {
   lazy val producesMimetype: String = {
     List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null) match {
       case x :: xs => x.value.first
