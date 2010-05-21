@@ -74,4 +74,12 @@ object Iterator {
     foreach[T](iterator, result.add(_))
     result
   }
+
+  def forall[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Boolean = {
+    while (iterator.hasNext) {
+      val item = iterator.next
+      if (!predicate(item)) return false
+    }
+    true
+  }
 }

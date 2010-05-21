@@ -3,16 +3,18 @@ package org.webfabric.rest
 import java.lang.reflect.Method
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
+import java.io.InputStream
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
   val pathExtractor = new PathExtractor(resource, method)
 
-  lazy val extractors = method.getParameterAnnotations.map(_(0) match {
+  lazy val extractors = method.getParameterTypes.zip(method.getParameterAnnotations).map(pair => {
+    if(pair._1 == classOf[InputStream]) new InputStreamExtractor() else pair._2(0) match {
       case query: QueryParam => new QueryParameterExtractor(query)
       case form: FormParam => new FormParameterExtractor(form)
       case path: PathParam => new PathParameterExtractor(path, pathExtractor)
       case _ => null
-    }).filter(_ != null)
+    }}).filter(_ != null)
 
   val matchers = List(new MethodMatcher(httpMethod), new MimeMatcher(resource, method), pathExtractor)
 
