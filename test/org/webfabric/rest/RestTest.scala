@@ -95,6 +95,15 @@ class RestTest {
     val input = new ByteArrayInputStream("input".getBytes)
     assertThat(engine.handle(put( "path/bar", input)), is("input"))
   }
+
+  @Test
+  def canDetermineInputHandlerByMimeType() {
+    val engine = new RestEngine
+    engine.add(classOf[MultiplePutContent])
+
+    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters("Content-Type" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
+    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters("Content-Type" -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+  }
 }
 
 object RestTest {
@@ -206,4 +215,21 @@ object RestTest {
       id
     }
   }
+
+  @Path("text")
+  class MultiplePutContent {
+    @PUT
+    @Consumes(Array("text/plain"))
+    def putPlain(input:InputStream): String = {
+      "plain"
+    }
+
+    @PUT
+    @Consumes(Array("text/html"))
+    def putHtml(input:InputStream): String = {
+      "html"
+    }
+  }
+
+
 }
