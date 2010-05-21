@@ -28,6 +28,8 @@ trait Iterable[T] extends java.lang.Iterable[T] {
   def toList:List[T] = Iterable.toList(this)
 
   def zip[S](list:java.lang.Iterable[S]): Iterable[(T,S)]  = Iterable.zip(this, list)
+
+  def forall(predicate: (T) => Boolean): Boolean  = Iterable.forall(this, predicate)
 }
 
 
@@ -89,6 +91,8 @@ object Iterable {
       def iterator = new ZipIterator[T,S](iterable.iterator, anotherIterable.iterator)
     }
   }
+
+  def forall[T](iterable:java.lang.Iterable[T], predicate: (T) => Boolean): Boolean  = Iterator.forall(iterable.iterator, predicate)
 
 
 }

@@ -3,6 +3,7 @@ package org.webfabric.rest
 import org.hamcrest.CoreMatchers._
 import org.junit.Assert._
 import org.junit._
+import org.webfabric.io.Converter.asString
 import org.webfabric.rest.RestTest._
 import javax.ws.rs._
 import core.StreamingOutput
@@ -50,8 +51,8 @@ class RestTest {
   def canDetermineGetMethodBasedOnMimeType() {
     val engine = new RestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters())), is("plain"))
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters())), is("html"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
   }
 
   @Test
@@ -77,6 +78,22 @@ class RestTest {
     val engine = new RestEngine
     engine.add(classOf[PathParameter])
     assertThat(engine.handle(get( "path/bar")), is("bar"))
+  }
+
+  @Test
+  def supportsDelete() {
+    val engine = new RestEngine
+    engine.add(classOf[DeleteContent])
+    assertThat(engine.handle(delete( "path/bar")), is(nullValue[String]))
+  }
+
+  @Test
+  def supportsPut() {
+    val engine = new RestEngine
+    engine.add(classOf[PutContent])
+
+    val input = new ByteArrayInputStream("input".getBytes)
+    assertThat(engine.handle(put( "path/bar", input)), is("input"))
   }
 }
 
@@ -162,6 +179,23 @@ object RestTest {
     @POST
     def post(): Unit = {
       count = count + 1
+    }
+  }
+
+  @Path("path/{id}")
+  class DeleteContent {
+    var count = 0
+    @DELETE
+    def delete(@PathParam("id") id:String): Unit = {
+      count = count + 1
+    }
+  }
+
+ @Path("path/{id}")
+  class PutContent {
+    @PUT
+    def put(@PathParam("id") id:String, input:InputStream): String = {
+      asString(input)
     }
   }
 
