@@ -26,7 +26,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     method.invoke(resourceInstance, getParameters(request): _*) match {
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
-      case null =>
+      case null => response.code = 204
     }
   }
 
