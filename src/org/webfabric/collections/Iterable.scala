@@ -30,6 +30,8 @@ trait Iterable[T] extends java.lang.Iterable[T] {
   def zip[S](list:java.lang.Iterable[S]): Iterable[(T,S)]  = Iterable.zip(this, list)
 
   def forall(predicate: (T) => Boolean): Boolean  = Iterable.forall(this, predicate)
+
+  def exists(predicate: (T) => Boolean): Boolean  = Iterable.exists(this, predicate)
 }
 
 
@@ -73,9 +75,15 @@ object Iterable {
     }
   }
 
-  implicit def toMyIterable[T](scalaIterable: scala.Iterable[T]): Iterable[T] = {
+  implicit def convertScalaIterable[T](scalaIterable: scala.Iterable[T]): Iterable[T] = {
     new Iterable[T] {
       def iterator = Iterator.toMyIterator(scalaIterable.elements)
+    }
+  }
+
+  implicit def convertEnumeration[T](enumeration: java.util.Enumeration[T]): Iterable[T] = {
+    new Iterable[T] {
+      def iterator = Iterator.toMyIterator(enumeration)
     }
   }
 
@@ -93,6 +101,8 @@ object Iterable {
   }
 
   def forall[T](iterable:java.lang.Iterable[T], predicate: (T) => Boolean): Boolean  = Iterator.forall(iterable.iterator, predicate)
+
+  def exists[T](iterable:java.lang.Iterable[T], predicate: (T) => Boolean): Boolean  = Iterator.exists(iterable.iterator, predicate)
 
 
 }

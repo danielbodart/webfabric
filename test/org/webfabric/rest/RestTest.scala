@@ -20,6 +20,13 @@ class RestTest {
   }
 
   @Test
+  def leadingSlashInPathShouldNotChangeMatch() {
+    val engine = new TestEngine
+    engine.add(classOf[Gettable])
+    assertThat(engine.handle(get("/foo")), is("bar"))
+  }
+
+  @Test
   def canGetWithQueryParameter() {
     val engine = new TestEngine
     engine.add(classOf[GettableWithQuery])
@@ -64,6 +71,17 @@ class RestTest {
     var response = new Response
     engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput), response)
     assertThat(response.headers.getValue("Content-Type"), is("text/plain"))
+  }
+
+  @Test
+  @Ignore
+  def canHandleRealWorldAcceptsHeader() {
+    val engine = new TestEngine
+    engine.add(classOf[GetsWithMimeTypes])
+    val accepts = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
+
+    var response = new Response
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> accepts), QueryParameters(), FormParameters(), Request.emptyInput)), is("xml"))
   }
 
   @Test
@@ -192,6 +210,12 @@ object RestTest {
     @Produces(Array("text/plain"))
     def getPlain(): String = {
       "plain"
+    }
+
+    @GET
+    @Produces(Array("application/xml"))
+    def getXml(): String = {
+      "xml"
     }
 
     @GET
