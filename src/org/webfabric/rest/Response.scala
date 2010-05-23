@@ -1,6 +1,7 @@
 package org.webfabric.rest
 
 import java.io.{ByteArrayOutputStream, OutputStreamWriter, OutputStream}
+import javax.servlet.http.HttpServletResponse
 
 case class Response(val output: OutputStream) {
   var code:Int = 200
@@ -12,5 +13,11 @@ case class Response(val output: OutputStream) {
     streamWriter.write(value)
     streamWriter.flush
     this
+  }
+}
+
+object Response{
+  def apply(response:HttpServletResponse):Response = {
+    Response(response.getOutputStream)
   }
 }

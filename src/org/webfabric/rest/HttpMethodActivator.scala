@@ -21,6 +21,8 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathExtractor)
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
+
+  def quality(request:Request):Float = producesMatcher.quality(request)
   
   def activate(container: Resolver, request:Request, response:Response): Unit = {
     val instance = container.resolve(resource)

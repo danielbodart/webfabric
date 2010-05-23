@@ -9,7 +9,11 @@ class PathExtractor(resource:Class[_], method:Method) extends Extractor[Request,
       new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
     }
 
-  def isMatch(request: Request) = pathTemplate.isMatch(request.path)
+  def isMatch(request: Request) = pathTemplate.isMatch(removeLeadingSlash(request.path))
 
-  def extract(request: Request) = pathTemplate.extract(request.path)
+  def extract(request: Request) = pathTemplate.extract(removeLeadingSlash(request.path))
+
+  def removeLeadingSlash(path:String):String = {
+    path.replaceFirst("^/", "")
+  }
 }

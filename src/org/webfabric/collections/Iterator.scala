@@ -57,6 +57,15 @@ object Iterator {
       def hasNext = scalaIterator.hasNext
     }
 
+  implicit def toMyIterator[T](enumeration:java.util.Enumeration[T]):java.util.Iterator[T] =
+    new java.util.Iterator[T] {
+      def remove = throw new UnsupportedOperationException
+
+      def next = enumeration.nextElement
+
+      def hasNext = enumeration.hasMoreElements
+    }
+
   def mkString[T](iterator: java.util.Iterator[T], separator:String):String = mkString(iterator, "", separator, "")
   def mkString[T](iterator: java.util.Iterator[T], start:String, separator:String, end:String):String ={
     val builder = new StringBuilder
@@ -81,5 +90,13 @@ object Iterator {
       if (!predicate(item)) return false
     }
     true
+  }
+
+  def exists[T](iterator: java.util.Iterator[T], predicate: (T) => Boolean): Boolean = {
+    while (iterator.hasNext) {
+      val item = iterator.next
+      if (predicate(item)) return true
+    }
+    false
   }
 }

@@ -1,6 +1,6 @@
 package org.webfabric.rest
 
-import org.webfabric.collections.Iterable.toMyIterable
+import org.webfabric.collections.Iterable.convertScalaIterable
 import java.lang.reflect.Method
 import org.webfabric.collections.List
 import javax.ws.rs.{HttpMethod}
