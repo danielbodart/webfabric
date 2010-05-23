@@ -67,7 +67,9 @@ class RestTest {
   def supportsNoContent() {
     val engine = new TestEngine
     engine.add(classOf[NoContent])
-    assertThat(engine.handle(post( "foo", FormParameters())), is(""))
+    val response = new Response()
+    engine.handle(post( "foo", FormParameters()), response)
+    assertThat(response.code, is(204))
   }
 
   @Test
@@ -81,7 +83,9 @@ class RestTest {
   def supportsDelete() {
     val engine = new TestEngine
     engine.add(classOf[DeleteContent])
-    assertThat(engine.handle(delete( "path/bar")), is(""))
+    val response = new Response()
+    engine.handle(delete( "path/bar"), response)
+    assertThat(response.code, is(204))
   }
 
   @Test
@@ -116,8 +120,12 @@ object RestTest {
 
     def handle(request:Request):String = {
       val output = new ByteArrayOutputStream
-      engine.handle(container, request, new Response(output))
+      handle(request, Response(output))
       output.toString
+    }
+
+    def handle(request:Request, response:Response):Unit = {
+      engine.handle(container, request, response)
     }
   }
 
