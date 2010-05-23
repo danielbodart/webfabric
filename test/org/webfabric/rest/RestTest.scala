@@ -9,39 +9,40 @@ import javax.ws.rs._
 import core.StreamingOutput
 import java.io._
 import Request._
+import com.googlecode.yadic.SimpleContainer
 
 class RestTest {
   @Test
   def canGet() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[Gettable])
     assertThat(engine.handle(get("foo")), is("bar"))
   }
 
   @Test
   def canGetWithQueryParameter() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[GettableWithQuery])
     assertThat(engine.handle(get("foo", QueryParameters("name" -> "value"))), is("value"))
   }
 
   @Test
   def canPostWithFormParameter() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[Postable])
     assertThat(engine.handle(post("foo", FormParameters("name" -> "value"))), is("value"))
   }
 
   @Test
   def canHandlePathsOnMethodAsWellAsClass() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[MutlilplePaths])
     assertThat(engine.handle(get("foo/bar")), is("found"))
   }
 
   @Test
   def canDetermineMethodWhenThereIsAChoice() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[MutlilpleGets])
     assertThat(engine.handle(get("foo")), is("no parameters"))
     assertThat(engine.handle(get("foo", QueryParameters("arg" -> "match"))), is("match"))
@@ -49,7 +50,7 @@ class RestTest {
 
   @Test
   def canDetermineGetMethodBasedOnMimeType() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
     assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
     assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
@@ -57,39 +58,35 @@ class RestTest {
 
   @Test
   def canStreamOutput() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[StreamOutput])
-    val out = new ByteArrayOutputStream
-
-    engine.handle(get("foo"), out)
-
-    assertThat(out.toString, is("stream"))
+    assertThat(engine.handle(get("foo")), is("stream"))
   }
 
   @Test
   def supportsNoContent() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[NoContent])
-    assertThat(engine.handle(post( "foo", FormParameters())), is(nullValue[String]))
+    assertThat(engine.handle(post( "foo", FormParameters())), is(""))
   }
 
   @Test
   def supportsPathParameter() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[PathParameter])
     assertThat(engine.handle(get( "path/bar")), is("bar"))
   }
 
   @Test
   def supportsDelete() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[DeleteContent])
-    assertThat(engine.handle(delete( "path/bar")), is(nullValue[String]))
+    assertThat(engine.handle(delete( "path/bar")), is(""))
   }
 
   @Test
   def supportsPut() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[PutContent])
 
     val input = new ByteArrayInputStream("input".getBytes)
@@ -98,7 +95,7 @@ class RestTest {
 
   @Test
   def canDetermineInputHandlerByMimeType() {
-    val engine = new RestEngine
+    val engine = new TestEngine
     engine.add(classOf[MultiplePutContent])
 
     assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters("Content-Type" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
@@ -107,6 +104,24 @@ class RestTest {
 }
 
 object RestTest {
+  class TestEngine{
+    val engine = new RestEngine
+    val container = new SimpleContainer
+
+    def add(resource: Class[_]):TestEngine = {
+      engine.add(resource)
+      container.add(resource)
+      this
+    }
+
+    def handle(request:Request):String = {
+      val output = new ByteArrayOutputStream
+      engine.handle(container, request, new Response(output))
+      output.toString
+    }
+  }
+
+
   @Path("foo")
   class Gettable {
     @GET

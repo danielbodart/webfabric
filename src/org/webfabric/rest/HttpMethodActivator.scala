@@ -3,6 +3,7 @@ package org.webfabric.rest
 import java.lang.reflect.Method
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
+import core.StreamingOutput
 import java.io.InputStream
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
@@ -20,9 +21,13 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
   
-  def activate(container: Resolver, request:Request): Object = {
+  def activate(container: Resolver, request:Request, response:Response): Unit = {
     val resourceInstance = container.resolve(resource)
-    method.invoke(resourceInstance, getParameters(request): _*)
+    method.invoke(resourceInstance, getParameters(request): _*) match {
+      case body:String => response.write(body)
+      case streaming:StreamingOutput => streaming.write(response.output)
+      case null =>
+    }
   }
 
   def getParameters(request:Request): Array[Object] = extractors.map(extractor => extractor.extract(request))
