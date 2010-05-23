@@ -4,6 +4,7 @@ import java.io.{ByteArrayOutputStream, OutputStreamWriter, OutputStream}
 
 case class Response(val output: OutputStream) {
   var code:Int = 200
+  val headers = HeaderParameters()
   def this() = this (new ByteArrayOutputStream)
 
   def write(value: String): Response = {
