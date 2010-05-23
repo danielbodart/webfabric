@@ -4,7 +4,7 @@ import javax.ws.rs.Produces
 import java.lang.reflect.Method
 
 class ProducesMimeMatcher(resource:Class[_], method:Method) extends Matcher[Request] {
-  lazy val producesMimetype: String = {
+  lazy val mimeType: String = {
     List(method.getAnnotation(classOf[Produces]), resource.getAnnotation(classOf[Produces])).filter(_ != null) match {
       case x :: xs => x.value.first
       case Nil => "*/*"
@@ -13,6 +13,6 @@ class ProducesMimeMatcher(resource:Class[_], method:Method) extends Matcher[Requ
 
   def isMatch(request: Request):Boolean = {
     val expected = if(request.headers.contains("Accept")) request.headers.getValue("Accept") else "*/*"
-    expected.equals(producesMimetype)
+    expected.equals(mimeType)
   }
 }

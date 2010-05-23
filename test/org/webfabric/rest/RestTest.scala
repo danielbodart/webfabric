@@ -57,6 +57,16 @@ class RestTest {
   }
 
   @Test
+  def setsResponseMimeType() {
+    val engine = new TestEngine
+    engine.add(classOf[GetsWithMimeTypes])
+
+    var response = new Response
+    engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput), response)
+    assertThat(response.headers.getValue("Content-Type"), is("text/plain"))
+  }
+
+  @Test
   def canStreamOutput() {
     val engine = new TestEngine
     engine.add(classOf[StreamOutput])

@@ -17,13 +17,16 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
       case _ => null
     }}).filter(_ != null)
 
-  val matchers = List(new MethodMatcher(httpMethod), new ProducesMimeMatcher(resource, method), new ConsumesMimeMatcher(resource, method), pathExtractor)
+  var producesMatcher = new ProducesMimeMatcher(resource, method)
+  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathExtractor)
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
   
   def activate(container: Resolver, request:Request, response:Response): Unit = {
-    val resourceInstance = container.resolve(resource)
-    method.invoke(resourceInstance, getParameters(request): _*) match {
+    val instance = container.resolve(resource)
+    var result = method.invoke(instance, getParameters(request): _*)
+    response.headers.add("Content-Type", producesMatcher.mimeType)
+    result match {
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
       case null => response.code = 204
