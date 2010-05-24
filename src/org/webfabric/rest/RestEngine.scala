@@ -32,7 +32,7 @@ class RestEngine {
   }
 
   def findActivator(request:Request): Option[HttpMethodActivator] = {
-    activators.filter(activator => activator.isMatch(request)).headOption
+    activators.filter(activator => activator.isMatch(request)).toList.sort(_.quality(request) > _.quality(request)).headOption
   }
 
 }

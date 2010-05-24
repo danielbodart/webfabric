@@ -74,7 +74,6 @@ class RestTest {
   }
 
   @Test
-  @Ignore
   def canHandleRealWorldAcceptsHeader() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
