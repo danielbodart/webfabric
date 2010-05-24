@@ -22,7 +22,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
 
   def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
 
-  def quality(request:Request):Float = producesMatcher.quality(request)
+  def matchQuality(request:Request):Float = producesMatcher.matchQuality(request) * (method.getParameterTypes.size + 1)
   
   def activate(container: Resolver, request:Request, response:Response): Unit = {
     val instance = container.resolve(resource)

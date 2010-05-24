@@ -17,7 +17,10 @@ class ProducesMimeMatcher(resource: Class[_], method: Method) extends Matcher[Re
     } else true
   }
 
-  def quality(request: Request):Float = {
-    Accept(request.headers.getValue("Accept")).quality(mimeType)
+  def matchQuality(request: Request):Float = {
+    if (request.headers.contains("Accept")) {
+      var quality = Accept(request.headers.getValue("Accept")).quality(mimeType)
+      quality
+    } else 1.0f
   }
 }
