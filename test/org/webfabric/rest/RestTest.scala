@@ -147,7 +147,9 @@ object RestTest {
 
     def handle(request:Request):String = {
       val output = new ByteArrayOutputStream
-      handle(request, Response(output))
+      val response: Response = Response(output)
+      handle(request, response)
+      response.flush
       output.toString
     }
 
