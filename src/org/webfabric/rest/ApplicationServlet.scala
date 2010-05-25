@@ -12,9 +12,6 @@ class ApplicationServlet extends HttpServlet{
   }
 
   override def service(req: HttpServletRequest, resp: HttpServletResponse) = {
-    var response = Response(resp)
-    application.handle(Request(req), response)
-    resp.setStatus(response.code)
-    resp.setHeader(HttpHeaders.CONTENT_TYPE, response.headers.getValue(HttpHeaders.CONTENT_TYPE))
+    application.handle(Request(req), Response(resp))
   }
 }

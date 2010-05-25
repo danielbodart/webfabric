@@ -33,11 +33,11 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   def activate(container: Resolver, request:Request, response:Response): Unit = {
     val instance = container.resolve(resource)
     var result = method.invoke(instance, getParameters(request): _*)
-    response.headers.add(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
+    response.setHeader(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
     result match {
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
-      case null => response.code = 204
+      case null => response.setCode(204)
     }
   }
 
