@@ -6,7 +6,7 @@ import org.junit._
 import org.webfabric.io.Converter.asString
 import org.webfabric.rest.RestTest._
 import javax.ws.rs._
-import core.StreamingOutput
+import core.{HttpHeaders, StreamingOutput}
 import java.io._
 import Request._
 import com.googlecode.yadic.SimpleContainer
@@ -37,6 +37,7 @@ class RestTest {
   def canPostWithFormParameter() {
     val engine = new TestEngine
     engine.add(classOf[Postable])
+    assertThat(engine.handle(Request(HttpMethod.POST, "foo", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "application/x-www-form-urlencoded"), QueryParameters(), FormParameters("name" -> "value"), emptyInput)), is("value"))
     assertThat(engine.handle(post("foo", FormParameters("name" -> "value"))), is("value"))
   }
 
@@ -59,8 +60,8 @@ class RestTest {
   def canDetermineGetMethodBasedOnMimeType() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
   }
 
   @Test
@@ -69,7 +70,7 @@ class RestTest {
     engine.add(classOf[GetsWithMimeTypes])
 
     var response = new Response
-    engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput), response)
+    engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput), response)
     assertThat(response.headers.getValue("Content-Type"), is("text/plain"))
   }
 
@@ -77,10 +78,13 @@ class RestTest {
   def canHandleRealWorldAcceptsHeader() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    val accepts = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
+    var accepts = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
+    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> accepts), QueryParameters(), FormParameters(), Request.emptyInput)), is("xml"))
 
-    var response = new Response
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters("Accept" -> accepts), QueryParameters(), FormParameters(), Request.emptyInput)), is("xml"))
+    engine.add(classOf[PutContent])
+    val input = new ByteArrayInputStream("input".getBytes)
+    accepts = """text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"""
+    assertThat(engine.handle(Request(HttpMethod.PUT, "path/foo", HeaderParameters(HttpHeaders.ACCEPT -> accepts), QueryParameters(), FormParameters(), input)), is("input"))
   }
 
   @Test
@@ -129,8 +133,8 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[MultiplePutContent])
 
-    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters("Content-Type" -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
-    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters("Content-Type" -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
+    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
   }
 }
 

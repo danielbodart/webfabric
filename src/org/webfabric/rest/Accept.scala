@@ -11,7 +11,7 @@ class Accept(mediaRanges: Iterable[MediaRange]) {
 }
 
 object Accept {
-  val regex = new Regex("""([^,;]+)(;q=([0-9\.]+))?,?""")
+  val regex = new Regex("""([^,;\s]+)(;\s*q=([0-9\.]+))?,?""")
 
   case class MediaRange(value: String, quality: Float)
 

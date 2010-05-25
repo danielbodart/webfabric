@@ -32,7 +32,13 @@ class RestEngine {
   }
 
   def findActivator(request:Request): Option[HttpMethodActivator] = {
-    activators.filter(activator => activator.isMatch(request)).toList.sort(_.matchQuality(request) > _.matchQuality(request)).headOption
+    activators.filter(activator => activator.isMatch(request)).toList.sort(compare(request, _,_)).headOption
+  }
+
+  def compare(request:Request, first:HttpMethodActivator, second:HttpMethodActivator):Boolean = {
+    val firstQuality = first.matchQuality(request)
+    val secondQuality = second.matchQuality(request)
+    if( firstQuality == secondQuality) first.numberOfArguments > second.numberOfArguments else firstQuality > secondQuality
   }
 
 }
