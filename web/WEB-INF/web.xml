@@ -20,16 +20,6 @@
     </listener>
 
     <servlet>
-        <servlet-name>properties-service</servlet-name>
-        <servlet-class>org.webfabric.properties.PropertiesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>properties-service</servlet-name>
-        <url-pattern>/properties/</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>sitemesh-service</servlet-name>
         <servlet-class>org.webfabric.sitemesh.SiteMeshServlet</servlet-class>
     </servlet>
