@@ -3,7 +3,7 @@ package org.webfabric.rest
 import java.lang.reflect.Method
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
-import core.StreamingOutput
+import core.{HttpHeaders, StreamingOutput}
 import java.io.InputStream
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
@@ -20,14 +20,20 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   var producesMatcher = new ProducesMimeMatcher(resource, method)
   val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathExtractor)
 
-  def isMatch(request:Request): Boolean = matchers.forall(_.isMatch(request)) && extractors.forall(_.isMatch(request))
+  def isMatch(request:Request): Boolean = {
+    var allMatchers = matchers.forall(_.isMatch(request))
+    var allExtractors = extractors.forall(_.isMatch(request))
+    allMatchers && allExtractors
+  }
 
-  def matchQuality(request:Request):Float = producesMatcher.matchQuality(request) * (method.getParameterTypes.size + 1)
+  def matchQuality(request:Request):Float = producesMatcher.matchQuality(request)
+
+  def numberOfArguments = method.getParameterTypes.size
   
   def activate(container: Resolver, request:Request, response:Response): Unit = {
     val instance = container.resolve(resource)
     var result = method.invoke(instance, getParameters(request): _*)
-    response.headers.add("Content-Type", producesMatcher.mimeType)
+    response.headers.add(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
     result match {
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)

@@ -2,6 +2,7 @@ package org.webfabric.rest
 
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import javax.servlet.ServletConfig
+import javax.ws.rs.core.HttpHeaders
 
 class ApplicationServlet extends HttpServlet{
   var application:Application = null
@@ -11,6 +12,9 @@ class ApplicationServlet extends HttpServlet{
   }
 
   override def service(req: HttpServletRequest, resp: HttpServletResponse) = {
-    application.handle(Request(req), Response(resp))
+    var response = Response(resp)
+    application.handle(Request(req), response)
+    resp.setStatus(response.code)
+    resp.setHeader(HttpHeaders.CONTENT_TYPE, response.headers.getValue(HttpHeaders.CONTENT_TYPE))
   }
 }
