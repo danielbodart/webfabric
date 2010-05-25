@@ -213,12 +213,9 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="Restlet">
+    <library name="rest">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/javax.ws.rs.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/org.restlet.ext.servlet.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/org.restlet.ext.jaxrs.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/org.restlet.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>

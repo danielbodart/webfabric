@@ -18,5 +18,4 @@ class LocalDatastore {
   def tearDown() {
     localServices.tearDown
   }
- 
 }
