@@ -25,7 +25,7 @@ class PropertiesModule extends Module{
   }
 
   def baseUrl = {
-    val url = RelativeResource.asUrl(classOf[PropertiesApplication], "editor.st")
+    val url = RelativeResource.asUrl(classOf[PropertiesModule], "editor.st")
     url.replacePath(url.path.parent)
   }
 }

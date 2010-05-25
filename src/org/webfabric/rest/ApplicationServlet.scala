@@ -2,7 +2,6 @@ package org.webfabric.rest
 
 import javax.servlet.http.{HttpServletResponse, HttpServletRequest, HttpServlet}
 import javax.servlet.ServletConfig
-import javax.ws.rs.core.HttpHeaders
 
 class ApplicationServlet extends HttpServlet{
   var application:Application = null

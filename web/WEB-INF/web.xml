@@ -4,21 +4,6 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <!--<context-param>-->
-    <!--<param-name>org.restlet.application</param-name>-->
-    <!--<param-value>org.webfabric.properties.RootApplication</param-value>-->
-    <!--</context-param>-->
-
-    <!--<servlet>-->
-    <!--<servlet-name>RestletServlet</servlet-name>-->
-    <!--<servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>-->
-    <!--</servlet>-->
-
-    <!--<servlet-mapping>-->
-    <!--<servlet-name>RestletServlet</servlet-name>-->
-    <!--<url-pattern>/rest/*</url-pattern>-->
-    <!--</servlet-mapping>-->
-
     <servlet>
         <servlet-name>ApplicationServlet</servlet-name>
         <servlet-class>org.webfabric.rest.ApplicationServlet</servlet-class>
