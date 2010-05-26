@@ -229,6 +229,13 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="cglib">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/cglib-nodep-2.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
 </project>
 
