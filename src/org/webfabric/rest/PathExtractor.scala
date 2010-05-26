@@ -13,6 +13,8 @@ class PathExtractor(resource:Class[_], method:Method) extends Extractor[Request,
 
   def extract(request: Request) = pathTemplate.extract(removeLeadingSlash(request.path))
 
+  def generate(parameters: PathParameters) = pathTemplate.generate(parameters)
+
   def removeLeadingSlash(path:String):String = {
     path.replaceFirst("^/", "")
   }
