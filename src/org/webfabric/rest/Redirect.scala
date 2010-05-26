@@ -1,13 +1,14 @@
 package org.webfabric.rest
 
-import java.lang.reflect.{Method, InvocationHandler, Proxy}
+
 import javax.ws.rs.core.StreamingOutput
 import java.io.{OutputStreamWriter, OutputStream, ByteArrayOutputStream}
+import java.lang.reflect.Method
+import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
 
-class Redirect(path:String){
+class Redirect(path: String) {
   override def toString = path.toString
 }
-
 
 object Redirect {
   def apply(path: String): Redirect = {
@@ -21,10 +22,10 @@ object Redirect {
   }
 
   def resource[T <: Object](aClass: Class[T]): T = {
-    var loader = getClass.getClassLoader
-    var classes = Array[Class[_]](aClass)
-    var proxyClass = Proxy.getProxyClass(loader, classes: _*)
-    Proxy.newProxyInstance(loader, classes, new ResourcePath).asInstanceOf[T]
+    val enhancer = new Enhancer
+    enhancer.setSuperclass(aClass)
+    enhancer.setCallback(new ResourcePath)
+    enhancer.create().asInstanceOf[T]
   }
 
   def getPath(method: Method, arguments: Array[Object]): String = {
@@ -54,8 +55,8 @@ object Redirect {
     }
   }
 
-  class ResourcePath extends InvocationHandler {
-    def invoke(proxy: Any, method: Method, arguments: Array[Object]): Object = {
+  class ResourcePath extends  MethodInterceptor  {
+    def intercept(proxy: Any, method: Method, arguments: Array[Object], methodProxy: MethodProxy):Object = {
       createReturnType(method.getReturnType, getPath(method, arguments))
     }
   }

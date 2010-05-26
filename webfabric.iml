@@ -56,6 +56,7 @@
     <orderEntry type="library" name="google.app.engine" level="project" />
     <orderEntry type="library" name="rest" level="project" />
     <orderEntry type="library" name="yadic" level="project" />
+    <orderEntry type="library" name="cglib" level="project" />
   </component>
 </module>
 
