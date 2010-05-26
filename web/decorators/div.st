@@ -1,0 +1,1 @@
+$query.("id"):{id|$properties.div.(id)$}$

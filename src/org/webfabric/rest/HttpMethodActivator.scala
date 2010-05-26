@@ -1,0 +1,45 @@
+package org.webfabric.rest
+
+import java.lang.reflect.Method
+import javax.ws.rs._
+import com.googlecode.yadic.{Resolver}
+import core.{HttpHeaders, StreamingOutput}
+import java.io.InputStream
+
+class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
+  val pathExtractor = new PathExtractor(resource, method)
+
+  lazy val extractors = method.getParameterTypes.zip(method.getParameterAnnotations).map(pair => {
+    if(pair._1 == classOf[InputStream]) new InputStreamExtractor() else pair._2(0) match {
+      case query: QueryParam => new QueryParameterExtractor(query)
+      case form: FormParam => new FormParameterExtractor(form)
+      case path: PathParam => new PathParameterExtractor(path, pathExtractor)
+      case _ => null
+    }}).filter(_ != null)
+
+  var producesMatcher = new ProducesMimeMatcher(resource, method)
+  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathExtractor)
+
+  def isMatch(request:Request): Boolean = {
+    var allMatchers = matchers.forall(_.isMatch(request))
+    var allExtractors = extractors.forall(_.isMatch(request))
+    allMatchers && allExtractors
+  }
+
+  def matchQuality(request:Request):Float = producesMatcher.matchQuality(request)
+
+  def numberOfArguments = method.getParameterTypes.size
+  
+  def activate(container: Resolver, request:Request, response:Response): Unit = {
+    val instance = container.resolve(resource)
+    var result = method.invoke(instance, getParameters(request): _*)
+    response.setHeader(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
+    result match {
+      case body:String => response.write(body)
+      case streaming:StreamingOutput => streaming.write(response.output)
+      case null => response.setCode(204)
+    }
+  }
+
+  def getParameters(request:Request): Array[Object] = extractors.map(extractor => extractor.extract(request))
+}
