@@ -36,5 +36,6 @@ class WebPropertiesTest {
 
     properties = new WebProperties(sameUrl)
     assertThat(properties.entrySet.size, is(1))
+    assertThat(properties.getProperty("foo"), is("bar"))
   }
 }
