@@ -1,7 +1,6 @@
 package org.webfabric.properties
 
 import com.googlecode.yadic.Container
-import com.google.appengine.api.datastore.{DatastoreService, DatastoreServiceFactory}
 import org.antlr.stringtemplate.StringTemplateGroup
 import org.webfabric.stringtemplate.UrlStringTemplateGroup
 import org.webfabric.io.RelativeResource
@@ -11,7 +10,6 @@ class PropertiesModule extends Module{
   def addPerRequestObjects(container: Container) = {
     container.add(classOf[PropertiesResource])
     container.add(classOf[PropertiesRepository])
-    container.add(classOf[DatastoreService], () => DatastoreServiceFactory.getDatastoreService)
     container.add(classOf[StringTemplateGroup], () => new UrlStringTemplateGroup("templates", baseUrl))
     this
   }
@@ -19,7 +17,7 @@ class PropertiesModule extends Module{
   def addPerApplicationObjects(container: Container) = this
 
 
-  def addResource(engine: RestEngine) = {
+  def addResources(engine: RestEngine) = {
     engine.add(classOf[PropertiesResource])
     this
   }
