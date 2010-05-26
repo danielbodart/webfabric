@@ -5,5 +5,5 @@ import com.googlecode.yadic.Container;
 public interface Module {
     Module addPerRequestObjects(Container container);
     Module addPerApplicationObjects(Container container);
-    Module addResource(RestEngine engine);
+    Module addResources(RestEngine engine);
 }
