@@ -28,5 +28,9 @@ class WebServer(port: Int) {
   def start = {
     server.start()
   }
+
+  def stop = {
+    server.stop()
+  }
 }
 

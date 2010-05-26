@@ -5,12 +5,20 @@ import org.junit.Assert._
 import org.junit._
 import org.webfabric.io.Url
 import java.util.UUID
+import org.webfabric.jetty.WebServer
 
 class WebPropertiesTest {
-  def url: Url = Url("http://www.webfabric.org/properties/?uuid=" + UUID.randomUUID.toString)
+  val url: Url = Url("http://localhost:8000/rest/properties/" + UUID.randomUUID.toString)
+  val server = new WebServer(8000)
+
+  @Before
+  def startServer = server.start
 
   @After
-  def cleanup:Unit = url.delete
+  def cleanup:Unit = {
+    url.delete
+    server.stop
+  }
 
   @Test
   def canGetProperties {
