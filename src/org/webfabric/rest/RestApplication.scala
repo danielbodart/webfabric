@@ -3,12 +3,14 @@ package org.webfabric.rest
 import org.webfabric.collections.List
 import org.webfabric.properties.PropertiesModule
 import com.googlecode.yadic.SimpleContainer
+import org.webfabric.gae.GaeModule
 
 class RestApplication extends Application{
   val engine = new RestEngine
   val applicationScope = new SimpleContainer
   val modules = List[Module]()
 
+  add(new GaeModule)
   add(new PropertiesModule)
 
   def handle(request: Request, response: Response) = {
@@ -19,7 +21,7 @@ class RestApplication extends Application{
   
   def add(module:Module){
     module.addPerApplicationObjects(applicationScope)
-    module.addResource(engine)
+    module.addResources(engine)
     modules.add(module)
   }
 }
