@@ -5,8 +5,8 @@ import org.junit.Assert._
 import org.junit._
 import javax.ws.rs.{PathParam, Path}
 import org.webfabric.rest.Redirect.resource
-import javax.ws.rs.core.StreamingOutput
 import org.webfabric.rest.RedirectTest.{NoDefaultConstructor, SomeResource}
+import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 
 class RedirectTest{
   @Test
@@ -19,10 +19,18 @@ class RedirectTest{
     assertThat(Redirect(resource(classOf[SomeResource]).getStreamingHtml("foo")).toString, is("path/foo"))
   }
 
-//  @Test
-//  def canHandleClassWithNoDefaultConstructor{
-//    assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).toString, is("path/foo"))
-//  }
+  @Test
+  def canHandleClassWithNoDefaultConstructor{
+    assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).toString, is("path/foo"))
+  }
+
+  @Test
+  def canApplyToResponse{
+    val response = Response()
+    Redirect("foo").applyTo(response)
+    assertThat(response.headers.getValue(HttpHeaders.LOCATION), is("foo"))
+    assertThat(response.code, is(303))
+  }
 }
 
 object RedirectTest{

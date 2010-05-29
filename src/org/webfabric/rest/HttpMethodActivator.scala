@@ -28,6 +28,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     var result = method.invoke(instance, getParameters(request): _*)
     response.setHeader(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
     result match {
+      case redirect:Redirect => redirect.applyTo(response)
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
       case null => response.setCode(204)

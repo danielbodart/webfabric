@@ -4,9 +4,8 @@ import javax.servlet.http.HttpServletResponse
 import java.io.{Writer, ByteArrayOutputStream, OutputStreamWriter, OutputStream}
 import java.lang.String
 
-case class Response(val writer: Writer, val output: OutputStream) {
+class Response(val writer: Writer, val output: OutputStream) {
   def this(output: OutputStream) = this (new OutputStreamWriter(output), output)
-
   def this() = this (new ByteArrayOutputStream)
 
   var code: Int = 200
@@ -35,7 +34,6 @@ object Response {
     }
   }
 
-  def apply(output: OutputStream): Response = {
-    new Response(output)
-  }
+  def apply(output: OutputStream): Response = new Response(output)
+  def apply(): Response = new Response
 }
