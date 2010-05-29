@@ -5,10 +5,11 @@ import java.io.{OutputStreamWriter, OutputStream, ByteArrayOutputStream}
 import java.lang.reflect.Method
 import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
+import org.webfabric.servlet.{BasePath}
 
 case class Redirect(location: String) {
-  def applyTo(response:Response) {
-    response.setHeader(HttpHeaders.LOCATION, location)
+  def applyTo(base:BasePath, response:Response) {
+    response.setHeader(HttpHeaders.LOCATION, base + "/" + location)
     response.setCode(303)
   }
 }
@@ -20,13 +21,12 @@ object Redirect {
     new Redirect(output.toString)
   }
 
-  def resource[T <: Object](o: Object): T = resource(o.getClass)
-
   def resource[T <: Object](aClass: Class[T]): T = {
     val enhancer = new Enhancer
     enhancer.setSuperclass(aClass)
     enhancer.setCallback(new ResourcePath)
-    val argumentTypes = aClass.getConstructors.first.getParameterTypes
+    val constructorWithLeastArguments = aClass.getConstructors.toList.sort(_.getParameterTypes.size < _.getParameterTypes.size).first
+    val argumentTypes = constructorWithLeastArguments.getParameterTypes
     val arguments:Array[Object] = argumentTypes.map(_ => null)
     val value: Any = enhancer.create(argumentTypes, arguments)
     value.asInstanceOf[T]

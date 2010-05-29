@@ -5,11 +5,12 @@ import org.webfabric.properties.PropertiesModule
 import com.googlecode.yadic.SimpleContainer
 import org.webfabric.gae.GaeModule
 
-class RestApplication extends Application{
-  val engine = new RestEngine
+class RestApplication(instances: Object*) extends Application {
+  lazy val engine = applicationScope.resolveType(classOf[RestEngine])
   val applicationScope = new SimpleContainer
   val modules = List[Module]()
 
+  add(new CoreModule)
   add(new GaeModule)
   add(new PropertiesModule)
 
@@ -18,10 +19,17 @@ class RestApplication extends Application{
     modules.foreach(_.addPerRequestObjects(requestScope))
     engine.handle(requestScope, request, response)
   }
-  
-  def add(module:Module){
+
+  def add(module: Module) {
     module.addPerApplicationObjects(applicationScope)
     module.addResources(engine)
     modules.add(module)
+  }
+
+  def addInstances {
+    instances.foreach(instance => {
+      applicationScope.remove(instance.getClass)
+      applicationScope.add(instance)
+    })
   }
 }

@@ -28,9 +28,15 @@ class Response(val writer: Writer, val output: OutputStream) {
 object Response {
   def apply(response: HttpServletResponse): Response = {
     new Response(response.getWriter, response.getOutputStream){
-      override def setHeader(name: String, value: String) = response.setHeader(name, value)
+      override def setHeader(name: String, value: String) = {
+        response.setHeader(name, value)
+        headers.add(name, value)
+      }
 
-      override def setCode(value: Int) = response.setStatus(value)
+      override def setCode(value: Int) = {
+        response.setStatus(value)
+        code = value
+      }
     }
   }
 
