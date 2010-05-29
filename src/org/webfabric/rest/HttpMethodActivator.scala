@@ -4,6 +4,7 @@ import java.lang.reflect.Method
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
 import core.{HttpHeaders, StreamingOutput}
+import org.webfabric.servlet.ContextPath
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
   val pathExtractor = new PathExtractor(resource, method)
@@ -28,7 +29,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
     var result = method.invoke(instance, getParameters(request): _*)
     response.setHeader(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
     result match {
-      case redirect:Redirect => redirect.applyTo(response)
+      case redirect:Redirect => redirect.applyTo(request.base, response)
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
       case null => response.setCode(204)
