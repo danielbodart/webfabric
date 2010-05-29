@@ -3,8 +3,7 @@ package org.webfabric.rest
 
 import java.io.{OutputStreamWriter, OutputStream, ByteArrayOutputStream}
 import java.lang.reflect.Method
-import sun.reflect.ReflectionFactory
-import net.sf.cglib.proxy.{Callback, MethodProxy, MethodInterceptor, Enhancer}
+import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 
 case class Redirect(location: String) {
@@ -15,8 +14,6 @@ case class Redirect(location: String) {
 }
 
 object Redirect {
-  lazy val reflectionFactory = ReflectionFactory.getReflectionFactory
-
   def apply(path: StreamingOutput): Redirect = {
     val output = new ByteArrayOutputStream
     path.write(output)
@@ -28,13 +25,11 @@ object Redirect {
   def resource[T <: Object](aClass: Class[T]): T = {
     val enhancer = new Enhancer
     enhancer.setSuperclass(aClass)
-    enhancer.setCallbackType(classOf[ResourcePath])
-    val resource = enhancer.createClass
-    Enhancer.registerCallbacks(resource, Array[Callback](new ResourcePath))
-
-    var constructor = reflectionFactory.newConstructorForSerialization(resource,
-      classOf[Object].getConstructor(new Array[Class[_]](0): _*))
-    constructor.newInstance(new Array[Object](0): _*).asInstanceOf[T]
+    enhancer.setCallback(new ResourcePath)
+    val argumentTypes = aClass.getConstructors.first.getParameterTypes
+    val arguments:Array[Object] = argumentTypes.map(_ => null)
+    val value: Any = enhancer.create(argumentTypes, arguments)
+    value.asInstanceOf[T]
   }
 
   def getPath(method: Method, arguments: Array[Object]): String = {
@@ -69,5 +64,4 @@ object Redirect {
       createReturnType(method.getReturnType, getPath(method, arguments))
     }
   }
-
 }
