@@ -10,6 +10,7 @@ import core.{HttpHeaders, StreamingOutput}
 import java.io._
 import Request._
 import com.googlecode.yadic.SimpleContainer
+import Redirect.resource
 
 class RestTest {
   @Test
@@ -135,6 +136,15 @@ class RestTest {
 
     assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
     assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+  }
+
+  @Test
+  def canPostRedirectGet() {
+    val engine = new TestEngine
+    engine.add(classOf[PostRedirectGet])
+    val response = Response()
+    engine.handle(post("path/bob", FormParameters()), response)
+    assertThat(engine.handle(get(response.headers.getValue(HttpHeaders.LOCATION))), is("bob"))
   }
 }
 
@@ -291,6 +301,15 @@ object RestTest {
     def putHtml(input:InputStream): String = {
       "html"
     }
+  }
+
+  @Path("path/{id}")
+  class PostRedirectGet {
+    @POST
+    def post(@PathParam("id") id:String): Redirect = Redirect(resource(classOf[PostRedirectGet]).get(id))
+
+    @GET
+    def get(@PathParam("id") id:String): String = id
   }
 
 

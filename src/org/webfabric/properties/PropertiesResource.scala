@@ -5,6 +5,8 @@ import javax.ws.rs._
 import core.{StreamingOutput}
 import java.io._
 import org.antlr.stringtemplate.{AutoIndentWriter, StringTemplateGroup}
+import org.webfabric.rest.Redirect
+import org.webfabric.rest.Redirect.resource
 
 @Path("properties/{id}")
 class PropertiesResource(repository: PropertiesRepository, templates:StringTemplateGroup) {
@@ -39,11 +41,12 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   }
 
   @POST
-  def post(@PathParam("id") id: String, @FormParam("properties") input:String):Unit = {
+  def post(@PathParam("id") id: String, @FormParam("properties") input:String):Redirect = {
     val uuid = UUID.fromString(id)
     val properties = new Properties
     properties.load( new StringReader(input))
     repository.set(uuid, properties)
+    Redirect(resource(classOf[PropertiesResource]).getHtml(id))
   }
 
   @PUT

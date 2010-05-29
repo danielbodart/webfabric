@@ -1,19 +1,21 @@
 package org.webfabric.rest
 
 
-import javax.ws.rs.core.StreamingOutput
 import java.io.{OutputStreamWriter, OutputStream, ByteArrayOutputStream}
 import java.lang.reflect.Method
-import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
+import sun.reflect.ReflectionFactory
+import net.sf.cglib.proxy.{Callback, MethodProxy, MethodInterceptor, Enhancer}
+import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 
-class Redirect(path: String) {
-  override def toString = path.toString
+case class Redirect(location: String) {
+  def applyTo(response:Response) {
+    response.setHeader(HttpHeaders.LOCATION, location)
+    response.setCode(303)
+  }
 }
 
 object Redirect {
-  def apply(path: String): Redirect = {
-    new Redirect(path)
-  }
+  lazy val reflectionFactory = ReflectionFactory.getReflectionFactory
 
   def apply(path: StreamingOutput): Redirect = {
     val output = new ByteArrayOutputStream
@@ -21,11 +23,18 @@ object Redirect {
     new Redirect(output.toString)
   }
 
+  def resource[T <: Object](o: Object): T = resource(o.getClass)
+
   def resource[T <: Object](aClass: Class[T]): T = {
     val enhancer = new Enhancer
     enhancer.setSuperclass(aClass)
-    enhancer.setCallback(new ResourcePath)
-    enhancer.create().asInstanceOf[T]
+    enhancer.setCallbackType(classOf[ResourcePath])
+    val resource = enhancer.createClass
+    Enhancer.registerCallbacks(resource, Array[Callback](new ResourcePath))
+
+    var constructor = reflectionFactory.newConstructorForSerialization(resource,
+      classOf[Object].getConstructor(new Array[Class[_]](0): _*))
+    constructor.newInstance(new Array[Object](0): _*).asInstanceOf[T]
   }
 
   def getPath(method: Method, arguments: Array[Object]): String = {
@@ -55,8 +64,8 @@ object Redirect {
     }
   }
 
-  class ResourcePath extends  MethodInterceptor  {
-    def intercept(proxy: Any, method: Method, arguments: Array[Object], methodProxy: MethodProxy):Object = {
+  class ResourcePath extends MethodInterceptor {
+    def intercept(proxy: Any, method: Method, arguments: Array[Object], methodProxy: MethodProxy): Object = {
       createReturnType(method.getReturnType, getPath(method, arguments))
     }
   }
