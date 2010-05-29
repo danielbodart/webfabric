@@ -11,17 +11,17 @@ import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 class RedirectTest{
   @Test
   def canExtractPath{
-    assertThat(Redirect(resource(classOf[SomeResource]).getHtml("foo")).toString, is("path/foo"))
+    assertThat(Redirect(resource(classOf[SomeResource]).getHtml("foo")).location, is("path/foo"))
   }
 
   @Test
   def canExtractPathWithStreamingOutput{
-    assertThat(Redirect(resource(classOf[SomeResource]).getStreamingHtml("foo")).toString, is("path/foo"))
+    assertThat(Redirect(resource(classOf[SomeResource]).getStreamingHtml("foo")).location, is("path/foo"))
   }
 
   @Test
   def canHandleClassWithNoDefaultConstructor{
-    assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).toString, is("path/foo"))
+    assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).location, is("path/foo"))
   }
 
   @Test
