@@ -1,4 +1,5 @@
-package org.webfabric.properties
+package org.webfabric.gae
+
 
 import org.junit.{Before, After}
 import com.google.appengine.tools.development.testing.{LocalServiceTestHelper, LocalDatastoreServiceTestConfig}

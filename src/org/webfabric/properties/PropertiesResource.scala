@@ -42,11 +42,14 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
 
   @POST
   def post(@PathParam("id") id: String, @FormParam("properties") input:String):Redirect = {
-    val uuid = UUID.fromString(id)
+    val uuid = id match {
+      case "new" => UUID.randomUUID
+      case _ => UUID.fromString(id)
+    }
     val properties = new Properties
     properties.load( new StringReader(input))
     repository.set(uuid, properties)
-    Redirect(resource(classOf[PropertiesResource]).getHtml(id))
+    Redirect(resource(classOf[PropertiesResource]).getHtml(uuid.toString))
   }
 
   @PUT
