@@ -8,7 +8,7 @@ import org.webfabric.rest.RestTest._
 import javax.ws.rs._
 import core.{HttpHeaders, StreamingOutput}
 import java.io._
-import Request._
+import RequestBuilder._
 import com.googlecode.yadic.SimpleContainer
 import Redirect.resource
 
@@ -31,15 +31,15 @@ class RestTest {
   def canGetWithQueryParameter() {
     val engine = new TestEngine
     engine.add(classOf[GettableWithQuery])
-    assertThat(engine.handle(get("foo", QueryParameters("name" -> "value"))), is("value"))
+    assertThat(engine.handle(get("foo").withQuery("name" -> "value")), is("value"))
   }
 
   @Test
   def canPostWithFormParameter() {
     val engine = new TestEngine
     engine.add(classOf[Postable])
-    assertThat(engine.handle(Request(HttpMethod.POST, "foo", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "application/x-www-form-urlencoded"), QueryParameters(), FormParameters("name" -> "value"), emptyInput)), is("value"))
-    assertThat(engine.handle(post("foo", FormParameters("name" -> "value"))), is("value"))
+    assertThat(engine.handle(post("foo").withForm("name" -> "value")), is("value"))
+    assertThat(engine.handle(post("foo").withHeader(HttpHeaders.CONTENT_TYPE -> "application/x-www-form-urlencoded").withForm("name" -> "value")), is("value"))
   }
 
   @Test
@@ -54,15 +54,15 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[MutlilpleGets])
     assertThat(engine.handle(get("foo")), is("no parameters"))
-    assertThat(engine.handle(get("foo", QueryParameters("arg" -> "match"))), is("match"))
+    assertThat(engine.handle(get("foo").withQuery("arg" -> "match")), is("match"))
   }
 
   @Test
   def canDetermineGetMethodBasedOnMimeType() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/plain")), is("plain"))
+    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/html")), is("html"))
   }
 
   @Test
@@ -71,8 +71,8 @@ class RestTest {
     engine.add(classOf[GetsWithMimeTypes])
 
     var response = new Response
-    engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput), response)
-    assertThat(response.headers.getValue("Content-Type"), is("text/plain"))
+    engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/plain"), response)
+    assertThat(response.headers.getValue(HttpHeaders.CONTENT_TYPE), is("text/plain"))
   }
 
   @Test
@@ -80,12 +80,12 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
     var accepts = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
-    assertThat(engine.handle(Request(HttpMethod.GET, "text", HeaderParameters(HttpHeaders.ACCEPT -> accepts), QueryParameters(), FormParameters(), Request.emptyInput)), is("xml"))
+    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> accepts)), is("xml"))
 
     engine.add(classOf[PutContent])
     val input = new ByteArrayInputStream("input".getBytes)
     accepts = """text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"""
-    assertThat(engine.handle(Request(HttpMethod.PUT, "path/foo", HeaderParameters(HttpHeaders.ACCEPT -> accepts), QueryParameters(), FormParameters(), input)), is("input"))
+    assertThat(engine.handle(put("path/foo").withHeader(HttpHeaders.ACCEPT -> accepts).withInput(input)), is("input"))
   }
 
   @Test
@@ -100,7 +100,7 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[NoContent])
     val response = new Response()
-    engine.handle(post( "foo", FormParameters()), response)
+    engine.handle(post( "foo"), response)
     assertThat(response.code, is(204))
   }
 
@@ -126,7 +126,7 @@ class RestTest {
     engine.add(classOf[PutContent])
 
     val input = new ByteArrayInputStream("input".getBytes)
-    assertThat(engine.handle(put( "path/bar", input)), is("input"))
+    assertThat(engine.handle(put("path/bar").withInput(input)), is("input"))
   }
 
   @Test
@@ -134,8 +134,8 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[MultiplePutContent])
 
-    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/plain"), QueryParameters(), FormParameters(), Request.emptyInput)), is("plain"))
-    assertThat(engine.handle(Request(HttpMethod.PUT, "text", HeaderParameters(HttpHeaders.CONTENT_TYPE -> "text/html"), QueryParameters(), FormParameters(), Request.emptyInput)), is("html"))
+    assertThat(engine.handle(put("text").withHeader(HttpHeaders.CONTENT_TYPE -> "text/plain")), is("plain"))
+    assertThat(engine.handle(put("text").withHeader(HttpHeaders.CONTENT_TYPE -> "text/html")), is("html"))
   }
 
   @Test
@@ -143,7 +143,7 @@ class RestTest {
     val engine = new TestEngine
     engine.add(classOf[PostRedirectGet])
     val response = Response()
-    engine.handle(post("path/bob", FormParameters()), response)
+    engine.handle(post("path/bob"), response)
     assertThat(engine.handle(get(response.headers.getValue(HttpHeaders.LOCATION))), is("bob"))
   }
 }

@@ -1,10 +1,10 @@
 package org.webfabric.rest
 
-import java.lang.reflect.Method
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
 import core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.ContextPath
+import java.lang.reflect.{InvocationTargetException, Method}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request]{
   val pathExtractor = new PathExtractor(resource, method)
@@ -26,7 +26,12 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   
   def activate(container: Resolver, request:Request, response:Response): Unit = {
     val instance = container.resolve(resource)
-    var result = method.invoke(instance, getParameters(request): _*)
+    val result =
+    try {
+      method.invoke(instance, getParameters(request): _*)
+    } catch {
+      case e:InvocationTargetException => throw e.getCause
+    }
     response.setHeader(HttpHeaders.CONTENT_TYPE, producesMatcher.mimeType)
     result match {
       case redirect:Redirect => redirect.applyTo(request.base, response)

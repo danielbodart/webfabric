@@ -5,6 +5,7 @@ import org.junit.Assert._
 import org.junit._
 import java.util.{UUID, Properties}
 import com.google.appengine.api.datastore.EntityNotFoundException
+import org.webfabric.gae.LocalDatastore
 
 class PropertiesRepositoryTest extends LocalDatastore {
   @Test
