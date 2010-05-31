@@ -6,6 +6,7 @@ import org.junit._
 import org.webfabric.io.Converter.asString
 import org.webfabric.rest.RestTest._
 import javax.ws.rs._
+import core.Response.Status
 import core.{HttpHeaders, StreamingOutput}
 import java.io._
 import RequestBuilder._
@@ -101,7 +102,7 @@ class RestTest {
     engine.add(classOf[NoContent])
     val response = new Response()
     engine.handle(post( "foo"), response)
-    assertThat(response.code, is(204))
+    assertThat(response.code, is(Status.NO_CONTENT))
   }
 
   @Test
@@ -117,7 +118,7 @@ class RestTest {
     engine.add(classOf[DeleteContent])
     val response = new Response()
     engine.handle(delete( "path/bar"), response)
-    assertThat(response.code, is(204))
+    assertThat(response.code, is(Status.NO_CONTENT))
   }
 
   @Test

@@ -3,8 +3,7 @@ package org.webfabric.properties
 import org.hamcrest.CoreMatchers._
 import org.junit.Assert._
 import org.junit._
-import java.util.{UUID, Properties}
-import com.google.appengine.api.datastore.EntityNotFoundException
+import java.util.{Properties}
 import org.webfabric.gae.LocalDatastore
 
 class PropertiesRepositoryTest extends LocalDatastore {
@@ -48,12 +47,12 @@ class PropertiesRepositoryTest extends LocalDatastore {
     // setup
     val properties = new Properties
     var name = "name"
-    var value = "value"
+    val value = "value"
     properties.setProperty(name, value)
     val repository = new PropertiesRepository(datastoreService)
 
     // execute
-    var key = UUID.randomUUID
+    val key = Id()
     assertThat(repository.set(key, properties), is(key))
     val result = repository.get(key)
 
@@ -67,7 +66,7 @@ class PropertiesRepositoryTest extends LocalDatastore {
     val repository = new PropertiesRepository(datastoreService)
 
     // execute
-    var key = UUID.randomUUID
+    var key = Id()
     var properties = repository.get(key)
     
     // verify

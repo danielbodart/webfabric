@@ -6,11 +6,12 @@ import java.lang.reflect.Method
 import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.{BasePath}
+import javax.ws.rs.core.Response.Status
 
 case class Redirect(location: String) {
   def applyTo(base:BasePath, response:Response) {
     response.setHeader(HttpHeaders.LOCATION, base + "/" + location)
-    response.setCode(303)
+    response.setCode(Status.SEE_OTHER)
   }
 }
 

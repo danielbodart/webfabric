@@ -17,10 +17,21 @@ class PropertiesResourceTest extends LocalDatastore{
     val properties = "foo=bar"
     application.handle(post("properties/new").withForm("properties" -> properties), postResponse)
 
-    assertThat(postResponse.code, is(Status.SEE_OTHER.getStatusCode))
+    assertThat(postResponse.code, is(Status.SEE_OTHER))
     val location = postResponse.headers.getValue(HttpHeaders.LOCATION)
     val getResponse = Response()
     application.handle(get(location).withHeader(HttpHeaders.ACCEPT -> "text/plain"), getResponse)
     assertTrue(getResponse.output.toString.contains(properties))
+  }
+
+  @Test
+  def canGetNewResource{
+    val application = new RestApplication
+    val response = Response()
+    val properties = "foo=bar"
+    application.handle(get("properties/new").withHeader(HttpHeaders.ACCEPT -> "text/html"), response)
+
+    assertThat(response.code, is(Status.OK))
+    
   }
 }
