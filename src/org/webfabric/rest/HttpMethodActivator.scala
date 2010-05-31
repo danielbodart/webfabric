@@ -2,6 +2,7 @@ package org.webfabric.rest
 
 import javax.ws.rs._
 import com.googlecode.yadic.{Resolver}
+import core.Response.Status
 import core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.ContextPath
 import java.lang.reflect.{InvocationTargetException, Method}
@@ -37,7 +38,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
       case redirect:Redirect => redirect.applyTo(request.base, response)
       case body:String => response.write(body)
       case streaming:StreamingOutput => streaming.write(response.output)
-      case null => response.setCode(204)
+      case null => response.setCode(Status.NO_CONTENT)
     }
   }
 

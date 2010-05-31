@@ -8,6 +8,7 @@ import org.webfabric.rest.Redirect.resource
 import org.webfabric.rest.RedirectTest.{NoDefaultConstructor, SomeResource}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.{BasePath, ContextPath}
+import javax.ws.rs.core.Response.Status
 
 class RedirectTest{
   @Test
@@ -31,7 +32,7 @@ class RedirectTest{
     val base = BasePath("")
     Redirect("foo").applyTo(base, response)
     assertThat(response.headers.getValue(HttpHeaders.LOCATION), is("/foo"))
-    assertThat(response.code, is(303))
+    assertThat(response.code, is(Status.SEE_OTHER))
   }
 }
 

@@ -9,8 +9,19 @@ object Map {
     result
   }
 
-  implicit def toIterable[K, V](m: java.util.Map[K, V]): Iterable[java.util.Map.Entry[K, V]] =
-    new Iterable[java.util.Map.Entry[K, V]] {
-      def iterator = m.entrySet.iterator
+  implicit def toIterable[K, V](m: java.util.Map[K, V]): Iterable[(K, V)] =
+    new Iterable[(K, V)] {
+      def iterator = new java.util.Iterator[(K,V)] {
+        val iterator = m.entrySet.iterator
+
+        def remove = iterator.remove
+
+        def next = {
+          val entry = iterator.next
+          (entry.getKey, entry.getValue)
+        }
+
+        def hasNext = iterator.hasNext
+      }
     }
 }

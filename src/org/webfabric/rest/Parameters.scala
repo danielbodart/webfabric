@@ -1,8 +1,9 @@
 package org.webfabric.rest
 
-import org.webfabric.collections.{Map, List}
+import org.webfabric.collections.{Map, List, Iterable}
+import org.webfabric.collections.Map.toIterable
 
-class Parameters{
+class Parameters extends Iterable[(String, List[String])]{
   val values = Map[String, List[String]]()
 
   def add(name:String, value:String):Parameters = {
@@ -16,10 +17,12 @@ class Parameters{
   def size = values.size
 
   def getValue(name:String):String = {
-    values.get(name).get(0)
+    if(!values.containsKey(name)) null else values.get(name).get(0)
   }
 
   def contains(name:String):Boolean = {
     values.containsKey(name)
   }
+
+  def iterator = values.iterator
 }

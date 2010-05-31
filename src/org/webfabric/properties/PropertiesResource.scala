@@ -15,8 +15,7 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   @GET
   @Produces(Array("text/plain"))
   def getProperties(@PathParam("id") id: String): StreamingOutput = {
-    val uuid = UUID.fromString(id)
-    val properties = repository.get(uuid)
+    val properties = repository.get(Id(id))
     new StreamingOutput {
       def write(out: OutputStream) = properties.store(out, null)
     }
@@ -25,8 +24,7 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   @GET
   @Produces(Array("text/html"))
   def getHtml(@PathParam("id") id: String): StreamingOutput = {
-    val uuid = UUID.fromString(id)
-    val properties = repository.get(uuid)
+    val properties = repository.get(Id(id))
     val template = templates.getInstanceOf("editor")
     val writer = new StringWriter
     properties.store(writer, null)
@@ -43,8 +41,8 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   @POST
   def post(@PathParam("id") id: String, @FormParam("properties") input:String):Redirect = {
     val uuid = id match {
-      case "new" => UUID.randomUUID
-      case _ => UUID.fromString(id)
+      case "new" => Id()
+      case _ => Id(id)
     }
     val properties = new Properties
     properties.load( new StringReader(input))
@@ -55,15 +53,13 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   @PUT
   @Consumes(Array("text/plain"))
   def put(@PathParam("id") id: String, input: InputStream):Unit = {
-    val uuid = UUID.fromString(id)
     val properties = new Properties
     properties.load(input)
-    repository.set(uuid, properties)
+    repository.set(Id(id), properties)
   }
 
   @DELETE
   def delete(@PathParam("id") id: String):Unit = {
-    val uuid = UUID.fromString(id)
-    repository.remove(uuid)
+    repository.remove(Id(id))
   }
 }
