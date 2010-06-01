@@ -12,6 +12,7 @@ import java.io._
 import RequestBuilder._
 import com.googlecode.yadic.SimpleContainer
 import Redirect.resource
+import org.webfabric.properties.Id
 
 class RestTest {
   @Test
@@ -147,6 +148,13 @@ class RestTest {
     engine.handle(post("path/bob"), response)
     assertThat(engine.handle(get(response.headers.getValue(HttpHeaders.LOCATION))), is("bob"))
   }
+
+//  @Test
+//  def canCoerceTypes() {
+//    val engine = new TestEngine
+//    engine.add(classOf[GetWithStrongType])
+//    assertThat(engine.handle(get("path/4d237b0a-535f-49e9-86ca-10d28aa3e4f8")), is("4d237b0a-535f-49e9-86ca-10d28aa3e4f8"))
+//  }
 }
 
 object RestTest {
@@ -311,6 +319,12 @@ object RestTest {
 
     @GET
     def get(@PathParam("id") id:String): String = id
+  }
+
+  @Path("path/{id}")
+  class GetWithStrongType {
+    @GET
+    def get(@PathParam("id") id:Id): String = id.value
   }
 
 

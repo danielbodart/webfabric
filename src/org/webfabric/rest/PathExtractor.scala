@@ -3,7 +3,7 @@ package org.webfabric.rest
 import javax.ws.rs.Path
 import java.lang.reflect.Method
 
-class PathExtractor(resource:Class[_], method:Method) extends Extractor[Request, PathParameters] with Matcher[Request] {
+class PathExtractor(resource:Class[_], method:Method) extends RequestExtractor[PathParameters] {
   lazy val pathTemplate: UriTemplate = {
       val paths = List(resource.getAnnotation(classOf[Path]), method.getAnnotation(classOf[Path]))
       new UriTemplate(paths.filter(_ != null).map(_.value).mkString("/"))
