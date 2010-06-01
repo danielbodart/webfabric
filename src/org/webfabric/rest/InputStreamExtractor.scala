@@ -1,7 +1,8 @@
 package org.webfabric.rest
 
+import java.io.InputStream
 
-class InputStreamExtractor extends Extractor[Request, Object] with Matcher[Request]{
+class InputStreamExtractor extends RequestExtractor[InputStream]{
   def isMatch(request: Request) = true
 
   def extract(request: Request) = request.input
