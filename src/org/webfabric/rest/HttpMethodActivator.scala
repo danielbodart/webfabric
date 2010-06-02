@@ -7,10 +7,10 @@ import java.lang.reflect.{InvocationTargetException, Method}
 import com.googlecode.yadic.{Resolver}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request] {
-  val pathExtractor = new PathExtractor(resource, method)
-  val argumentsExtractor = new ArgumentsExtractor(pathExtractor, resource, method)
+  val pathMatcher = new PathMatcher(resource, method)
+  val argumentsExtractor = new ArgumentsExtractor(pathMatcher, method)
   var producesMatcher = new ProducesMimeMatcher(resource, method)
-  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathExtractor, argumentsExtractor)
+  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathMatcher, argumentsExtractor)
 
   def isMatch(request: Request): Boolean = matchers.forall(_.isMatch(request))
 
