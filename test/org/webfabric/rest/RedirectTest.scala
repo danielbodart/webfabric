@@ -30,9 +30,7 @@ class RedirectTest{
   @Test
   def canHandleCustomTypeWithSimpleToString{
     val id = Id()
-    val location = Redirect(resource(classOf[CustomType]).getHtml(id)).location
-    Console.println(location)
-    assertThat(location, is("path/" + id.toString))
+    assertThat(Redirect(resource(classOf[CustomType]).getHtml(id)).location, is("path/" + id.toString))
   }
 
   @Test
