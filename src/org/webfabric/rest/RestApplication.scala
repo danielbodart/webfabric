@@ -29,7 +29,7 @@ class RestApplication(instances: Object*) extends Application {
   def addInstances {
     instances.foreach(instance => {
       applicationScope.remove(instance.getClass)
-      applicationScope.add(instance)
+      applicationScope.addInstance(instance)
     })
   }
 }

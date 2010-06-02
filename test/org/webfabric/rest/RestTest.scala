@@ -149,12 +149,12 @@ class RestTest {
     assertThat(engine.handle(get(response.headers.getValue(HttpHeaders.LOCATION))), is("bob"))
   }
 
-//  @Test
-//  def canCoerceTypes() {
-//    val engine = new TestEngine
-//    engine.add(classOf[GetWithStrongType])
-//    assertThat(engine.handle(get("path/4d237b0a-535f-49e9-86ca-10d28aa3e4f8")), is("4d237b0a-535f-49e9-86ca-10d28aa3e4f8"))
-//  }
+  @Test
+  def canCoerceTypes() {
+    val engine = new TestEngine
+    engine.add(classOf[GetWithStrongType])
+    assertThat(engine.handle(get("path/4d237b0a-535f-49e9-86ca-10d28aa3e4f8")), is("4d237b0a-535f-49e9-86ca-10d28aa3e4f8"))
+  }
 }
 
 object RestTest {
