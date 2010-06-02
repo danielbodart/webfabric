@@ -35,15 +35,8 @@ object Redirect {
 
   def getPath(method: Method, arguments: Array[Object]): String = {
     var pathExtractor = new PathExtractor(method.getDeclaringClass, method)
-    val params = PathParameters()
-    var extractors = Extractors.generateExtractors(method, pathExtractor)
-    extractors.zip(arguments).foreach(pair => {
-      pair._1 match {
-        case pathExtractor: PathParameterExtractor => pathExtractor.generate(params, pair._2.toString)
-        case _ =>
-      }
-    })
-    pathExtractor.generate(params)
+    var argumentsExtractor = new ArgumentsExtractor(pathExtractor, method.getDeclaringClass, method)
+    argumentsExtractor.generate(arguments).path
   }
 
   def createReturnType(returnType: Class[_], path: String): Object = {

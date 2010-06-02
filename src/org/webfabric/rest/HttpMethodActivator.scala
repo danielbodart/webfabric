@@ -4,9 +4,7 @@ import javax.ws.rs._
 import core.Response.Status
 import core.{HttpHeaders, StreamingOutput}
 import java.lang.reflect.{InvocationTargetException, Method}
-import java.io.{InputStream}
-import com.googlecode.yadic.{Container, SimpleContainer, Resolver}
-import java.util.NoSuchElementException
+import com.googlecode.yadic.{Resolver}
 
 class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request] {
   val pathExtractor = new PathExtractor(resource, method)

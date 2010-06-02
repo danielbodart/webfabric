@@ -5,10 +5,11 @@ import org.junit.Assert._
 import org.junit._
 import javax.ws.rs.{PathParam, Path}
 import org.webfabric.rest.Redirect.resource
-import org.webfabric.rest.RedirectTest.{NoDefaultConstructor, SomeResource}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.{BasePath, ContextPath}
 import javax.ws.rs.core.Response.Status
+import org.webfabric.properties.Id
+import org.webfabric.rest.RedirectTest.{CustomType, NoDefaultConstructor, SomeResource}
 
 class RedirectTest{
   @Test
@@ -24,6 +25,14 @@ class RedirectTest{
   @Test
   def canHandleClassWithNoDefaultConstructor{
     assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).location, is("path/foo"))
+  }
+
+  @Test
+  def canHandleCustomTypeWithSimpleToString{
+    val id = Id()
+    val location = Redirect(resource(classOf[CustomType]).getHtml(id)).location
+    Console.println(location)
+    assertThat(location, is("path/" + id.toString))
   }
 
   @Test
@@ -50,5 +59,10 @@ object RedirectTest{
     def getHtml(@PathParam("id") id: String): String = "bob"
 
     def getStreamingHtml(@PathParam("id") id: String): StreamingOutput = null
+  }
+
+  @Path("path/{id}")
+  class CustomType{
+    def getHtml(@PathParam("id") id: Id): String = "bob"
   }
 }
