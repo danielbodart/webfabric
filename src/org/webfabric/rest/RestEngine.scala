@@ -13,7 +13,7 @@ class RestEngine() {
 
   def add(resource: Class[_]): Unit = {
     resource.getMethods.foreach(method => getHttpMethod(method) match {
-      case Some(httpMethod) => activators.add(new HttpMethodActivator(httpMethod.value, resource, method))
+      case Some(httpMethod) => activators.add(new HttpMethodActivator(httpMethod.value, method))
       case _ =>
     })
   }

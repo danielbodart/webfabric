@@ -4,9 +4,9 @@ import java.lang.reflect.Method
 import javax.ws.rs.{Consumes}
 import javax.ws.rs.core.MediaType
 
-class ConsumesMimeMatcher(resource: Class[_], method: Method) extends Matcher[Request] {
+class ConsumesMimeMatcher(method: Method) extends Matcher[Request] {
   lazy val mimeType: String = {
-    List(method.getAnnotation(classOf[Consumes]), resource.getAnnotation(classOf[Consumes])).filter(_ != null) match {
+    List(method.getAnnotation(classOf[Consumes]), method.getDeclaringClass.getAnnotation(classOf[Consumes])).filter(_ != null) match {
       case x :: xs => x.value.first
       case Nil => MediaType.WILDCARD
     }
