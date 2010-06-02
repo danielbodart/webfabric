@@ -6,7 +6,6 @@ import org.webfabric.collections.List
 import javax.ws.rs.{HttpMethod}
 import java.lang.{Class}
 import com.googlecode.yadic.{Resolver}
-import org.webfabric.servlet.ContextPath
 
 class RestEngine() {
   val activators = List[HttpMethodActivator]()
