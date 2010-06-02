@@ -1,6 +1,5 @@
 package org.webfabric.rest
 
-
 import org.webfabric.collections.{List, Iterable}
 import org.webfabric.regex.{Regex}
 import java.util.regex.Pattern

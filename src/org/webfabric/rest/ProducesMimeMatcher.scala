@@ -2,7 +2,7 @@ package org.webfabric.rest
 
 import javax.ws.rs.Produces
 import java.lang.reflect.Method
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.{HttpHeaders, MediaType}
 
 class ProducesMimeMatcher(method: Method) extends Matcher[Request] {
   lazy val mimeType: String = {
@@ -13,14 +13,14 @@ class ProducesMimeMatcher(method: Method) extends Matcher[Request] {
   }
 
   def isMatch(request: Request): Boolean = {
-    if (request.headers.contains("Accept")) {
-      Accept(request.headers.getValue("Accept")).contains(mimeType)
+    if (request.headers.contains(HttpHeaders.ACCEPT)) {
+      Accept(request.headers.getValue(HttpHeaders.ACCEPT)).contains(mimeType)
     } else true
   }
 
   def matchQuality(request: Request): Float = {
-    if (request.headers.contains("Accept")) {
-      Accept(request.headers.getValue("Accept")).quality(mimeType)
+    if (request.headers.contains(HttpHeaders.ACCEPT)) {
+      Accept(request.headers.getValue(HttpHeaders.ACCEPT)).quality(mimeType)
     } else 1.0f
   }
 }

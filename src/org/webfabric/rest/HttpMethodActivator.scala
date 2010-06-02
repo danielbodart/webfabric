@@ -34,5 +34,4 @@ class HttpMethodActivator(httpMethod: String, method: Method) extends Matcher[Re
       case null => response.setCode(Status.NO_CONTENT)
     }
   }
-
 }
