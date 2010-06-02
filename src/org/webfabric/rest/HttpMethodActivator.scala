@@ -6,11 +6,11 @@ import core.{HttpHeaders, StreamingOutput}
 import java.lang.reflect.{InvocationTargetException, Method}
 import com.googlecode.yadic.{Resolver}
 
-class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method) extends Matcher[Request] {
-  val pathMatcher = new PathMatcher(resource, method)
+class HttpMethodActivator(httpMethod: String, method: Method) extends Matcher[Request] {
+  val pathMatcher = new PathMatcher(method)
   val argumentsExtractor = new ArgumentsExtractor(pathMatcher, method)
-  var producesMatcher = new ProducesMimeMatcher(resource, method)
-  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(resource, method), pathMatcher, argumentsExtractor)
+  var producesMatcher = new ProducesMimeMatcher(method)
+  val matchers = List(new MethodMatcher(httpMethod), producesMatcher, new ConsumesMimeMatcher(method), pathMatcher, argumentsExtractor)
 
   def isMatch(request: Request): Boolean = matchers.forall(_.isMatch(request))
 
@@ -19,7 +19,7 @@ class HttpMethodActivator(httpMethod: String, resource: Class[_], method: Method
   def numberOfArguments = method.getParameterTypes.size
 
   def activate(container: Resolver, request: Request, response: Response): Unit = {
-    val instance = container.resolve(resource)
+    val instance = container.resolve(method.getDeclaringClass)
     val result =
     try {
       method.invoke(instance, argumentsExtractor.extract(request): _*)

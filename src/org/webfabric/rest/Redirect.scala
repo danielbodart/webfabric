@@ -34,7 +34,7 @@ object Redirect {
   }
 
   def getPath(method: Method, arguments: Array[Object]): String = {
-    var pathExtractor = new PathMatcher(method.getDeclaringClass, method)
+    var pathExtractor = new PathMatcher(method)
     var argumentsGenerator = new ArgumentsGenerator(pathExtractor, method)
     argumentsGenerator.generate(arguments).path
   }
