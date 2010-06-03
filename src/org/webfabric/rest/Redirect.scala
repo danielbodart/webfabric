@@ -34,9 +34,9 @@ object Redirect {
   }
 
   def getPath(method: Method, arguments: Array[Object]): String = {
-    var pathExtractor = new PathMatcher(method)
-    var argumentsGenerator = new ArgumentsGenerator(pathExtractor, method)
-    argumentsGenerator.generate(arguments).path
+    var uriTemplate = new UriTemplateExtractor().extract(method)
+    var requestGenerator = new RequestGenerator(uriTemplate, method)
+    requestGenerator.generate(arguments).path
   }
 
   def createReturnType(returnType: Class[_], path: String): Object = {

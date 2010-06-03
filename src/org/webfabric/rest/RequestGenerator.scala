@@ -4,7 +4,7 @@ import java.io.{ByteArrayInputStream, InputStream}
 import javax.ws.rs.{HeaderParam, QueryParam, FormParam, PathParam}
 import java.lang.reflect.Method
 
-class ArgumentsGenerator(pathExtractor: PathMatcher, method: Method) {
+class RequestGenerator(uriTemplate: UriTemplate, method: Method) {
   def generate(arguments: Array[Object]): Request = {
     val pathParams = PathParameters()
     val headers = HeaderParameters()
@@ -24,6 +24,6 @@ class ArgumentsGenerator(pathExtractor: PathMatcher, method: Method) {
         case _ =>
       }
     })
-    Request(null, pathExtractor.pathTemplate.generate(pathParams), headers, queryParams, formParams, input)
+    Request(null, uriTemplate.generate(pathParams), headers, queryParams, formParams, input)
   }
 }
