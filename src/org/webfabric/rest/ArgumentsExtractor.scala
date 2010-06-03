@@ -5,7 +5,7 @@ import java.lang.reflect.Method
 import java.io.{InputStream}
 import javax.ws.rs.{HeaderParam, QueryParam, FormParam, PathParam}
 
-class ArgumentsExtractor(pathExtractor: PathMatcher, method: Method) extends RequestExtractor[Array[Object]] {
+class ArgumentsExtractor(uriTemplate: UriTemplate, method: Method) extends RequestExtractor[Array[Object]] {
   def isMatch(request: Request) = {
     try {
       extract(request)
@@ -44,7 +44,7 @@ class ArgumentsExtractor(pathExtractor: PathMatcher, method: Method) extends Req
 
   def getArgumentContainer: Container = {
     val container = new SimpleContainer
-    container.add(classOf[UriTemplate], () => pathExtractor.pathTemplate)
+    container.addInstance(uriTemplate)
     container.add(classOf[PathParameters], () => container.resolveType(classOf[UriTemplate]).extract(container.resolveType(classOf[Request]).path))
     container.add(classOf[HeaderParameters], () => container.resolveType(classOf[Request]).headers)
     container.add(classOf[QueryParameters], () => container.resolveType(classOf[Request]).query)
