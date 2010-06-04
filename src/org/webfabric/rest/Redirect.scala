@@ -1,12 +1,12 @@
 package org.webfabric.rest
 
 
-import java.io.{OutputStreamWriter, OutputStream, ByteArrayOutputStream}
 import java.lang.reflect.Method
 import net.sf.cglib.proxy.{MethodProxy, MethodInterceptor, Enhancer}
 import javax.ws.rs.core.{HttpHeaders, StreamingOutput}
 import org.webfabric.servlet.{BasePath}
 import javax.ws.rs.core.Response.Status
+import java.io._
 
 case class Redirect(location: String) {
   def applyTo(base:BasePath, response:Response) {
@@ -18,6 +18,12 @@ case class Redirect(location: String) {
 object Redirect {
   def apply(path: StreamingOutput): Redirect = {
     val output = new ByteArrayOutputStream
+    path.write(output)
+    new Redirect(output.toString)
+  }
+
+  def apply(path: StreamingWriter): Redirect = {
+    val output = new StringWriter
     path.write(output)
     new Redirect(output.toString)
   }
@@ -46,6 +52,12 @@ object Redirect {
           var writer = new OutputStreamWriter(output)
           writer.write(path)
           writer.flush
+        }
+      }
+    } else if (returnType == classOf[StreamingWriter]) {
+      new StreamingWriter {
+        def write(output: Writer) = {
+          output.write(path)
         }
       }
     } else {
