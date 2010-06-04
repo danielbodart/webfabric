@@ -98,6 +98,13 @@ class RestTest {
   }
 
   @Test
+  def canHandleStreamingWriter() {
+    val engine = new TestEngine
+    engine.add(classOf[StreamWriter])
+    assertThat(engine.handle(get("foo")), is("writer"))
+  }
+
+  @Test
   def supportsNoContent() {
     val engine = new TestEngine
     engine.add(classOf[NoContent])
@@ -258,6 +265,18 @@ object RestTest {
           var streamWriter = new OutputStreamWriter(out)
           streamWriter.write("stream")
           streamWriter.flush
+        }
+      }
+    }
+  }
+
+  @Path("foo")
+  class StreamWriter {
+    @GET
+    def get(): StreamingWriter = {
+      new StreamingWriter {
+        def write(writer: Writer) = {
+          writer.write("writer")
         }
       }
     }

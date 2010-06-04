@@ -31,6 +31,7 @@ class HttpMethodActivator(httpMethod: String, method: Method) extends Matcher[Re
       case redirect: Redirect => redirect.applyTo(request.base, response)
       case body: String => response.write(body)
       case streaming: StreamingOutput => streaming.write(response.output)
+      case writer: StreamingWriter => writer.write(response.writer)
       case null => response.setCode(Status.NO_CONTENT)
     }
   }

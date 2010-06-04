@@ -22,6 +22,12 @@ class RedirectTest{
     assertThat(Redirect(resource(classOf[SomeResource]).getStreamingHtml("foo")).location, is("path/foo"))
   }
 
+
+  @Test
+  def canExtractPathWithStreamingWriter{
+    assertThat(Redirect(resource(classOf[SomeResource]).getStreamingWriter("foo")).location, is("path/foo"))
+  }
+
   @Test
   def canHandleClassWithNoDefaultConstructor{
     assertThat(Redirect(resource(classOf[NoDefaultConstructor]).getStreamingHtml("foo")).location, is("path/foo"))
@@ -50,6 +56,8 @@ object RedirectTest{
     def getHtml(@PathParam("id") id: String): String = "bob"
 
     def getStreamingHtml(@PathParam("id") id: String): StreamingOutput = null
+
+    def getStreamingWriter(@PathParam("id") id: String): StreamingWriter = null
   }
 
   @Path("path/{id}")
