@@ -6,6 +6,15 @@ import org.junit._
 
 class UriTemplateTest{
   @Test
+  def canCaptureEnd() {
+    val template = new UriTemplate("""path""")
+    assertThat(template.isMatch("path/someotherpath"), is(true))
+    assertThat(template.extract("path/someotherpath").getValue("$"), is("/someotherpath"))
+    assertThat(template.isMatch("path"), is(true))
+    assertThat(template.generate(PathParameters("$" -> "/someotherpath")), is("path/someotherpath"))
+  }
+
+  @Test
   def supportsCustomRegex() {
     val template = new UriTemplate("""path/{id:\d}""")
     assertThat(template.isMatch("path/foo"), is(false))

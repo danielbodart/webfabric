@@ -15,12 +15,14 @@ class MatchIterable(text:String, matcher: Matcher) extends Iterable[Match] {
     var position = 0;
     foreach(m => {
       var before = text.substring(position, m.start)
-      if (before.length > 0) builder.append(notMatched(before))
-      builder.append(matched(m))
+      if (before.length > 0) builder.append(filter(notMatched(before)))
+      builder.append(filter(matched(m)))
       position = m.end
     })
     var after = text.substring(position)
-    if (after.length > 0) builder.append(notMatched(after))
+    if (after.length > 0) builder.append(filter(notMatched(after)))
     builder.toString
   }
+
+  def filter(value:String) = if(value == null) "" else value
 }

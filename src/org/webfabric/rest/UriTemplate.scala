@@ -19,7 +19,7 @@ class UriTemplate(template: String) extends Extractor[String, PathParameters] wi
     matches.replace(m => parameters.getValue(m.groups.get(1).value))
   }
 
-  lazy val matches = UriTemplate.pathParameters.matches(template)
+  lazy val matches = UriTemplate.pathParameters.matches(template + "{$:(/.*)?}")
   lazy val names = matches.map(m => m.groups.get(1).value)
   lazy val templateRegex = new Regex(matches.replace(notMatched => Pattern.quote(notMatched), matched => {
     if(matched.groups.get(2).value == null) """([^/]+)""" else "(" + matched.groups.get(2).value + ")"
@@ -28,5 +28,5 @@ class UriTemplate(template: String) extends Extractor[String, PathParameters] wi
 }
 
 object UriTemplate {
-  val pathParameters = new Regex("""\{(\w+)(?:\:([^\}]+))?\}""")
+  val pathParameters = new Regex("""\{([^\}]+?)(?:\:([^\}]+))?\}""")
 }
