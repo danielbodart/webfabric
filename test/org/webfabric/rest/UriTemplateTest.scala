@@ -6,12 +6,23 @@ import org.junit._
 
 class UriTemplateTest{
   @Test
+  def supportedMultiplePathParams() {
+    val template = new UriTemplate("""properties/{id}/{name}""")
+    Console.println(template.templateRegex)
+    assertThat(template.isMatch("properties/123/bob"), is(true))
+    val pathParameters = template.extract("properties/123/bob")
+    assertThat(pathParameters.getValue("id"), is("123"))
+    assertThat(pathParameters.getValue("name"), is("bob"))
+    assertThat(template.generate(PathParameters("id" -> "123", "name" -> "bob")), is("properties/123/bob"))
+  }
+
+  @Test
   def canCaptureEnd() {
-    val template = new UriTemplate("""path""")
-    assertThat(template.isMatch("path/someotherpath"), is(true))
-    assertThat(template.extract("path/someotherpath").getValue("$"), is("/someotherpath"))
-    assertThat(template.isMatch("path"), is(true))
-    assertThat(template.generate(PathParameters("$" -> "/someotherpath")), is("path/someotherpath"))
+    val template = new UriTemplate("""path/{id}""")
+    assertThat(template.isMatch("path/123/someotherpath"), is(true))
+    assertThat(template.extract("path/123/someotherpath").getValue("$"), is("/someotherpath"))
+    assertThat(template.isMatch("path/123"), is(true))
+    assertThat(template.generate(PathParameters("id" -> "123", "$" -> "/someotherpath")), is("path/123/someotherpath"))
   }
 
   @Test

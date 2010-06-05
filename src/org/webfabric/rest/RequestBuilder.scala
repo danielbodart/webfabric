@@ -2,12 +2,15 @@ package org.webfabric.rest
 
 import javax.ws.rs.HttpMethod
 import java.io.{ByteArrayInputStream, InputStream}
+import javax.ws.rs.core.HttpHeaders
 
 class RequestBuilder(method:String, path:String){
   val headers = HeaderParameters()
   val query = QueryParameters()
   val form = FormParameters()
   var input:InputStream = new ByteArrayInputStream(new Array[Byte](0))
+
+  def accepting(value:String) = withHeader(HttpHeaders.ACCEPT, value)
 
   def withHeader(pair: (String, String)) = {
     headers.add(pair._1, pair._2)

@@ -3,6 +3,8 @@ package org.webfabric.collections
 trait Iterable[T] extends java.lang.Iterable[T] {
   def head: T = Iterable.head(this)
 
+  def tail: Iterable[T] = Iterable.tail(this)
+
   def headOption: Option[T] = Iterable.headOption(this)
 
   def find(predicate: (T) => Boolean): Option[T] = Iterable.find(this, predicate)
@@ -38,6 +40,11 @@ trait Iterable[T] extends java.lang.Iterable[T] {
 object Iterable {
   def head[T](iterable: java.lang.Iterable[T]): T =
     Iterator.head(iterable.iterator)
+
+  def tail[T](iterable: java.lang.Iterable[T]): Iterable[T] =
+    new Iterable[T] {
+      def iterator = Iterator.tail(iterable.iterator)
+    }
 
   def headOption[T](iterable: java.lang.Iterable[T]): Option[T] =
     Iterator.headOption(iterable.iterator)

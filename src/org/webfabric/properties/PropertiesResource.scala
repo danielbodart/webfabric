@@ -22,6 +22,13 @@ class PropertiesResource(repository: PropertiesRepository, templates:StringTempl
   }
 
   @GET
+  @Path("{name}")
+  @Produces(Array("text/plain"))
+  def getProperty(@PathParam("id") id: Id, @PathParam("name") name:String ): String = {
+    repository.get(id).getProperty(name)
+  }
+
+  @GET
   @Produces(Array("text/html"))
   def getHtml(@PathParam("id") id: Id): StreamingWriter = {
     val properties = repository.get(id)
