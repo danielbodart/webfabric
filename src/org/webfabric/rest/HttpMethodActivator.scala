@@ -12,9 +12,20 @@ class HttpMethodActivator(httpMethod: String, method: Method) extends Matcher[Re
   var producesMatcher = new ProducesMimeMatcher(method)
   val matchers = List(new MethodMatcher(httpMethod), new PathMatcher(uriTemplate), producesMatcher, new ConsumesMimeMatcher(method), argumentsExtractor)
 
-  def isMatch(request: Request): Boolean = matchers.forall(_.isMatch(request))
+  def isMatch(request: Request): Boolean = {
+    Console.print(uriTemplate)
+    val result = matchers.forall(log(_, request))
+    Console.println
+    result
+  }
 
-  def matchQuality(request: Request): Float = producesMatcher.matchQuality(request)
+  def log(matcher:Matcher[Request], request:Request):Boolean = {
+    val result = matcher.isMatch(request)
+    Console.print(" " + matcher.getClass.getSimpleName + ":" + result + " ")
+    result
+  }
+
+  def matchQuality(request: Request): Float = producesMatcher.matchQuality(request) 
 
   def numberOfArguments = method.getParameterTypes.size
 

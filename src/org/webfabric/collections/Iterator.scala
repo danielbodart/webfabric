@@ -5,6 +5,13 @@ object Iterator {
     if (iterator.hasNext) iterator.next else throw new NoSuchElementException
   }
 
+  def tail[T](iterator: java.util.Iterator[T]): java.util.Iterator[T] = {
+    if (iterator.hasNext) {
+      iterator.next
+      iterator
+    } else throw new NoSuchElementException
+  }
+
   def headOption[T](iterator: java.util.Iterator[T]): Option[T] = {
     if (iterator.hasNext) Some(iterator.next) else None
   }

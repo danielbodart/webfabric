@@ -20,7 +20,7 @@ class PropertiesResourceTest extends LocalDatastore{
     assertThat(postResponse.code, is(Status.SEE_OTHER))
     val location = postResponse.headers.getValue(HttpHeaders.LOCATION)
     val getResponse = Response()
-    application.handle(get(location).withHeader(HttpHeaders.ACCEPT -> "text/plain"), getResponse)
+    application.handle(get(location).accepting("text/plain"), getResponse)
     assertTrue(getResponse.output.toString.contains(properties))
   }
 
@@ -29,9 +29,23 @@ class PropertiesResourceTest extends LocalDatastore{
     val application = new RestApplication
     val response = Response()
     val properties = "foo=bar"
-    application.handle(get("properties/new").withHeader(HttpHeaders.ACCEPT -> "text/html"), response)
+    application.handle(get("properties/new").accepting("text/html"), response)
 
     assertThat(response.code, is(Status.OK))
     
+  }
+
+  @Test
+  def canGetASinglePropertyValue{
+    val application = new RestApplication
+    val postResponse = Response()
+    val properties = "foo=bar"
+    application.handle(post("properties/new").withForm("properties" -> properties), postResponse)
+
+    val location = postResponse.headers.getValue(HttpHeaders.LOCATION) + "/foo"
+    val getResponse = Response()
+    application.handle(get(location).accepting("text/plain"), getResponse)
+    getResponse.flush
+    assertThat(getResponse.output.toString, is("bar"))
   }
 }

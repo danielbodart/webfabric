@@ -63,8 +63,8 @@ class RestTest {
   def canDetermineGetMethodBasedOnMimeType() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/plain")), is("plain"))
-    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/html")), is("html"))
+    assertThat(engine.handle(get("text").accepting("text/plain")), is("plain"))
+    assertThat(engine.handle(get("text").accepting("text/html")), is("html"))
   }
 
   @Test
@@ -73,7 +73,7 @@ class RestTest {
     engine.add(classOf[GetsWithMimeTypes])
 
     var response = new Response
-    engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> "text/plain"), response)
+    engine.handle(get("text").accepting("text/plain"), response)
     assertThat(response.headers.getValue(HttpHeaders.CONTENT_TYPE), is("text/plain"))
   }
 
@@ -81,13 +81,13 @@ class RestTest {
   def canHandleRealWorldAcceptsHeader() {
     val engine = new TestEngine
     engine.add(classOf[GetsWithMimeTypes])
-    var accepts = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
-    assertThat(engine.handle(get("text").withHeader(HttpHeaders.ACCEPT -> accepts)), is("xml"))
+    var mimeTypes = """application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"""
+    assertThat(engine.handle(get("text").accepting(mimeTypes)), is("xml"))
 
     engine.add(classOf[PutContent])
     val input = new ByteArrayInputStream("input".getBytes)
-    accepts = """text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"""
-    assertThat(engine.handle(put("path/foo").withHeader(HttpHeaders.ACCEPT -> accepts).withInput(input)), is("input"))
+    mimeTypes = """text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2"""
+    assertThat(engine.handle(put("path/foo").accepting(mimeTypes).withInput(input)), is("input"))
   }
 
   @Test
