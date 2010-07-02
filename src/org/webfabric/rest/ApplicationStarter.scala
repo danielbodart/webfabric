@@ -1,12 +1,17 @@
 package org.webfabric.rest
 
-import javax.servlet.{ServletContextEvent, ServletContextListener}
 import org.webfabric.servlet.{ContextPath, BasePath, WarRoot}
+import javax.servlet.{ServletContext, ServletContextEvent, ServletContextListener}
+import org.webfabric.properties.PropertiesApplication
 
 class ApplicationStarter extends ServletContextListener{
+  def createApplication(servletContext: ServletContext): Application = {
+    new PropertiesApplication
+  }
+
   def contextInitialized(event: ServletContextEvent) = {
     val context = event.getServletContext
-    val application = new RestApplication(WarRoot(context), ContextPath(context))
+    val application = createApplication(context).addInstance(WarRoot(context)).addInstance(ContextPath(context))
     context.setAttribute(classOf[Application].getCanonicalName, application)
   }
   

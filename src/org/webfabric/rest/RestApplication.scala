@@ -1,35 +1,35 @@
 package org.webfabric.rest
 
 import org.webfabric.collections.List
-import org.webfabric.properties.PropertiesModule
-import com.googlecode.yadic.SimpleContainer
-import org.webfabric.gae.GaeModule
+import com.googlecode.yadic.{Container, SimpleContainer}
 
-class RestApplication(instances: Object*) extends Application {
+class RestApplication() extends Application {
   lazy val engine = applicationScope.resolveType(classOf[RestEngine])
   val applicationScope = new SimpleContainer
   val modules = List[Module]()
 
   add(new CoreModule)
-  add(new GaeModule)
-  add(new PropertiesModule)
 
-  def handle(request: Request, response: Response) = {
+  def createRequestScope: Container = {
     val requestScope = new SimpleContainer(applicationScope)
     modules.foreach(_.addPerRequestObjects(requestScope))
-    engine.handle(requestScope, request, response)
+    requestScope
   }
 
-  def add(module: Module) {
+  def handle(request: Request, response: Response) = {
+    engine.handle(createRequestScope, request, response)
+  }
+
+  def add (module: Module):Application = {
     module.addPerApplicationObjects(applicationScope)
     module.addResources(engine)
     modules.add(module)
+    this
   }
 
-  def addInstances {
-    instances.foreach(instance => {
-      applicationScope.remove(instance.getClass)
-      applicationScope.addInstance(instance)
-    })
+  def addInstance (instance: Object):Application = {
+    applicationScope.remove(instance.getClass)
+    applicationScope.addInstance(instance)
+    this
   }
 }

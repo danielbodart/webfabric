@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response.Status
 class PropertiesResourceTest extends LocalDatastore{
   @Test
   def canPostToCreateNewResource{
-    val application = new RestApplication
+    val application = new PropertiesApplication
     val postResponse = Response()
     val properties = "foo=bar"
     application.handle(post("properties/new").withForm("properties" -> properties), postResponse)
@@ -26,7 +26,7 @@ class PropertiesResourceTest extends LocalDatastore{
 
   @Test
   def canGetNewResource{
-    val application = new RestApplication
+    val application = new PropertiesApplication
     val response = Response()
     val properties = "foo=bar"
     application.handle(get("properties/new").accepting("text/html"), response)
@@ -37,7 +37,7 @@ class PropertiesResourceTest extends LocalDatastore{
 
   @Test
   def canGetASinglePropertyValue{
-    val application = new RestApplication
+    val application = new PropertiesApplication
     val postResponse = Response()
     val properties = "foo=bar"
     application.handle(post("properties/new").withForm("properties" -> properties), postResponse)
