@@ -19,6 +19,11 @@
         <listener-class>org.webfabric.rest.ApplicationStarter</listener-class>
     </listener>
 
+    <context-param>
+        <param-name>org.webfabric.rest.ApplicationStarter</param-name>
+        <param-value>org.webfabric.properties.PropertiesApplication</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>sitemesh-service</servlet-name>
         <servlet-class>org.webfabric.sitemesh.SiteMeshServlet</servlet-class>
