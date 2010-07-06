@@ -9,7 +9,7 @@ class ApplicationStarter extends ServletContextListener{
   def createApplication(servletContext: ServletContext): Application = {
     val className = servletContext.getInitParameter(getClass.getName)
     if(className == null || className.equals("")){
-      throw new UnsupportedOperationException("The web.xml must container a init-param for :" + getClass.getName + " ")
+      throw new UnsupportedOperationException("The web.xml must container a context-param called " + getClass.getName)
     }
     val aClass = Class.forName(className)
     val instance = new SimpleContainer().add(aClass).resolve(aClass)

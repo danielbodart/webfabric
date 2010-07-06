@@ -7,7 +7,7 @@ import javax.ws.rs.{HttpMethod}
 import java.lang.{Class}
 import com.googlecode.yadic.{Resolver}
 
-class RestEngine() {
+class RestEngine extends Engine {
   val activators = List[HttpMethodActivator]()
 
   def add(resource: Class[_]): Unit = {
