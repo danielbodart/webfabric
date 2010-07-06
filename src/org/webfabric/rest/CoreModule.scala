@@ -4,7 +4,7 @@ import com.googlecode.yadic.Container
 
 
 class CoreModule extends Module{
-  def addResources(engine: RestEngine) = this
+  def addResources(engine: Engine) = this
 
   def addPerApplicationObjects(container: Container) = {
     container.add(classOf[RestEngine])

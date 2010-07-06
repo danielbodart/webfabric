@@ -9,7 +9,6 @@ class WebServer(port: Int) {
   val server = new Server()
   createConnector()
   createAppContext()
-  server.setStopAtShutdown(true)
 
   def createAppContext() {
     val appContext = new WebAppContext()

@@ -4,7 +4,7 @@ import com.googlecode.yadic.Container
 import org.antlr.stringtemplate.StringTemplateGroup
 import org.webfabric.stringtemplate.UrlStringTemplateGroup
 import org.webfabric.io.RelativeResource
-import org.webfabric.rest.{RestEngine, Module, Request}
+import org.webfabric.rest.{Engine, RestEngine, Module, Request}
 
 class PropertiesModule extends Module{
   def addPerRequestObjects(container: Container) = {
@@ -17,7 +17,7 @@ class PropertiesModule extends Module{
   def addPerApplicationObjects(container: Container) = this
 
 
-  def addResources(engine: RestEngine) = {
+  def addResources(engine: Engine) = {
     engine.add(classOf[PropertiesResource])
     this
   }
