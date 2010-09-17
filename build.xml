@@ -7,8 +7,8 @@
     <property name="reports" value="${artifacts}/reports"/>
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
-    <property name="release.name" value="${ant.project.name}"/>
-    <property name="release.version" value="0.${build.number}"/>
+    <property name="release.version" value="${build.number}"/>
+    <property name="release.name" value="${ant.project.name}-${release.version}"/>
     <property name="release.jar" value="${release.name}.jar"/>
     <property name="release.jar.path" value="${artifacts}/${release.jar}"/>
     <property name="test.jar.path" value="${artifacts}/${release.name}.test.jar"/>
@@ -55,6 +55,7 @@
         </war>
 
         <propertyfile file="${artifacts}/release.properties">
+            <entry key="project.name" value="${ant.project.name}"/>
             <entry key="release.version" value="${release.version}"/>
             <entry key="release.name" value="${release.name}"/>
             <entry key="release.files" value="${release.jar},${release.src},${release.war}"/>
@@ -67,7 +68,7 @@
         </propertyfile>
 
         <propertyfile file="${artifacts}/deploy.properties">
-            <entry key="deploy.name" value="${release.name}"/>
+            <entry key="deploy.name" value="${ant.project.name}"/>
             <entry key="deploy.war" value="${release.war}"/>
         </propertyfile>
     </target>
