@@ -30,7 +30,7 @@ class Response(val writer: Writer, val output: OutputStream) {
 
 object Response {
   def apply(response: HttpServletResponse): Response = {
-    new Response(response.getWriter, response.getOutputStream) {
+    new Response(response.getOutputStream) {
       override def setHeader(name: String, value: String) = {
         response.setHeader(name, value)
         headers.add(name, value)
